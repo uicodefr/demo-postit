@@ -1,0 +1,26 @@
+@import "../../global.scss";
+
+.tabTitle {
+    font-size: $font-boost-base;
+}
+
+.menuIcon {
+    margin-right: $margin-small;
+}
+
+.cardBoard {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: end;
+    padding: $margin-base;
+
+    .cardAdd {
+        width: 200px;
+        margin: $margin-small;
+        text-align: center;
+        display: inline-block;
+        vertical-align: middle;
+    }
+}
+

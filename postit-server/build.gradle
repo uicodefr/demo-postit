@@ -1,0 +1,44 @@
+buildscript {
+	ext {
+		springBootVersion = '2.0.4.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+		maven { url 'https://plugins.gradle.org/m2/' }
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath('net.ltgt.gradle:gradle-apt-plugin:0.18')
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'net.ltgt.apt'
+
+group = 'com.uicode.postit'
+version = '0.1.0'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.springframework.boot:spring-boot-starter-validation')
+	compile('org.springframework.boot:spring-boot-starter-cache')
+	compile('org.springframework.boot:spring-boot-devtools')
+	compile('javax.xml.bind:jaxb-api')
+	compile('com.google.guava:guava:26.0-jre')
+	compile('org.mapstruct:mapstruct-jdk8:1.2.0.Final')
+	compile('org.apache.httpcomponents:httpclient:4.5.6')
+	runtime('org.postgresql:postgresql')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	testCompile('com.h2database:h2')
+	apt('org.mapstruct:mapstruct-processor:1.2.0.Final')
+}

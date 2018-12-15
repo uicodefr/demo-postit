@@ -1,0 +1,34 @@
+<mat-card class="card" [ngClass]="getColorClass()">
+
+  <mat-card-header>
+    <mat-card-title class="titleCard">
+      {{ note.name }}
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <p class="text">{{ note.text }}</p>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button (click)="changeOrder(-1)" mat-icon-button>
+      <mat-icon>arrow_upward</mat-icon>
+    </button>
+    <button (click)="changeOrder(1)" mat-icon-button>
+      <mat-icon>arrow_downward</mat-icon>
+    </button>
+
+    <button (click)="edit()" mat-button i18n>EDIT</button>
+
+    <button (click)="changeColor()" mat-icon-button>
+      <mat-icon>colorize</mat-icon>
+    </button>
+
+    <div class="buttonRight">
+      <button (click)="deleteNote()" mat-icon-button>
+        <mat-icon>delete_outline</mat-icon>
+      </button>
+    </div>
+  </mat-card-actions>
+
+</mat-card>

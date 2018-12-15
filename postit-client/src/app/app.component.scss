@@ -1,0 +1,13 @@
+@import "../global.scss";
+
+.appName {
+    margin-right: 20px;
+    font-size: $font-boost-base;
+}
+
+.unavailableApp {
+    margin-top: 50px;
+    color: $color-red-error;
+    text-align: center;
+    font-size: 400%;
+}

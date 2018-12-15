@@ -1,0 +1,60 @@
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+
+
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatCardModule } from '@angular/material/card';
+import { MatSnackBarModule, MatDialogModule, MatInputModule } from '@angular/material';
+
+import { AppComponent } from './app.component';
+import { BoardComponent } from './board/board.component';
+import { BoardNoteComponent } from './board/board-note/board-note.component';
+import { ConfirmDialogComponent } from './shared/component/dialog/confirm-dialog/confirm-dialog.component';
+import { ColorizeNoteDialogComponent } from './board/colorize-note-dialog/colorize-note-dialog.component';
+import { EditNoteDialogComponent } from './board/edit-note-dialog/edit-note-dialog.component';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    BoardComponent,
+    BoardNoteComponent,
+    ConfirmDialogComponent,
+    ColorizeNoteDialogComponent,
+    EditNoteDialogComponent
+  ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    FormsModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonModule,
+    MatBadgeModule,
+    MatProgressSpinnerModule,
+    MatTabsModule,
+    MatCardModule,
+    MatSnackBarModule,
+    MatDialogModule,
+    MatInputModule
+  ],
+  entryComponents: [
+    ConfirmDialogComponent,
+    ColorizeNoteDialogComponent,
+    EditNoteDialogComponent
+  ],
+  providers: [
+  ],
+  bootstrap: [AppComponent]
+})
+export class AppModule {
+
+}
