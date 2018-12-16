@@ -33,7 +33,9 @@ export class BoardNoteComponent implements OnInit {
     private globalInfoService: GlobalInfoService,
     private translateService: TranslateService,
     private postitService: PostitService
-  ) { }
+  ) {
+    this.note = new PostitNote();
+  }
 
   public ngOnInit() {
   }

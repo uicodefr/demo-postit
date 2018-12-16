@@ -1,16 +1,30 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EditNoteDialogComponent } from './edit-note-dialog.component';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA, MatInputModule } from '@angular/material';
+import { PostitService } from 'src/app/shared/service/postit/postit.service';
+import { FormsModule } from '@angular/forms';
 
 describe('EditNoteDialogComponent', () => {
   let component: EditNoteDialogComponent;
   let fixture: ComponentFixture<EditNoteDialogComponent>;
 
   beforeEach(async(() => {
+    const mockDialogRef = {
+      close: jasmine.createSpy('close')
+    };
+    const postitSpy = jasmine.createSpyObj('PostitService', ['updateNote']);
+
     TestBed.configureTestingModule({
-      declarations: [ EditNoteDialogComponent ]
+      declarations: [EditNoteDialogComponent],
+      providers: [
+        { provide: MatDialogRef, useValue: mockDialogRef },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: PostitService, useValue: postitSpy }
+      ],
+      imports: [FormsModule, MatDialogModule, MatInputModule]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -22,4 +36,5 @@ describe('EditNoteDialogComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
 });

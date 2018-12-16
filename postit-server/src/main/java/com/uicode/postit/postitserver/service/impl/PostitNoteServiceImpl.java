@@ -111,6 +111,7 @@ public class PostitNoteServiceImpl implements IPostitNoteService {
         if (noteId == null) {
             // Creation
             CheckDataUtils.checkNotNull("boardId", noteDto.getBoardId());
+            CheckDataUtils.checkNotNull("name", noteDto.getName());
             Optional<String> maxNoteParameter = globalService.getParameterValue(ParameterConst.NOTE_MAX);
             Long maxNote = ParameterUtils.getLong(maxNoteParameter, 0l);
             if (postitNoteDao.countByBoardId(noteDto.getBoardId()) > maxNote) {

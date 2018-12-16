@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-
 import { Subscription } from 'rxjs';
+
 import { GlobalInfoService } from './shared/service/utils/global-info.service';
 import { GlobalService } from './shared/service/global/global.service';
 
@@ -25,7 +25,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public ngOnInit() {
     this.globalService.getStatus().then(status => {
+      console.warn(status);
       this.availableApp = status.status === 'true';
+      console.warn(this.availableApp);
     }).catch(error => {
       this.availableApp = false;
     });

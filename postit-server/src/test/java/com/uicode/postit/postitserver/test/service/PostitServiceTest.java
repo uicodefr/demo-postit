@@ -15,7 +15,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.uicode.postit.postitserver.dto.postit.PostitNoteDto;
 import com.uicode.postit.postitserver.entity.postit.Board;
 import com.uicode.postit.postitserver.entity.postit.PostitNote;
+import com.uicode.postit.postitserver.service.IGlobalService;
 import com.uicode.postit.postitserver.service.IPostitNoteService;
+import com.uicode.postit.postitserver.utils.exception.FunctionnalException;
+import com.uicode.postit.postitserver.utils.exception.InvalidDataException;
+import com.uicode.postit.postitserver.utils.exception.NotFoundException;
+import com.uicode.postit.postitserver.utils.parameter.ParameterConst;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK)
@@ -23,6 +28,9 @@ public class PostitServiceTest {
 
     @Autowired
     private IPostitNoteService postitNoteService;
+
+    @Autowired
+    private IGlobalService globalService;
 
     @Test
     public void reorderBoard() {
@@ -73,6 +81,33 @@ public class PostitServiceTest {
             previous = note.getOrderNum();
         }
         return true;
+    }
+
+    @Test
+    public void saveNote() throws NotFoundException, InvalidDataException, FunctionnalException {
+        PostitNoteDto noteDto = new PostitNoteDto();
+        Assertions.assertThatThrownBy(() -> postitNoteService.saveNote(noteDto.getId(), noteDto))
+                .isInstanceOf(InvalidDataException.class);
+
+        noteDto.setId(-1l);
+        Assertions.assertThatThrownBy(() -> postitNoteService.saveNote(noteDto.getId(), noteDto))
+                .isInstanceOf(NotFoundException.class);
+
+        noteDto.setId(null);
+        noteDto.setBoardId(1l);
+        Assertions.assertThatThrownBy(() -> postitNoteService.saveNote(noteDto.getId(), noteDto))
+                .isInstanceOf(InvalidDataException.class);
+        
+        Long noteMax = Long.valueOf(globalService.getParameterValue(ParameterConst.NOTE_MAX)
+                .orElseThrow(() -> new InvalidDataException("noteMax")));
+        for (int i = 0; i < noteMax; i++) {
+            noteDto.setName("note " + i);
+            Assertions.assertThat(postitNoteService.saveNote(noteDto.getId(), noteDto)).isNotNull();
+        }
+
+        noteDto.setName("No more");
+        Assertions.assertThatThrownBy(() -> postitNoteService.saveNote(noteDto.getId(), noteDto))
+                .isInstanceOf(FunctionnalException.class);
     }
 
 }

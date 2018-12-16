@@ -1,11 +1,18 @@
 import { TestBed, inject } from '@angular/core/testing';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material';
 
 import { GlobalInfoService } from './global-info.service';
+import { TranslateService } from './translate.service';
 
 describe('GlobalInfoService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [GlobalInfoService]
+      providers: [
+        GlobalInfoService,
+        MatSnackBar,
+        TranslateService
+      ],
+      imports: [MatSnackBarModule]
     });
   });
 

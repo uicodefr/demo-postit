@@ -63,8 +63,8 @@ export class GlobalService implements OnInit, OnDestroy {
   public launchCountLikeTimer() {
     this.countLike();
     if (GlobalService.COUNT_LIKE_TIMER > 0) {
-      setTimeout(() => {
-        this.launchCountLikeTimer();
+      setInterval(() => {
+        this.countLike();
       }, GlobalService.COUNT_LIKE_TIMER * 1000);
     }
   }

@@ -20,6 +20,8 @@ import { BoardNoteComponent } from './board/board-note/board-note.component';
 import { ConfirmDialogComponent } from './shared/component/dialog/confirm-dialog/confirm-dialog.component';
 import { ColorizeNoteDialogComponent } from './board/colorize-note-dialog/colorize-note-dialog.component';
 import { EditNoteDialogComponent } from './board/edit-note-dialog/edit-note-dialog.component';
+import { AppRoutingModule } from './app-routing.module';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -28,13 +30,15 @@ import { EditNoteDialogComponent } from './board/edit-note-dialog/edit-note-dial
     BoardNoteComponent,
     ConfirmDialogComponent,
     ColorizeNoteDialogComponent,
-    EditNoteDialogComponent
+    EditNoteDialogComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
+    AppRoutingModule,
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
