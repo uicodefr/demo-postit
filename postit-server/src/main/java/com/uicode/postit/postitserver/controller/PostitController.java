@@ -3,10 +3,13 @@ package com.uicode.postit.postitserver.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,53 +30,53 @@ public class PostitController {
 
     // Boards
 
-    @RequestMapping(value = "/boards", method = RequestMethod.GET)
+    @GetMapping("/boards")
     public List<BoardDto> getBoardList() {
         return postitNoteService.getBoardList();
     }
 
-    @RequestMapping(value = "/boards", method = RequestMethod.POST)
+    @PostMapping("/boards")
     public BoardDto createBoard(@RequestBody BoardDto boardDto) throws NotFoundException, FunctionnalException {
         return postitNoteService.saveBoard(null, boardDto);
     }
 
-    @RequestMapping(value = "/boards/{id}", method = RequestMethod.PATCH)
+    @PatchMapping("/boards/{id}")
     public BoardDto updateBoard(@PathVariable(name = "id") Long boardId, @RequestBody BoardDto boardDto)
             throws NotFoundException, FunctionnalException {
         return postitNoteService.saveBoard(boardId, boardDto);
     }
 
-    @RequestMapping(value = "/boards/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping("/boards/{id}")
     public void deleteBoard(@PathVariable("id") Long boardId) {
         postitNoteService.deleteBoard(boardId);
     }
 
     // Notes
 
-    @RequestMapping(value = "/notes", method = RequestMethod.GET)
+    @GetMapping("/notes")
     public List<PostitNoteDto> getNoteList(@RequestParam("boardId") Long boardId) {
         return postitNoteService.getNoteList(boardId);
     }
 
-    @RequestMapping(value = "/notes/{id}", method = RequestMethod.GET)
+    @GetMapping("/notes/{id}")
     public PostitNoteDto getNote(@PathVariable("id") Long noteId) throws NotFoundException {
         return postitNoteService.getNote(noteId);
     }
 
-    @RequestMapping(value = "/notes", method = RequestMethod.POST)
+    @PostMapping("/notes")
     public PostitNoteDto createNote(@RequestBody PostitNoteDto noteDto)
             throws NotFoundException, InvalidDataException, FunctionnalException {
         return postitNoteService.saveNote(null, noteDto);
     }
 
-    @RequestMapping(value = "/notes/{id}", method = RequestMethod.PATCH)
+    @PatchMapping("/notes/{id}")
     public PostitNoteDto updateNote(@PathVariable(name = "id") Long noteId,
             @RequestBody PostitNoteDto noteDto)
             throws NotFoundException, InvalidDataException, FunctionnalException {
         return postitNoteService.saveNote(noteId, noteDto);
     }
 
-    @RequestMapping(value = "/notes/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping("/notes/{id}")
     public void deleteNote(@PathVariable("id") Long noteId) {
         postitNoteService.deleteNote(noteId);
     }

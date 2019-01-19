@@ -28,6 +28,10 @@ export class PostitService {
     return this.restClientService.patch<Board>(UrlConstant.Postit.BOARDS + '/' + board.id, board).toPromise();
   }
 
+  public deleteBoard(boardId: number): Promise<void> {
+    return this.restClientService.delete<void>(UrlConstant.Postit.BOARDS + '/' + boardId).toPromise();
+  }
+
   // Notes
 
   public getNoteList(boardId: number): Promise<Array<PostitNote>> {

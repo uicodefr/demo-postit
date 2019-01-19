@@ -8,5 +8,8 @@ export const translation = {
     'New note': 'New note',
     'New note created': 'New note created',
     'Note deleted': 'Note deleted',
-    'Note updated': 'Note updated'
+    'Note updated': 'Note updated',
+    'Delete board': 'Delete board',
+    'Are you sure to delete this board ?': 'Are you sure to delete this board ?',
+    'New board': 'New board'
 };

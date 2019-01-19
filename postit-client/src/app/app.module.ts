@@ -12,7 +12,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
-import { MatSnackBarModule, MatDialogModule, MatInputModule } from '@angular/material';
+import { MatSnackBarModule, MatDialogModule, MatInputModule, MatAccordion, MatExpansionModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { BoardComponent } from './board/board.component';
@@ -22,6 +22,7 @@ import { ColorizeNoteDialogComponent } from './board/colorize-note-dialog/colori
 import { EditNoteDialogComponent } from './board/edit-note-dialog/edit-note-dialog.component';
 import { AppRoutingModule } from './app-routing.module';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     ConfirmDialogComponent,
     ColorizeNoteDialogComponent,
     EditNoteDialogComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +50,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     MatCardModule,
     MatSnackBarModule,
     MatDialogModule,
-    MatInputModule
+    MatInputModule,
+    MatExpansionModule
   ],
   entryComponents: [
     ConfirmDialogComponent,

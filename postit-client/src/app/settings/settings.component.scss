@@ -1,0 +1,18 @@
+@import "../../global.scss";
+
+.settings {
+    padding: $margin-base;
+
+    h1 {
+        font-size: 20px;
+        color: rgba(0,0,0,.87);
+    }
+
+    .actionZone button {
+        margin: $margin-small $margin-base;
+    }
+
+    .creationZone {
+        margin-top: $margin-base;
+    }
+}

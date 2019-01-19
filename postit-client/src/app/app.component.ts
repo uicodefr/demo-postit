@@ -25,9 +25,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public ngOnInit() {
     this.globalService.getStatus().then(status => {
-      console.warn(status);
       this.availableApp = status.status === 'true';
-      console.warn(this.availableApp);
     }).catch(error => {
       this.availableApp = false;
     });

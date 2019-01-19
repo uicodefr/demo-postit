@@ -13,7 +13,7 @@ export class GlobalConstant {
 
     public static readonly Functional = class Functional {
         public static readonly VALID_COLOR_LIST = ['white', 'yellow', 'orange', 'blue', 'green', 'pink'];
-        public static readonly DEFAULT_COLOR = 'white';
+        public static readonly DEFAULT_COLOR = 'yellow';
     };
 
 }

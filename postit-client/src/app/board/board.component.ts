@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 
 import { PostitService } from '../shared/service/postit/postit.service';
@@ -20,11 +21,15 @@ export class BoardComponent implements OnInit {
 
   public boardList: Array<Board>;
   public noteListMap = new Map<number, Array<PostitNote>>();
+
+  public selectedIndex = 0;
   public currentBoard: Board;
 
   public parameterNoteMax: number;
 
   public constructor(
+    private route: ActivatedRoute,
+    private router: Router,
     private globalInfoService: GlobalInfoService,
     private translateService: TranslateService,
     private globalService: GlobalService,
@@ -32,11 +37,17 @@ export class BoardComponent implements OnInit {
   ) { }
 
   public ngOnInit() {
-    this.postitService.getBoardList().then(boardList => {
-      this.boardList = boardList;
-    });
     this.globalService.getParameterValue(GlobalConstant.Parameter.NOTE_MAX).then(paramValue => {
       this.parameterNoteMax = Number(paramValue);
+    });
+
+    this.postitService.getBoardList().then(boardList => {
+      this.boardList = boardList;
+
+      this.route.params.subscribe(routeParams => {
+        const selectedBoardId = parseInt(routeParams['id'], 10);
+        this.selectedIndex = this.boardList.findIndex(board => board.id === selectedBoardId);
+      });
     });
   }
 
@@ -44,6 +55,7 @@ export class BoardComponent implements OnInit {
     if (event.index < this.boardList.length) {
       this.currentBoard = this.boardList[event.index];
       this.loadNoteList(this.currentBoard.id);
+      this.router.navigate(['board', this.currentBoard.id]);
     }
   }
 

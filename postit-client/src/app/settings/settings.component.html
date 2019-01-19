@@ -1,0 +1,29 @@
+<div class="settings">
+
+  <h1 i18n>Board Configuration</h1>
+
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let board of boardList">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ board.name }}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <mat-form-field>
+        <input matInput placeholder="Name" [(ngModel)]="board.name">
+      </mat-form-field>
+
+      <div class="actionZone">
+        <button (click)="saveBoard(board)" mat-raised-button color="primary" i18n>Save name</button>
+        <button (click)="deleteBoard(board)" mat-raised-button color="warn" i18n>Delete</button>
+      </div>
+
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <div class="creationZone">
+    <button (click)="createBoard()" mat-raised-button color="primary" i18n>Create board</button>
+  </div>
+
+</div>

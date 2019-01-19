@@ -1,4 +1,4 @@
-<mat-tab-group mat-stretch-tabs (selectedTabChange)="changeBoard($event)">
+<mat-tab-group mat-stretch-tabs [(selectedIndex)]="selectedIndex" (selectedTabChange)="changeBoard($event)">
 
   <mat-tab *ngFor="let board of boardList">
     <ng-template mat-tab-label>

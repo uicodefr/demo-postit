@@ -10,6 +10,9 @@
   <span class="fill-remaining-space"></span>
   <mat-progress-spinner *ngIf="loading" mode="indeterminate" color="accent" diameter="40">
   </mat-progress-spinner>
+  <button mat-icon-button routerLink="/settings">
+    <mat-icon>settings</mat-icon>
+  </button>
 </mat-toolbar>
 
 <router-outlet *ngIf="availableApp"></router-outlet>
