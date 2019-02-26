@@ -19,7 +19,7 @@ apply plugin: 'io.spring.dependency-management'
 apply plugin: 'net.ltgt.apt'
 
 group = 'com.uicode.postit'
-version = '0.2.0'
+version = '0.2.1'
 sourceCompatibility = 1.8
 
 repositories {

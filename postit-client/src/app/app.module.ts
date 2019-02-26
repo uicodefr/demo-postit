@@ -12,7 +12,10 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
-import { MatSnackBarModule, MatDialogModule, MatInputModule, MatAccordion, MatExpansionModule } from '@angular/material';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { AppComponent } from './app.component';
 import { BoardComponent } from './board/board.component';

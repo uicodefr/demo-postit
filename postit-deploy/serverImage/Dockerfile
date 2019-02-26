@@ -1,4 +1,4 @@
-FROM openjdk:8-jre-alpine
+FROM adoptopenjdk/openjdk8:alpine-slim
 
 MAINTAINER uicode.fr
 
@@ -11,5 +11,5 @@ COPY ./*.jar /app.jar
 COPY ./application.properties /application.properties
 COPY ./version.txt /version.txt
 
-ENTRYPOINT ["/usr/bin/java"]
+ENTRYPOINT ["java"]
 CMD ["-Djava.security.egd=file:/dev/./urandom", "-jar", "/app.jar"]
