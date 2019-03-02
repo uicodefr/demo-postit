@@ -1,16 +1,29 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { MatDialog, MatDialogModule, MatExpansionModule, MatInputModule } from '@angular/material';
 
 import { SettingsComponent } from './settings.component';
+import { TranslateService } from '../shared/service/utils/translate.service';
+import { PostitService } from '../shared/service/postit/postit.service';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
   let fixture: ComponentFixture<SettingsComponent>;
 
   beforeEach(async(() => {
+    const postitSpy = jasmine.createSpyObj('PostitService', ['getBoardList']);
+    postitSpy.getBoardList.and.returnValue(Promise.resolve([]));
+
     TestBed.configureTestingModule({
-      declarations: [ SettingsComponent ]
+      declarations: [SettingsComponent],
+      providers: [
+        MatDialog,
+        { provide: PostitService, useValue: postitSpy },
+        TranslateService
+      ],
+      imports: [FormsModule, MatDialogModule, MatInputModule, MatExpansionModule]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

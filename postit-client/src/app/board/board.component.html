@@ -16,7 +16,7 @@
 
         <mat-card *ngIf="parameterNoteMax && parameterNoteMax > noteListMap.get(board.id).length" class="cardAdd">
           <mat-card-content>
-            <button (click)="addNote(board)" mat-raised-button color="primary" i18n>Add a note</button>
+            <button (click)="addNote(board)" mat-raised-button color="primary" appHighlight i18n>Add a note</button>
           </mat-card-content>
         </mat-card>
 

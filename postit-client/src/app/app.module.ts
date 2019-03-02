@@ -26,6 +26,7 @@ import { EditNoteDialogComponent } from './board/edit-note-dialog/edit-note-dial
 import { AppRoutingModule } from './app-routing.module';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { SettingsComponent } from './settings/settings.component';
+import { HighlightDirective } from './shared/directive/highlight.directive';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { SettingsComponent } from './settings/settings.component';
     ColorizeNoteDialogComponent,
     EditNoteDialogComponent,
     PageNotFoundComponent,
-    SettingsComponent
+    SettingsComponent,
+    HighlightDirective
   ],
   imports: [
     BrowserModule,

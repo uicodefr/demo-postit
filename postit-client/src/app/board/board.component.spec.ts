@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatTabsModule, MatCardModule } from '@angular/material';
 
 import { BoardComponent } from './board.component';
@@ -7,12 +8,15 @@ import { GlobalInfoService } from '../shared/service/utils/global-info.service';
 import { PostitService } from '../shared/service/postit/postit.service';
 import { TranslateService } from '../shared/service/utils/translate.service';
 import { GlobalService } from '../shared/service/global/global.service';
+import { of } from 'rxjs';
 
 describe('BoardComponent', () => {
   let component: BoardComponent;
   let fixture: ComponentFixture<BoardComponent>;
 
   beforeEach(async(() => {
+    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+
     const globalInfoSpy = jasmine.createSpyObj('GlobalInfoService', ['showAlert']);
 
     const globalSpy = jasmine.createSpyObj('GlobalService', ['getParameterValue']);
@@ -24,6 +28,13 @@ describe('BoardComponent', () => {
     TestBed.configureTestingModule({
       declarations: [BoardComponent],
       providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            params: of({ id: 1 })
+          }
+        },
+        { provide: Router, useValue: routerSpy },
         { provide: GlobalInfoService, useValue: globalInfoSpy },
         TranslateService,
         { provide: GlobalService, useValue: globalSpy },
