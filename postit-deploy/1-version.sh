@@ -15,8 +15,8 @@ fi
 
 echo "# VERSION : Change version to $newVersion"
 
-sed -i -e "s/^version = '.*'$/version = '$newVersion'/g" ../postit-server/build.gradle
-grep version ../postit-server/build.gradle
+sed -i -e "s/^\t<version>.*<\/version>$/\t<version>$newVersion<\/version>/g" ../postit-server/pom.xml
+grep "<version>" ../postit-server/pom.xml
 sed -i -e "s/String VERSION = \".*\";$/String VERSION = \"$newVersion\";/g" ../postit-server/src/main/java/com/uicode/postit/postitserver/service/impl/GlobalServiceImpl.java
 grep "VERSION =" ../postit-server/src/main/java/com/uicode/postit/postitserver/service/impl/GlobalServiceImpl.java
 

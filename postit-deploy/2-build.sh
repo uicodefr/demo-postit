@@ -10,19 +10,19 @@ buildTarget=$1
 
 if [ $buildTarget == 'server' ] || [ $buildTarget == 'all' ]; then
 	echo "# BUILD : Start to build server"
-	serverVersion=`grep "version =" ../postit-server/build.gradle | sed -r -e "s/^version = '(.+)'$/\1/"`
+	serverVersion=`grep $'^\t<version>' ../postit-server/pom.xml | sed -r -e "s/^\t<version>(.+)<\/version>$/\1/"`
 	echo "# - server version : $serverVersion"
 	
 	echo "# - build jar server"
 	cd ../postit-server
-	./gradlew clean
-	./gradlew build
+	./mvnw clean
+	./mvnw package
 	
 	cd ../postit-deploy
 	rm ./serverImage/postit-server*.jar
 	rm ./serverImage/version.txt
 	
-	cp ../postit-server/build/libs/postit-server-$serverVersion.jar ./serverImage/
+	cp ../postit-server/target/postit-server-$serverVersion.jar ./serverImage/
 	echo $serverVersion > ./serverImage/version.txt
 	
 fi
