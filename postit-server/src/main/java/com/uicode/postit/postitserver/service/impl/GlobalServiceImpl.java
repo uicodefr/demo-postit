@@ -31,7 +31,7 @@ public class GlobalServiceImpl implements IGlobalService {
 
     private static final Logger LOGGER = LogManager.getLogger(GlobalServiceImpl.class);
 
-    private static final String VERSION = "0.2.2";
+    private static final String VERSION = "0.2.3";
     private static final Date UPDATE = new Date();
 
     @Autowired
