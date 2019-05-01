@@ -1,6 +1,9 @@
 package com.uicode.postit.postitserver.controller;
 
+import java.io.IOException;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,7 +22,6 @@ import com.uicode.postit.postitserver.service.IPostitNoteService;
 import com.uicode.postit.postitserver.utils.exception.FunctionnalException;
 import com.uicode.postit.postitserver.utils.exception.InvalidDataException;
 import com.uicode.postit.postitserver.utils.exception.NotFoundException;
-
 
 @RestController
 @RequestMapping("/postit")
@@ -70,8 +72,7 @@ public class PostitController {
     }
 
     @PatchMapping("/notes/{id}")
-    public PostitNoteDto updateNote(@PathVariable(name = "id") Long noteId,
-            @RequestBody PostitNoteDto noteDto)
+    public PostitNoteDto updateNote(@PathVariable(name = "id") Long noteId, @RequestBody PostitNoteDto noteDto)
             throws NotFoundException, InvalidDataException, FunctionnalException {
         return postitNoteService.saveNote(noteId, noteDto);
     }
@@ -79,6 +80,11 @@ public class PostitController {
     @DeleteMapping("/notes/{id}")
     public void deleteNote(@PathVariable("id") Long noteId) {
         postitNoteService.deleteNote(noteId);
+    }
+
+    @GetMapping(value = "/notes/export", produces = "text/csv")
+    public void exportNotes(HttpServletResponse response) throws IOException {
+        postitNoteService.exportNotesToCsv(response.getWriter());
     }
 
 }

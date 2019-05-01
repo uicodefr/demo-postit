@@ -23,35 +23,35 @@ export class RestClientService {
 
   public get<T>(url: string, paramData?: any): Observable<T> {
     this.globalInfoService.notifLoader(true);
-    const obsResponse = this.httpClient.get(UrlConstant.BASE + url,
+    const obsResponse = this.httpClient.get(url,
       { observe: 'response', responseType: 'json', params: new HttpParams({ fromObject: paramData }) });
     return this.addMapperAndCatcher<T>(obsResponse, url);
   }
 
   public post<T>(url: string, paramData?: any): Observable<T> {
     this.globalInfoService.notifLoader(true);
-    const obsResponse = this.httpClient.post(UrlConstant.BASE + url, paramData,
+    const obsResponse = this.httpClient.post(url, paramData,
       { observe: 'response', responseType: 'json' });
     return this.addMapperAndCatcher<T>(obsResponse, url);
   }
 
   public put<T>(url: string, paramData?: any): Observable<T> {
     this.globalInfoService.notifLoader(true);
-    const obsResponse = this.httpClient.put(UrlConstant.BASE + url, paramData,
+    const obsResponse = this.httpClient.put(url, paramData,
       { observe: 'response', responseType: 'json' });
     return this.addMapperAndCatcher<T>(obsResponse, url);
   }
 
   public patch<T>(url: string, paramData?: any): Observable<T> {
     this.globalInfoService.notifLoader(true);
-    const obsResponse = this.httpClient.patch(UrlConstant.BASE + url, paramData,
+    const obsResponse = this.httpClient.patch(url, paramData,
       { observe: 'response', responseType: 'json' });
     return this.addMapperAndCatcher<T>(obsResponse, url);
   }
 
   public delete<T>(url: string): Observable<T> {
     this.globalInfoService.notifLoader(true);
-    const obsResponse = this.httpClient.delete(UrlConstant.BASE + url,
+    const obsResponse = this.httpClient.delete(url,
       { observe: 'response', responseType: 'json' });
     return this.addMapperAndCatcher<T>(obsResponse, url);
   }
@@ -60,7 +60,7 @@ export class RestClientService {
 
   public getBlob(url: string, paramData?: any): Observable<{} | Blob> {
     this.globalInfoService.notifLoader(true);
-    const obsResponse = this.httpClient.get(UrlConstant.BASE + url,
+    const obsResponse = this.httpClient.get(url,
       { observe: 'body', responseType: 'blob' }
     ).pipe(catchError(this.handleError(this.globalInfoService, url))).pipe(finalize(() => {
       this.globalInfoService.notifLoader(false);

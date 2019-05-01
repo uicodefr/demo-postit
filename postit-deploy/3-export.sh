@@ -20,6 +20,7 @@ if [ $buildTarget == 'server' ] || [ $buildTarget == 'all' ]; then
 	echo "# - server version : $serverVersion"
 
 	echo "# - build docker server"
+	rm ./serverImage/postit-server-*.tar
 	docker build --tag postit-server:$serverVersion --tag postit-server:latest serverImage
 	docker image save postit-server:$serverVersion -o ./serverImage/postit-server-$serverVersion.tar
 
@@ -39,6 +40,7 @@ if [ $buildTarget == 'client' ] || [ $buildTarget == 'all' ]; then
 	echo "# - client version : $clientVersion"
 
 	echo "# - build docker client"
+	rm ./clientImage/postit-client-*.tar
 	docker build --tag postit-client:$clientVersion --tag postit-client:latest clientImage 
 	docker image save postit-client:$clientVersion -o ./clientImage/postit-client-$clientVersion.tar
 

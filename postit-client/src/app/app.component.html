@@ -10,6 +10,9 @@
   <span class="fill-remaining-space"></span>
   <mat-progress-spinner *ngIf="loading" mode="indeterminate" color="accent" diameter="40">
   </mat-progress-spinner>
+  <a mat-icon-button download="notes.csv" [href]="exportNotesUrl">
+    <mat-icon>get_app</mat-icon>
+  </a>
   <button mat-icon-button routerLink="/settings">
     <mat-icon>settings</mat-icon>
   </button>
@@ -20,4 +23,4 @@
 <div *ngIf="!availableApp" class="unavailableApp" i18n>
   Application Unavailable
 </div>
-<div style="display: none;">version: '0.2.3'</div>
+<div style="display: none;">version: '0.2.4'</div>

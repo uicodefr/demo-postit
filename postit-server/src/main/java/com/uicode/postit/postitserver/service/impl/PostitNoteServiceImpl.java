@@ -1,5 +1,8 @@
 package com.uicode.postit.postitserver.service.impl;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -14,6 +17,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Streams;
+import com.opencsv.CSVWriter;
 import com.uicode.postit.postitserver.dao.postit.IBoardDao;
 import com.uicode.postit.postitserver.dao.postit.IPostitNoteDao;
 import com.uicode.postit.postitserver.dto.postit.BoardDto;
@@ -31,12 +35,14 @@ import com.uicode.postit.postitserver.utils.exception.NotFoundException;
 import com.uicode.postit.postitserver.utils.parameter.ParameterConst;
 import com.uicode.postit.postitserver.utils.parameter.ParameterUtils;
 
-
 @Service
 @Transactional
 public class PostitNoteServiceImpl implements IPostitNoteService {
 
     private static final Logger LOGGER = LogManager.getLogger(PostitNoteServiceImpl.class);
+
+    private static final String[] EXPORT_HEADERS = { "board id", "board name", "note id", "note name", "note text",
+            "note color", "note order" };
 
     @Autowired
     private IBoardDao boardDao;
@@ -163,6 +169,30 @@ public class PostitNoteServiceImpl implements IPostitNoteService {
     @Override
     public void deleteNote(Long noteId) {
         postitNoteDao.deleteById(noteId);
+    }
+
+    @Override
+    public void exportNotesToCsv(PrintWriter writer) throws IOException {
+        CSVWriter csvWriter = new CSVWriter(writer);
+
+        csvWriter.writeNext(EXPORT_HEADERS);
+
+        for (BoardDto board : getBoardList()) {
+            for (PostitNoteDto note : getNoteList(board.getId())) {
+                List<String> contentLineList = new ArrayList<>();
+                contentLineList.add(board.getId().toString());
+                contentLineList.add(board.getName());
+                contentLineList.add(note.getId().toString());
+                contentLineList.add(note.getName());
+                contentLineList.add(note.getText());
+                contentLineList.add(note.getColor());
+                contentLineList.add(note.getOrderNum().toString());
+                
+                csvWriter.writeNext(contentLineList.toArray(new String[contentLineList.size()]));
+            }
+        }
+
+        csvWriter.close();
     }
 
 }

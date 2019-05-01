@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 
 import { GlobalInfoService } from './shared/service/utils/global-info.service';
 import { GlobalService } from './shared/service/global/global.service';
+import { UrlConstant } from './shared/const/url-constant';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public availableApp = true;
   public loading = false;
   public likes: number = null;
+  public exportNotesUrl = UrlConstant.Postit.NOTES_EXPORT;
 
   private loadingSubscription: Subscription = null;
   private likesSubscription: Subscription = null;
