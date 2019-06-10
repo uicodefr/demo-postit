@@ -14,8 +14,8 @@ public abstract class PostitNoteMapper {
 
     public static final PostitNoteMapper INSTANCE = Mappers.getMapper(PostitNoteMapper.class);
 
-    @Mapping(source = "board.id", target = "boardId")
-    @Mapping(source = "textValue", target = "text")
+    @Mapping(target = "boardId", source = "board.id")
+    @Mapping(target = "text", source = "textValue")
     public abstract PostitNoteDto toDto(PostitNote entity);
 
     public void updateEntity(PostitNoteDto dto, PostitNote entity) {

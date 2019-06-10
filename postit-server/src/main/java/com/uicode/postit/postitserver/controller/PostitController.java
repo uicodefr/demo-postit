@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -38,17 +39,20 @@ public class PostitController {
     }
 
     @PostMapping("/boards")
+    @Secured("ROLE_BOARD_WRITE")
     public BoardDto createBoard(@RequestBody BoardDto boardDto) throws NotFoundException, FunctionnalException {
         return postitNoteService.saveBoard(null, boardDto);
     }
 
     @PatchMapping("/boards/{id}")
-    public BoardDto updateBoard(@PathVariable(name = "id") Long boardId, @RequestBody BoardDto boardDto)
+    @Secured("ROLE_BOARD_WRITE")
+    public BoardDto updateBoard(@PathVariable("id") Long boardId, @RequestBody BoardDto boardDto)
             throws NotFoundException, FunctionnalException {
         return postitNoteService.saveBoard(boardId, boardDto);
     }
 
     @DeleteMapping("/boards/{id}")
+    @Secured("ROLE_BOARD_WRITE")
     public void deleteBoard(@PathVariable("id") Long boardId) {
         postitNoteService.deleteBoard(boardId);
     }
@@ -72,7 +76,7 @@ public class PostitController {
     }
 
     @PatchMapping("/notes/{id}")
-    public PostitNoteDto updateNote(@PathVariable(name = "id") Long noteId, @RequestBody PostitNoteDto noteDto)
+    public PostitNoteDto updateNote(@PathVariable("id") Long noteId, @RequestBody PostitNoteDto noteDto)
             throws NotFoundException, InvalidDataException, FunctionnalException {
         return postitNoteService.saveNote(noteId, noteDto);
     }

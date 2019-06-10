@@ -8,7 +8,8 @@ import org.springframework.cache.annotation.EnableCaching;
 @EnableCaching
 public class PostitServerApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(PostitServerApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(PostitServerApplication.class, args);
+    }
+
 }

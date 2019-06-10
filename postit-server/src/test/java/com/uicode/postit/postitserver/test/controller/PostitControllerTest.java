@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.uicode.postit.postitserver.dto.postit.BoardDto;
 import com.uicode.postit.postitserver.dto.postit.PostitNoteDto;
+import com.uicode.postit.postitserver.test.tools.TestRestTemplateWithHeaders;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -26,25 +27,29 @@ public class PostitControllerTest {
         Assertions.assertThat(boardList).isNotNull();
         int boardCount = boardList.length;
 
-        // Insert
-        BoardDto boardDto = new BoardDto();
-        boardDto.setName("New Board");
+        // Connect as admin
+        TestRestTemplateWithHeaders restTemplateConnected = TestRestTemplateWithHeaders.login(restTemplate,
+                "admin", "admin");
 
-        BoardDto createdBoard = restTemplate.postForObject("/postit/boards", boardDto, BoardDto.class);
+        // Insert
+        BoardDto board = new BoardDto();
+        board.setName("New Board");
+
+        BoardDto createdBoard = restTemplateConnected.postForObject("/postit/boards", board, BoardDto.class);
         Assertions.assertThat(createdBoard).isNotNull();
         Assertions.assertThat(createdBoard.getId()).isNotNull();
-        Assertions.assertThat(createdBoard.getName()).isEqualTo(boardDto.getName());
+        Assertions.assertThat(createdBoard.getName()).isEqualTo(board.getName());
 
         // Update
         createdBoard.setName("Update Board");
-        BoardDto updatedBoard = restTemplate.patchForObject("/postit/boards/{id}", createdBoard, BoardDto.class,
-                createdBoard.getId());
+        BoardDto updatedBoard = restTemplateConnected.patchForObject("/postit/boards/{id}", createdBoard,
+                BoardDto.class, createdBoard.getId());
         Assertions.assertThat(updatedBoard).isNotNull();
         Assertions.assertThat(updatedBoard.getId()).isEqualTo(createdBoard.getId());
         Assertions.assertThat(updatedBoard.getName()).isEqualTo(createdBoard.getName());
 
         // Delete
-        restTemplate.delete("/postit/boards/{id}", createdBoard.getId());
+        restTemplateConnected.delete("/postit/boards/{id}", createdBoard.getId());
 
         // Final Check
         boardList = restTemplate.getForObject("/postit/boards", BoardDto[].class);
@@ -53,10 +58,14 @@ public class PostitControllerTest {
 
     @Test
     public void noteCrud() {
+        // Connect as admin
+        TestRestTemplateWithHeaders restTemplateConnected = TestRestTemplateWithHeaders.login(restTemplate, "admin",
+                "admin");
+
         // Insert
         BoardDto boardDto = new BoardDto();
         boardDto.setName("New Board");
-        BoardDto createdBoard = restTemplate.postForObject("/postit/boards", boardDto, BoardDto.class);
+        BoardDto createdBoard = restTemplateConnected.postForObject("/postit/boards", boardDto, BoardDto.class);
         Assertions.assertThat(createdBoard).isNotNull();
         Assertions.assertThat(createdBoard.getId()).isNotNull();
 
