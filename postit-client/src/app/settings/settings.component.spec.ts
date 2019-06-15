@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { MatDialog, MatDialogModule, MatExpansionModule, MatInputModule } from '@angular/material';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatInputModule } from '@angular/material/input';
 
 import { SettingsComponent } from './settings.component';
 import { TranslateService } from '../shared/service/utils/translate.service';

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 
 import { PostitNote } from '../../shared/model/postit/postit-note';
 import { ConfirmDialogComponent, ConfirmDialogData } from '../../shared/component/dialog/confirm-dialog/confirm-dialog.component';

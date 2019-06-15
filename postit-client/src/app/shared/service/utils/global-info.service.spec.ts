@@ -1,5 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { GlobalInfoService } from './global-info.service';
 import { TranslateService } from './translate.service';

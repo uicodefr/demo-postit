@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ColorizeNoteDialogComponent } from './colorize-note-dialog.component';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PostitService } from 'src/app/shared/service/postit/postit.service';
 
 describe('ColorizeNoteDialogComponent', () => {

@@ -1,5 +1,8 @@
 import { TestBed, async } from '@angular/core/testing';
-import { MatToolbarModule, MatIconModule, MatProgressSpinnerModule, MatSnackBarModule } from '@angular/material';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { of } from 'rxjs';
 

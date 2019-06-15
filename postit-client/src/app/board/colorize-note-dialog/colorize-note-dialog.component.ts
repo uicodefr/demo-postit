@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { PostitService } from 'src/app/shared/service/postit/postit.service';
 import { PostitNote } from 'src/app/shared/model/postit/postit-note';

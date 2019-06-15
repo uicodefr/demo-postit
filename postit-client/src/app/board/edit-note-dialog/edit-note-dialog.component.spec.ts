@@ -1,7 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EditNoteDialogComponent } from './edit-note-dialog.component';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA, MatInputModule } from '@angular/material';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
 import { PostitService } from 'src/app/shared/service/postit/postit.service';
 import { FormsModule } from '@angular/forms';
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 
 import { PostitService } from '../shared/service/postit/postit.service';
 import { Board } from '../shared/model/postit/board';
