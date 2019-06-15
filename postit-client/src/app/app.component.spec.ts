@@ -4,11 +4,14 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { of } from 'rxjs';
 
 import { AppComponent } from './app.component';
 import { GlobalInfoService } from './shared/service/utils/global-info.service';
 import { GlobalService } from './shared/service/global/global.service';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { AuthService } from './shared/auth/auth.service';
 
 describe('AppComponent', () => {
 
@@ -20,16 +23,22 @@ describe('AppComponent', () => {
     globalSpy.getStatus.and.returnValue(Promise.resolve({ status: 'true' }));
     globalSpy.getCountLikeObservable.and.returnValue(of());
 
+    const authSpy = jasmine.createSpyObj('AuthService', ['getCurrentUser']);
+
     TestBed.configureTestingModule({
       declarations: [
-        AppComponent
+        AppComponent, PageNotFoundComponent
       ],
       providers: [
         { provide: GlobalInfoService, useValue: globalInfoSpy },
-        { provide: GlobalService, useValue: globalSpy }
+        { provide: GlobalService, useValue: globalSpy },
+        { provide: AuthService, useValue: authSpy }
       ],
       imports: [
-        MatToolbarModule, MatIconModule, MatProgressSpinnerModule, MatSnackBarModule
+        RouterModule.forRoot([{
+          path: '',
+          component: PageNotFoundComponent
+        }]), MatToolbarModule, MatIconModule, MatProgressSpinnerModule, MatSnackBarModule
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();

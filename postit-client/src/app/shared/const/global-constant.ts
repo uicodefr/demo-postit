@@ -8,7 +8,7 @@ export class GlobalConstant {
 
     public static readonly Display = class Display {
         public static readonly DIALOG_WIDTH = '450px';
-        public static readonly NOTIFICATION_DELAY = 2000;
+        public static readonly NOTIFICATION_DELAY = 3000;
     };
 
     public static readonly Functional = class Functional {

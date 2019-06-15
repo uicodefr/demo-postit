@@ -1,29 +1,44 @@
 <div class="settings">
 
-  <h1 i18n>Board Configuration</h1>
+  <h1 i18n>Settings
+
+    <div class="refreshZone">
+      <button type="button" mat-icon-button title="Refresh" i18n-title (click)="refresh()">
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </div>
+  </h1>
 
   <mat-accordion>
-    <mat-expansion-panel *ngFor="let board of boardList">
+
+    <mat-expansion-panel *appHasRole="'ROLE_BOARD_WRITE'">
       <mat-expansion-panel-header>
-        <mat-panel-title>
-          {{ board.name }}
+        <mat-panel-title i18n>
+          Board Configuration
         </mat-panel-title>
+        <mat-panel-description i18n>
+          Add, update and delete boards
+        </mat-panel-description>
       </mat-expansion-panel-header>
 
-      <mat-form-field>
-        <input matInput placeholder="Name" [(ngModel)]="board.name">
-      </mat-form-field>
-
-      <div class="actionZone">
-        <button (click)="saveBoard(board)" mat-raised-button color="primary" i18n>Save name</button>
-        <button (click)="deleteBoard(board)" mat-raised-button color="warn" i18n>Delete</button>
-      </div>
+      <app-board-settings #boardSettings></app-board-settings>
 
     </mat-expansion-panel>
-  </mat-accordion>
 
-  <div class="creationZone">
-    <button (click)="createBoard()" mat-raised-button color="primary" i18n>Create board</button>
-  </div>
+    <mat-expansion-panel *appHasRole="'ROLE_USER_WRITE'">
+      <mat-expansion-panel-header>
+        <mat-panel-title i18n>
+          User Configuration
+        </mat-panel-title>
+        <mat-panel-description i18n>
+          Add, update and delete users
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <app-user-settings #userSettings></app-user-settings>
+
+    </mat-expansion-panel>
+
+  </mat-accordion>
 
 </div>

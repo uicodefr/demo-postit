@@ -18,4 +18,6 @@ public interface IUserService extends UserDetailsService {
 
     void deleteUser(Long userId);
 
+    List<String> getRoleList();
+
 }

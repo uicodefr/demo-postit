@@ -34,12 +34,12 @@ public class GlobalController {
         return globalService.getParameterValueForClient(parameterName);
     }
 
-    @PostMapping("/clearCache")
+    @PostMapping(":clearCache")
     public void clearCache() {
         globalService.clearCache();
     }
 
-    @GetMapping("/likes/count")
+    @GetMapping("/likes:count")
     public CountLikesDto countLikes() {
         return globalService.countLikes();
     }

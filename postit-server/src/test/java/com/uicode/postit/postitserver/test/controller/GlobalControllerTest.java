@@ -52,12 +52,12 @@ public class GlobalControllerTest {
 
     @Test
     public void clearCache() {
-        restTemplate.getForObject("/global/clearCache", String.class);
+        restTemplate.getForObject("/global:clearCache", String.class);
     }
 
     @Test
     public void countLikes() {
-        CountLikesDto countLikesDto = restTemplate.getForObject("/global/likes/count", CountLikesDto.class);
+        CountLikesDto countLikesDto = restTemplate.getForObject("/global/likes:count", CountLikesDto.class);
         Assertions.assertThat(countLikesDto).isNotNull();
         Assertions.assertThat(countLikesDto.getCount()).isNotNull();
     }

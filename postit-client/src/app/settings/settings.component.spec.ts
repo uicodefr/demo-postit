@@ -1,29 +1,26 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { SettingsComponent } from './settings.component';
-import { TranslateService } from '../shared/service/utils/translate.service';
-import { PostitService } from '../shared/service/postit/postit.service';
+import { AuthService } from '../shared/auth/auth.service';
+import { HasRoleDirective } from '../shared/directive/has-role.directive';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
   let fixture: ComponentFixture<SettingsComponent>;
 
   beforeEach(async(() => {
-    const postitSpy = jasmine.createSpyObj('PostitService', ['getBoardList']);
-    postitSpy.getBoardList.and.returnValue(Promise.resolve([]));
+    const authSpy = jasmine.createSpyObj('AuthService', ['getRefreshedCurrentUser', 'hasRoles']);
 
     TestBed.configureTestingModule({
-      declarations: [SettingsComponent],
+      declarations: [SettingsComponent, HasRoleDirective],
       providers: [
-        MatDialog,
-        { provide: PostitService, useValue: postitSpy },
-        TranslateService
+        { provide: AuthService, useValue: authSpy },
       ],
-      imports: [FormsModule, MatDialogModule, MatInputModule, MatExpansionModule]
+      imports: [MatExpansionModule, MatIconModule],
+      schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
   }));

@@ -15,3 +15,8 @@ $candy-app-theme: mat-light-theme($candy-app-primary, $candy-app-accent, $candy-
 
 // Include theme styles for core and each component used in your app.
 @include angular-material-theme($candy-app-theme);
+
+.mat-tab-labels {
+    background-color: white;
+    background-image: none;
+}

@@ -1,5 +1,7 @@
 package com.uicode.postit.postitserver.security;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -49,7 +51,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.formLogin().loginPage(LOGIN_URL).successHandler(successHandler).failureHandler(failureHandler);
-        http.logout().logoutUrl(LOGOUT_URL);
+        http.logout().logoutUrl(LOGOUT_URL)
+            .logoutSuccessHandler((httpServletRequest, httpServletResponse, authentication) -> {
+                httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            });
 
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
     }

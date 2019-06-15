@@ -11,5 +11,17 @@ export const translation = {
     'Note updated': 'Note updated',
     'Delete board': 'Delete board',
     'Are you sure to delete this board ?': 'Are you sure to delete this board ?',
-    'New board': 'New board'
+    'Board updated': 'Board updated',
+    'Board deleted': 'Board deleted',
+    'Board created': 'Board created',
+    'New board': 'New board',
+    'Delete user': 'Delete user',
+    'Are you sure to delete this user ?': 'Are you sure to delete this user ?',
+    'User updated': 'User updated',
+    'User deleted': 'User deleted',
+    'User created': 'User created',
+    'username': 'username',
+    'Sign-in Failed : Incorrect username or password': 'Sign-in Failed : Incorrect username or password',
+    'Access Unauthorized. Please sign in.': 'Access Unauthorized. Please sign in.',
+    'Access Forbidden !': 'Access Forbidden !'
 };

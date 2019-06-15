@@ -1,21 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
-
-
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatBadgeModule } from '@angular/material/badge';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatCardModule } from '@angular/material/card';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatInputModule } from '@angular/material/input';
-import { MatExpansionModule } from '@angular/material/expansion';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { BoardComponent } from './board/board.component';
@@ -27,6 +14,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { SettingsComponent } from './settings/settings.component';
 import { HighlightDirective } from './shared/directive/highlight.directive';
+import { BoardSettingsComponent } from './settings/board-settings/board-settings.component';
+import { UserSettingsComponent } from './settings/user-settings/user-settings.component';
+import { LoginComponent } from './login/login.component';
+import { AppMaterialModule } from './app-material.module';
+import { InitService } from './shared/auth/init.service';
+import { HasRoleDirective } from './shared/directive/has-role.directive';
+import { AuthInterceptor } from './shared/auth/auth.interceptor';
+
+export function startupServiceFactory(initService: InitService): Function {
+  return () => initService.startupInit();
+}
 
 @NgModule({
   declarations: [
@@ -38,25 +36,20 @@ import { HighlightDirective } from './shared/directive/highlight.directive';
     EditNoteDialogComponent,
     PageNotFoundComponent,
     SettingsComponent,
-    HighlightDirective
+    HighlightDirective,
+    BoardSettingsComponent,
+    UserSettingsComponent,
+    LoginComponent,
+    HasRoleDirective
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatButtonModule,
-    MatBadgeModule,
-    MatProgressSpinnerModule,
-    MatTabsModule,
-    MatCardModule,
-    MatSnackBarModule,
-    MatDialogModule,
-    MatInputModule,
-    MatExpansionModule
+    AppMaterialModule
   ],
   entryComponents: [
     ConfirmDialogComponent,
@@ -64,9 +57,19 @@ import { HighlightDirective } from './shared/directive/highlight.directive';
     EditNoteDialogComponent
   ],
   providers: [
+    InitService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: startupServiceFactory,
+      deps: [InitService],
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    }
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-
-}
+export class AppModule { }

@@ -53,4 +53,9 @@ public class UserController {
         userService.deleteUser(userId);
     }
 
+    @GetMapping("/roles")
+    public List<String> getRoleList() {
+        return userService.getRoleList();
+    }
+
 }

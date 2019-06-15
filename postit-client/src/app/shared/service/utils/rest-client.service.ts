@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
-import { Observable } from 'rxjs';
+import { Observable, NEVER } from 'rxjs';
 import { catchError, finalize, map } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
 import { GlobalInfoService } from './global-info.service';
-import { UrlConstant } from '../../const/url-constant';
 import { AlertType } from '../../const/alert-type';
+import { TranslateService } from './translate.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,8 @@ export class RestClientService {
 
   public constructor(
     private httpClient: HttpClient,
-    private globalInfoService: GlobalInfoService
+    private globalInfoService: GlobalInfoService,
+    private translateService: TranslateService
   ) { }
 
   // GET, POST, PUT, DELETE in JSON
@@ -62,7 +63,7 @@ export class RestClientService {
     this.globalInfoService.notifLoader(true);
     const obsResponse = this.httpClient.get(url,
       { observe: 'body', responseType: 'blob' }
-    ).pipe(catchError(this.handleError(this.globalInfoService, url))).pipe(finalize(() => {
+    ).pipe(catchError(this.handleError(url))).pipe(finalize(() => {
       this.globalInfoService.notifLoader(false);
     }));
     return obsResponse;
@@ -71,18 +72,31 @@ export class RestClientService {
   // Internal Method
 
   private addMapperAndCatcher<T>(obsResponse: Observable<HttpResponse<Object>>, url: string): Observable<T> {
-    return obsResponse.pipe(catchError(this.handleError(this.globalInfoService, url)))
+    return obsResponse.pipe(catchError(this.handleError(url)))
       .pipe(map((response) => response.body))
       .pipe(finalize(() => {
         this.globalInfoService.notifLoader(false);
       })) as Observable<T>;
   }
 
-  private handleError(globalInfoService: GlobalInfoService, url: string) {
+  private handleError(url: string) {
+    const globalInfoService = this.globalInfoService;
+    const translateService = this.translateService;
+
     return function (err) {
       let errMsg = url + ' - ';
       let errResult = null;
+
       if (err instanceof HttpErrorResponse) {
+
+        if (err.status === 401) {
+          globalInfoService.showAlert(AlertType.WARNING, translateService.get('Access Unauthorized. Please sign in.'));
+          return NEVER;
+        } else if (err.status === 403) {
+          globalInfoService.showAlert(AlertType.DANGER, translateService.get('Access Forbidden !'));
+          return NEVER;
+        }
+
         errMsg = errMsg + err.status + ' ' + err.statusText;
         errResult = err.status;
       } else {
@@ -90,7 +104,7 @@ export class RestClientService {
         errResult = errMsg;
       }
 
-      globalInfoService.showAlert(AlertType.DANGER, 'Error on HttpRequest : ' + errMsg);
+      globalInfoService.showAlert(AlertType.DANGER, 'Technical Error : ' + errMsg);
       return throwError(errResult);
     };
   }

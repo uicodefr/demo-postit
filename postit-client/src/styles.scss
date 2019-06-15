@@ -3,6 +3,11 @@
 body {
     margin: 0px;
     font-family: 'Roboto', sans-serif;
+    color: rgba(0, 0, 0, 0.92);
+
+    background-color: #fafdfd;
+    background-image: url("assets/img/background.png");
+    background-repeat: repeat;
 }
 
 .material-icons.md-18 { font-size: 18px; }
@@ -15,15 +20,15 @@ body {
 }
 
 // Alert SnackBar
-.alertSuccess {
+.alertSuccess .mat-simple-snackbar {
     color: #ADFF2F;
 }
-.alertInfo {
+.alertInfo .mat-simple-snackbar {
     color: #AFEEEE;
 }
-.alertWarning {
+.alertWarning .mat-simple-snackbar {
     color: #FFA500;
 }
-.alertDanger {
+.alertDanger .mat-simple-snackbar {
     color: #f44336;
 }

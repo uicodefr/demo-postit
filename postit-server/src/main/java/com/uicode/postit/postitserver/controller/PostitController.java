@@ -86,7 +86,7 @@ public class PostitController {
         postitNoteService.deleteNote(noteId);
     }
 
-    @GetMapping(value = "/notes/export", produces = "text/csv")
+    @GetMapping(value = "/notes:export", produces = "text/csv")
     public void exportNotes(HttpServletResponse response) throws IOException {
         postitNoteService.exportNotesToCsv(response.getWriter());
     }

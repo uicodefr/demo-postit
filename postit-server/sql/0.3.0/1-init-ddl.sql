@@ -3,7 +3,7 @@
 CREATE TABLE global_user (
     id bigserial PRIMARY KEY,
     username varchar(256) NOT NULL UNIQUE,
-    password varchar(256) NOT NULL,
+    password varchar(256),
     enabled boolean NOT NULL DEFAULT false
 );
 

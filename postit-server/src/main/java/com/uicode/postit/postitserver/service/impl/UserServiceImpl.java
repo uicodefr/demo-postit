@@ -67,8 +67,8 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public List<UserDto> getUserList() {
-        Iterable<User> boardIterable = userDao.findAll(new Sort(Direction.ASC, "username"));
-        return Streams.stream(boardIterable).map(UserMapper.INSTANCE::toDto).collect(Collectors.toList());
+        Iterable<User> userIterable = userDao.findAll(new Sort(Direction.ASC, "username"));
+        return Streams.stream(userIterable).map(UserMapper.INSTANCE::toDto).collect(Collectors.toList());
     }
 
     @Override
@@ -93,7 +93,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     private void updatePassword(String password, User user) throws FunctionnalException {
-        if (password == null) {
+        if (StringUtils.isEmpty(password)) {
             return;
         }
 
@@ -125,6 +125,12 @@ public class UserServiceImpl implements IUserService {
             return;
         }
         userDao.delete(userOpt.get());
+    }
+
+    @Override
+    public List<String> getRoleList() {
+        Iterable<UserAuthority> userAuthorityIterable = userAuthorityDao.findAll(new Sort(Direction.ASC, "authority"));
+        return Streams.stream(userAuthorityIterable).map(UserAuthority::getAuthority).collect(Collectors.toList());
     }
 
 }

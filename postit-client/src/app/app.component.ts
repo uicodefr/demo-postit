@@ -4,6 +4,9 @@ import { Subscription } from 'rxjs';
 import { GlobalInfoService } from './shared/service/utils/global-info.service';
 import { GlobalService } from './shared/service/global/global.service';
 import { UrlConstant } from './shared/const/url-constant';
+import { debounceTime } from 'rxjs/operators';
+import { AuthService } from './shared/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +14,8 @@ import { UrlConstant } from './shared/const/url-constant';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
+
+  private static readonly LOADING_DEBOUNCE_TIME_MS = 100;
 
   public availableApp = true;
   public loading = false;
@@ -21,8 +26,10 @@ export class AppComponent implements OnInit, OnDestroy {
   private likesSubscription: Subscription = null;
 
   public constructor(
+    private router: Router,
     private globalInfoService: GlobalInfoService,
-    private globalService: GlobalService
+    private globalService: GlobalService,
+    private authService: AuthService
   ) { }
 
   public ngOnInit() {
@@ -32,9 +39,11 @@ export class AppComponent implements OnInit, OnDestroy {
       this.availableApp = false;
     });
 
-    this.loadingSubscription = this.globalInfoService.getLoaderObservable().subscribe(displayLoader => {
-      this.loading = displayLoader;
-    });
+    this.loadingSubscription = this.globalInfoService.getLoaderObservable()
+      .pipe(debounceTime(AppComponent.LOADING_DEBOUNCE_TIME_MS))
+      .subscribe(displayLoader => {
+        this.loading = displayLoader;
+      });
 
     this.likesSubscription = this.globalService.getCountLikeObservable().subscribe(countLike => {
       this.likes = countLike;
@@ -53,6 +62,20 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public like() {
     this.globalService.addLike();
+  }
+
+  public get isLoggedIn() {
+    return this.authService.getCurrentUser();
+  }
+
+  public logout() {
+    if (!this.authService.getCurrentUser()) {
+      return;
+    }
+
+    this.authService.logout().then(() => {
+      this.router.navigate(['']);
+    });
   }
 
 }

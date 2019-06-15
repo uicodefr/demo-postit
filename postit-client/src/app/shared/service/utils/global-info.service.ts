@@ -1,6 +1,6 @@
 import { Injectable, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 import { AlertType } from '../../const/alert-type';
 import { GlobalConstant } from '../../const/global-constant';
@@ -38,8 +38,8 @@ export class GlobalInfoService implements OnInit, OnDestroy {
   public showAlert(alertType: AlertType, message: string, duration?: number) {
     this.snackBar.open(message, this.translateService.get('Close'), {
       duration: duration ? duration : GlobalConstant.Display.NOTIFICATION_DELAY,
-      panelClass: this.getAlertClass(alertType)
-    });
+      panelClass: [this.getAlertClass(alertType)]
+    } as MatSnackBarConfig);
   }
 
   private getAlertClass(alertType: AlertType): string {
@@ -53,7 +53,7 @@ export class GlobalInfoService implements OnInit, OnDestroy {
       case AlertType.DANGER:
         return 'alertDanger';
       default:
-        return '';
+        return 'alertDefault';
     }
   }
 

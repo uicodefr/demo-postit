@@ -145,7 +145,7 @@ public class PostitControllerTest {
         String expectedCsv = "\"board id\",\"board name\",\"note id\",\"note name\",\"note text\",\"note color\",\"note order\"\n";
         expectedCsv += "\"1\",\"Test Board\",\"1\",\"Test Note\",\"Test Content\",\"yellow\",\"1\"\n";
 
-        String testCsv = restTemplate.getForObject("/postit/notes/export", String.class);
+        String testCsv = restTemplate.getForObject("/postit/notes:export", String.class);
         Assertions.assertThat(testCsv).isEqualTo(expectedCsv);
     }
 
