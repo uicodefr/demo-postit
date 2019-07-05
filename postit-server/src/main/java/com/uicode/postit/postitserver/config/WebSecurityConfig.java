@@ -1,4 +1,4 @@
-package com.uicode.postit.postitserver.security;
+package com.uicode.postit.postitserver.config;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -12,6 +12,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.uicode.postit.postitserver.config.security.RestAuthenticationEntryPoint;
+import com.uicode.postit.postitserver.config.security.RestAuthenticationFailureHandler;
+import com.uicode.postit.postitserver.config.security.RestAuthenticationSuccessHandler;
 import com.uicode.postit.postitserver.service.IUserService;
 
 @Configuration
@@ -52,9 +55,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.formLogin().loginPage(LOGIN_URL).successHandler(successHandler).failureHandler(failureHandler);
         http.logout().logoutUrl(LOGOUT_URL)
-            .logoutSuccessHandler((httpServletRequest, httpServletResponse, authentication) -> {
-                httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-            });
+            .logoutSuccessHandler((httpServletRequest, httpServletResponse, authentication) ->
+                httpServletResponse.setStatus(HttpServletResponse.SC_OK)
+            );
 
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
     }

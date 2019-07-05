@@ -3,6 +3,7 @@ import { environment } from '../../../environments/environment';
 export class UrlConstant {
 
     public static readonly BASE = environment.baseUrl;
+
     public static readonly LOGIN = UrlConstant.BASE + '/login';
     public static readonly LOGOUT = UrlConstant.BASE + '/logout';
 
@@ -29,6 +30,12 @@ export class UrlConstant {
         public static readonly USERS = User.PREFIX;
         public static readonly CURRENT_USER = User.PREFIX + '/me';
         public static readonly ROLES = User.PREFIX + '/roles';
+    };
+
+    public static readonly WebSocket = class WebSocket {
+        public static readonly CONNECTION = UrlConstant.BASE + '/websocket';
+
+        public static readonly LISTEN_LIKE_COUNT = '/listen/likes:count';
     };
 
 }

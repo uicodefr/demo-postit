@@ -1,4 +1,4 @@
-package com.uicode.postit.postitserver.security;
+package com.uicode.postit.postitserver.config.security;
 
 import java.io.IOException;
 

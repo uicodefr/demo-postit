@@ -7,6 +7,7 @@ import { UrlConstant } from './shared/const/url-constant';
 import { debounceTime } from 'rxjs/operators';
 import { AuthService } from './shared/auth/auth.service';
 import { Router } from '@angular/router';
+import { LikeService } from './shared/service/global/like.service';
 
 @Component({
   selector: 'app-root',
@@ -29,6 +30,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private router: Router,
     private globalInfoService: GlobalInfoService,
     private globalService: GlobalService,
+    private likeService: LikeService,
     private authService: AuthService
   ) { }
 
@@ -45,10 +47,10 @@ export class AppComponent implements OnInit, OnDestroy {
         this.loading = displayLoader;
       });
 
-    this.likesSubscription = this.globalService.getCountLikeObservable().subscribe(countLike => {
+    this.likesSubscription = this.likeService.getCountLikeObservable().subscribe(countLike => {
       this.likes = countLike;
     });
-    this.globalService.launchCountLikeTimer();
+    this.likeService.listenCountLikeTimer();
   }
 
   public ngOnDestroy() {
@@ -61,7 +63,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public like() {
-    this.globalService.addLike();
+    this.likeService.addLike();
   }
 
   public get isLoggedIn() {

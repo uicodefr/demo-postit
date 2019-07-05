@@ -38,7 +38,7 @@ if [ $buildTarget == 'client' ] || [ $buildTarget == 'all' ]; then
 	npm run ng -- build --prod --base-href /demo/postit/
 	
 	cd ../postit-deploy
-	rm ./clientImage/postit-client/*
+	rm -R ./clientImage/postit-client/*
 	rm ./clientImage/version.txt
 	
 	cp -r ../postit-client/dist/postit-client ./clientImage/

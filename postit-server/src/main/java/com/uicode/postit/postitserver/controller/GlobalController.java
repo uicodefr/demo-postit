@@ -3,6 +3,8 @@ package com.uicode.postit.postitserver.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,6 +53,12 @@ public class GlobalController {
             clientIp = request.getRemoteAddr();
         }
         return globalService.addLike(clientIp);
+    }
+
+    @MessageMapping("/likes")
+    @SendTo("/listen/likes")
+    public IdEntityDto wsAddLike() {
+        return globalService.addLike("websocket");
     }
 
 }

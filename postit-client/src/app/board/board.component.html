@@ -14,9 +14,20 @@
           (changeNote)="refreshCurrentBoard()" (orderNote)="reorderBoard($event)">
         </app-board-note>
 
-        <mat-card *ngIf="parameterNoteMax && parameterNoteMax > noteListMap.get(board.id).length" class="cardAdd">
+        <mat-card class="cardButtons">
           <mat-card-content>
-            <button (click)="addNote(board)" mat-raised-button color="primary" appHighlight i18n>Add a note</button>
+            <div class="buttonCard">
+
+              <button (click)="refreshCurrentBoard()" mat-mini-fab color="primary" title="Refresh board" i18n-title>
+                <mat-icon>refresh</mat-icon>
+              </button>
+
+              <button *ngIf="parameterNoteMax && parameterNoteMax > noteListMap.get(board.id).length"
+                (click)="addNote(board)" mat-raised-button color="primary" appHighlight i18n>
+                Add a note
+              </button>
+
+            </div>
           </mat-card-content>
         </mat-card>
 

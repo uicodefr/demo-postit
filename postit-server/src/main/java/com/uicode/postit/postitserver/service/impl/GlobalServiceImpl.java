@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import com.uicode.postit.postitserver.dao.global.ILikeDao;
@@ -31,8 +32,9 @@ public class GlobalServiceImpl implements IGlobalService {
 
     private static final Logger LOGGER = LogManager.getLogger(GlobalServiceImpl.class);
 
-    private static final String VERSION = "0.3.0";
+    private static final String VERSION = "0.3.1";
     private static final Date UPDATE = new Date();
+    private static final String WS_LIKE_PATH = "/listen/likes:count";
 
     @Autowired
     private CacheManager cacheManager;
@@ -42,6 +44,9 @@ public class GlobalServiceImpl implements IGlobalService {
 
     @Autowired
     private ILikeDao likeDao;
+
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @Override
     public GlobalStatusDto getStatus() {
@@ -108,6 +113,10 @@ public class GlobalServiceImpl implements IGlobalService {
         like = likeDao.save(like);
 
         result.setId(like.getId());
+
+        // Send Result to WebSocket
+        simpMessagingTemplate.convertAndSend(WS_LIKE_PATH, countLikes());
+
         return result;
     }
 

@@ -1,8 +1,10 @@
 package com.uicode.postit.postitserver.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -27,9 +29,12 @@ import com.uicode.postit.postitserver.dto.user.UserDto;
 import com.uicode.postit.postitserver.entity.user.User;
 import com.uicode.postit.postitserver.entity.user.UserAuthority;
 import com.uicode.postit.postitserver.mapper.user.UserMapper;
+import com.uicode.postit.postitserver.service.IGlobalService;
 import com.uicode.postit.postitserver.service.IUserService;
 import com.uicode.postit.postitserver.utils.exception.FunctionnalException;
 import com.uicode.postit.postitserver.utils.exception.NotFoundException;
+import com.uicode.postit.postitserver.utils.parameter.ParameterConst;
+import com.uicode.postit.postitserver.utils.parameter.ParameterUtils;
 
 @Service
 @Transactional
@@ -44,6 +49,9 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private IUserAuthorityDao userAuthorityDao;
+
+    @Autowired
+    private IGlobalService globalService;
 
     @Override
     public UserDetails loadUserByUsername(String username) {
@@ -77,8 +85,15 @@ public class UserServiceImpl implements IUserService {
 
         if (userId == null) {
             // Creation
+            Optional<String> maxUserParameter = globalService.getParameterValue(ParameterConst.USER_MAX);
+            Long maxUser = ParameterUtils.getLong(maxUserParameter, 0l);
+            if (userDao.count() > maxUser) {
+                throw new FunctionnalException("Max User achieved : creation is blocked");
+            }
+
             user = new User();
             user.setEnabled(false);
+
         } else {
             // Update
             Optional<User> userOpt = userDao.findById(userId);
@@ -109,8 +124,11 @@ public class UserServiceImpl implements IUserService {
         if (roleList == null) {
             return;
         }
+
         List<UserAuthority> authorityList = new ArrayList<>();
-        for (String role : roleList) {
+        Set<String> roleSet = new HashSet<>(roleList);
+
+        for (String role : roleSet) {
             authorityList.add(userAuthorityDao.findByAuthority(role)
                     .orElseThrow(() -> new FunctionnalException("Role not found : " + role)));
         }

@@ -14,6 +14,9 @@ INSERT INTO global_parameter (name, value, client_view) VALUES
 INSERT INTO global_parameter (name, value, client_view) VALUES
     ('note.max', '40', true);
 
+INSERT INTO global_parameter (name, value, client_view) VALUES
+    ('user.max', '5', true);
+
 -- # ONE BOARD # --
 
 INSERT INTO postit_board

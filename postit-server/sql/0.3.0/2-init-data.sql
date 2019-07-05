@@ -1,5 +1,8 @@
 -- # GLOBAL # --
 
+INSERT INTO global_parameter (name, value, client_view) VALUES
+    ('user.max', '10', true);
+
 INSERT INTO global_user (username, password, enabled) VALUES
     ('admin', '$2a$10$DvPfBzqUbcoiC3wDA8FFP.Tuoz/MV/2T0Dn.bWWAAzoyashi5uh6K', true),
     ('superadmin', '$2a$10$pV/Wt0NnfjDJoOxZ2cqcn.OCj9qd.Xx0yTCs.PVPVs/9nPLlwbj8S', true);
