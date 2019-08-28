@@ -25,11 +25,11 @@ export class GlobalService {
     if (this.parameterMap.has(parameterName)) {
       return Promise.resolve(this.parameterMap.get(parameterName));
     } else {
-      const promise = this.restClientService.get<string>(UrlConstant.Global.PARAMETERS + '/' + parameterName).toPromise();
-      promise.then(parameterValue => {
-        this.parameterMap.set(parameterName, parameterValue);
-      });
-      return promise;
+      return this.restClientService.get<string>(UrlConstant.Global.PARAMETERS + '/' + parameterName)
+        .toPromise().then(parameterValue => {
+          this.parameterMap.set(parameterName, parameterValue);
+          return parameterValue;
+        });
     }
   }
 

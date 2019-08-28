@@ -35,14 +35,9 @@ export class AuthService {
   }
 
   public getRefreshedCurrentUser(): Promise<User> {
-    return new Promise((resolve, reject) => {
-      this.userService.getCurrentUser().then(user => {
-        this.currentUser = user;
-        resolve(this.currentUser);
-
-      }).catch(error => {
-        reject(error);
-      });
+    return this.userService.getCurrentUser().then(user => {
+      this.currentUser = user;
+      return this.currentUser;
     });
   }
 
@@ -56,23 +51,21 @@ export class AuthService {
   }
 
   public login(username: string, password: string): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      const loginFormData = new FormData();
-      loginFormData.append('username', username);
-      loginFormData.append('password', password);
+    const loginFormData = new FormData();
+    loginFormData.append('username', username);
+    loginFormData.append('password', password);
 
-      return this.httpClient.post<User>(UrlConstant.LOGIN, loginFormData).toPromise()
-        .then(user => {
-          this.currentUser = user;
-          resolve(this.currentUser != null);
-          if (this.currentUser != null && this.routeBeforeLogin != null && this.routeBeforeLogin.routeConfig != null) {
-            this.router.navigate([this.routeBeforeLogin.routeConfig.path]);
-          }
+    return this.httpClient.post<User>(UrlConstant.LOGIN, loginFormData).toPromise()
+      .then(user => {
+        this.currentUser = user;
+        if (this.currentUser != null && this.routeBeforeLogin != null && this.routeBeforeLogin.routeConfig != null) {
+          this.router.navigate([this.routeBeforeLogin.routeConfig.path]);
+        }
+        return this.currentUser != null;
 
-        }).catch(error => {
-          resolve(false);
-        });
-    });
+      }).catch(error => {
+        return false;
+      });
   }
 
   public logout(): Promise<void> {

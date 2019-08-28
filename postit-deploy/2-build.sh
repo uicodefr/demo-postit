@@ -19,7 +19,7 @@ if [ $buildTarget == 'server' ] || [ $buildTarget == 'all' ]; then
 	./mvnw package
 	
 	cd ../postit-deploy
-	rm ./serverImage/postit-server*.jar
+	rm ./serverImage/postit-server*
 	rm ./serverImage/version.txt
 	
 	cp ../postit-server/target/postit-server-$serverVersion.jar ./serverImage/

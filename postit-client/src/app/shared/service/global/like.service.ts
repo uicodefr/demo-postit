@@ -86,7 +86,9 @@ export class LikeService implements OnDestroy {
 
   public addLike() {
     this.restClientService.post<void>(UrlConstant.Global.LIKE).toPromise().then(() => {
-      this.countLike();
+      if (!LikeService.LIKE_WEB_SOCKET) {
+        this.countLike();
+      }
     });
   }
 
