@@ -9,6 +9,7 @@ export const translation = {
     'New note created': 'New note created',
     'Note deleted': 'Note deleted',
     'Note updated': 'Note updated',
+    'Note moved': 'Note moved',
     'Delete board': 'Delete board',
     'Are you sure to delete this board ?': 'Are you sure to delete this board ?',
     'Board updated': 'Board updated',

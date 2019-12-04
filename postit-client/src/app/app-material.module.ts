@@ -16,6 +16,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatMenuModule } from '@angular/material/menu'; 
 
 @NgModule({
   exports: [
@@ -34,7 +35,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatPaginatorModule,
     MatSelectModule,
     MatCheckboxModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatMenuModule
   ]
 })
 export class AppMaterialModule { }

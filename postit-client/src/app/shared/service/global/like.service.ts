@@ -10,26 +10,19 @@ import { CountLikes } from '../../model/global/count-likes';
 @Injectable({
   providedIn: 'root'
 })
-export class LikeService implements OnDestroy {
+export class LikeService {
 
   private static readonly COUNT_LIKE_TIMER = environment.likeTimerSecond;
   private static readonly LIKE_WEB_SOCKET = environment.likeWebSocket;
 
-  private countLikeSubject: Subject<number>;
-  private countLikeObservable: Observable<number>;
+  private countLikeSubject = new Subject<number>();
+  private countLikeObservable = this.countLikeSubject.asObservable();
 
   private stompClient: Client;
 
   public constructor(
     private restClientService: RestClientService
-  ) {
-    this.countLikeSubject = new Subject<number>();
-    this.countLikeObservable = this.countLikeSubject.asObservable();
-  }
-
-  public ngOnDestroy() {
-    this.countLikeSubject.unsubscribe();
-  }
+  ) { }
 
   public getCountLikeObservable(): Observable<number> {
     return this.countLikeObservable;

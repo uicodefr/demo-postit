@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.uicode.postit</groupId>
 	<artifactId>postit-server</artifactId>
-	<version>0.3.3</version>
+	<version>0.3.4</version>
 	<name>postit-server</name>
 	<description>PostIt Server</description>
 

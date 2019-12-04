@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { GlobalInfoService } from './shared/service/utils/global-info.service';
@@ -6,7 +7,6 @@ import { GlobalService } from './shared/service/global/global.service';
 import { UrlConstant } from './shared/const/url-constant';
 import { debounceTime } from 'rxjs/operators';
 import { AuthService } from './shared/auth/auth.service';
-import { Router } from '@angular/router';
 import { LikeService } from './shared/service/global/like.service';
 
 @Component({
@@ -17,13 +17,18 @@ import { LikeService } from './shared/service/global/like.service';
 export class AppComponent implements OnInit, OnDestroy {
 
   private static readonly LOADING_DEBOUNCE_TIME_MS = 100;
-
-  public availableApp = true;
-  public loading = false;
-  public likes: number = null;
   public exportNotesUrl = UrlConstant.Postit.NOTES_EXPORT;
 
+
+  public initApp = false;
+  public availableApp = true;
+  public loading = false;
+
+  public likes: number = null;
+  public isLoggedIn = false;
+
   private loadingSubscription: Subscription = null;
+  private userSubscription: Subscription = null;
   private likesSubscription: Subscription = null;
 
   public constructor(
@@ -35,18 +40,29 @@ export class AppComponent implements OnInit, OnDestroy {
   ) { }
 
   public ngOnInit() {
+    // Loading information
+    this.loadingSubscription = this.globalInfoService.getLoaderObservable()
+      .pipe(debounceTime(AppComponent.LOADING_DEBOUNCE_TIME_MS))
+      .subscribe(displayLoader => {
+        this.loading = displayLoader;
+    });
+
+    // Check app status
     this.globalService.getStatus().then(status => {
       this.availableApp = status.status === 'true';
     }).catch(error => {
       this.availableApp = false;
     });
 
-    this.loadingSubscription = this.globalInfoService.getLoaderObservable()
-      .pipe(debounceTime(AppComponent.LOADING_DEBOUNCE_TIME_MS))
-      .subscribe(displayLoader => {
-        this.loading = displayLoader;
-      });
+    // Get User and init app
+    this.userSubscription = this.authService.getUserObservable().subscribe(user => {
+      this.isLoggedIn = !!user;
+    });
+    this.authService.getRefreshedCurrentUser().finally(() => {
+      this.initApp = true;
+    });
 
+    // Like subscription
     this.likesSubscription = this.likeService.getCountLikeObservable().subscribe(countLike => {
       this.likes = countLike;
     });
@@ -57,6 +73,9 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.loadingSubscription != null) {
       this.loadingSubscription.unsubscribe();
     }
+    if (this.userSubscription != null) {
+      this.userSubscription.unsubscribe();
+    }
     if (this.likesSubscription != null) {
       this.likesSubscription.unsubscribe();
     }
@@ -64,10 +83,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public like() {
     this.likeService.addLike();
-  }
-
-  public get isLoggedIn() {
-    return this.authService.getCurrentUser();
   }
 
   public logout() {

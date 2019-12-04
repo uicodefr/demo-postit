@@ -9,7 +9,7 @@ import { TranslateService } from './translate.service';
 @Injectable({
   providedIn: 'root'
 })
-export class GlobalInfoService implements OnInit, OnDestroy {
+export class GlobalInfoService {
 
   private loaderSubject = new Subject<boolean>();
   private loaderObservable = this.loaderSubject.asObservable();
@@ -17,15 +17,7 @@ export class GlobalInfoService implements OnInit, OnDestroy {
   public constructor(
     private snackBar: MatSnackBar,
     private translateService: TranslateService
-  ) {
-  }
-
-  public ngOnInit() {
-  }
-
-  public ngOnDestroy() {
-    this.loaderSubject.unsubscribe();
-  }
+  ) { }
 
   public getLoaderObservable(): Observable<boolean> {
     return this.loaderObservable;

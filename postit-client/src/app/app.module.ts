@@ -18,13 +18,8 @@ import { BoardSettingsComponent } from './settings/board-settings/board-settings
 import { UserSettingsComponent } from './settings/user-settings/user-settings.component';
 import { LoginComponent } from './login/login.component';
 import { AppMaterialModule } from './app-material.module';
-import { InitService } from './shared/auth/init.service';
 import { HasRoleDirective } from './shared/directive/has-role.directive';
 import { AuthInterceptor } from './shared/auth/auth.interceptor';
-
-export function startupServiceFactory(initService: InitService): Function {
-  return () => initService.startupInit();
-}
 
 @NgModule({
   declarations: [
@@ -57,13 +52,6 @@ export function startupServiceFactory(initService: InitService): Function {
     EditNoteDialogComponent
   ],
   providers: [
-    InitService,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: startupServiceFactory,
-      deps: [InitService],
-      multi: true
-    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

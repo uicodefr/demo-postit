@@ -10,6 +10,7 @@ import { TranslateService } from '../../shared/service/utils/translate.service';
 import { EditNoteDialogComponent } from '../edit-note-dialog/edit-note-dialog.component';
 import { GlobalConstant } from '../../shared/const/global-constant';
 import { ColorizeNoteDialogComponent } from '../colorize-note-dialog/colorize-note-dialog.component';
+import { Board } from 'src/app/shared/model/postit/board';
 
 @Component({
   selector: 'app-board-note',
@@ -20,6 +21,8 @@ export class BoardNoteComponent implements OnInit {
 
   @Input()
   public note: PostitNote;
+  @Input()
+  public otherBoardList: Array<Board> = [];
 
   @Output()
   public takeOffNote = new EventEmitter<PostitNote>();
@@ -84,6 +87,17 @@ export class BoardNoteComponent implements OnInit {
 
     colorDialog.afterClosed().subscribe(updatedNote => {
       this.changeNoteAfterUpdate(updatedNote);
+    });
+  }
+
+  public changeToBoard(board: Board) {
+    const moveNote = new PostitNote();
+    moveNote.id = this.note.id;
+    moveNote.boardId = board.id;
+
+    this.postitService.updateNote(moveNote).then(updatedNote => {
+      this.globalInfoService.showAlert(AlertType.SUCCESS, this.translateService.get('Note moved'));
+      this.changeNote.emit(null);
     });
   }
 

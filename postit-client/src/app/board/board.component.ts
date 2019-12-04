@@ -24,6 +24,7 @@ export class BoardComponent implements OnInit {
 
   public selectedIndex = 0;
   public currentBoard: Board;
+  public otherBoardList: Array<Board> = [];
 
   public parameterNoteMax: number;
 
@@ -54,6 +55,7 @@ export class BoardComponent implements OnInit {
   public changeBoard(event: MatTabChangeEvent) {
     if (event.index < this.boardList.length) {
       this.currentBoard = this.boardList[event.index];
+      this.otherBoardList = this.boardList.filter(board => board.id !== this.currentBoard.id);
       this.loadNoteList(this.currentBoard.id);
       this.router.navigate(['board', this.currentBoard.id]);
     }

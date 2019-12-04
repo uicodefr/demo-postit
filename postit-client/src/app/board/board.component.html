@@ -10,8 +10,8 @@
     <ng-template matTabContent>
       <div class="cardBoard" *ngIf="noteListMap.get(board.id)">
 
-        <app-board-note *ngFor="let note of noteListMap.get(board.id)" [note]="note" (takeOffNote)="takeOffNote($event)"
-          (changeNote)="refreshCurrentBoard()" (orderNote)="reorderBoard($event)">
+        <app-board-note *ngFor="let note of noteListMap.get(board.id)" [note]="note" [otherBoardList]="otherBoardList"
+          (takeOffNote)="takeOffNote($event)" (changeNote)="refreshCurrentBoard()" (orderNote)="reorderBoard($event)">
         </app-board-note>
 
         <mat-card class="cardButtons">

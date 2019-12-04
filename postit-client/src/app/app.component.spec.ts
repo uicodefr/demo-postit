@@ -1,4 +1,4 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, async, tick } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -12,6 +12,7 @@ import { GlobalInfoService } from './shared/service/utils/global-info.service';
 import { GlobalService } from './shared/service/global/global.service';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AuthService } from './shared/auth/auth.service';
+import { LikeService } from './shared/service/global/like.service';
 
 describe('AppComponent', () => {
 
@@ -23,7 +24,13 @@ describe('AppComponent', () => {
     globalSpy.getStatus.and.returnValue(Promise.resolve({ status: 'true' }));
     globalSpy.getCountLikeObservable.and.returnValue(of());
 
-    const authSpy = jasmine.createSpyObj('AuthService', ['getCurrentUser']);
+    const likeSpy = jasmine.createSpyObj('LikeService', ['getCountLikeObservable', 'listenCountLikeTimer']);
+    likeSpy.getCountLikeObservable.and.returnValue(of());
+
+    const authSpy = jasmine.createSpyObj('AuthService', ['getCurrentUser', 'getRefreshedCurrentUser', 'getUserObservable']);
+    authSpy.getCurrentUser.and.returnValue(null);
+    authSpy.getRefreshedCurrentUser.and.returnValue(Promise.resolve(null));
+    authSpy.getUserObservable.and.returnValue(of());
 
     TestBed.configureTestingModule({
       declarations: [
@@ -32,6 +39,7 @@ describe('AppComponent', () => {
       providers: [
         { provide: GlobalInfoService, useValue: globalInfoSpy },
         { provide: GlobalService, useValue: globalSpy },
+        { provide: LikeService, useValue: likeSpy },
         { provide: AuthService, useValue: authSpy }
       ],
       imports: [
@@ -63,9 +71,17 @@ describe('AppComponent', () => {
 
   it('should render a h1 tag', async(() => {
     const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.debugElement.componentInstance;
+
+    expect(app.initApp).toEqual(false);
     fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Post-It');
+
+    fixture.whenStable().then(() => {
+      expect(app.initApp).toEqual(true);
+      fixture.detectChanges();
+      const compiled = fixture.debugElement.nativeElement;
+      expect(compiled.querySelector('h1').textContent).toContain('Post-It');
+    });
   }));
 
 });

@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.uicode.postit.postitserver.dto.postit.BoardDto;
 import com.uicode.postit.postitserver.dto.postit.PostitNoteDto;
 import com.uicode.postit.postitserver.entity.postit.Board;
 import com.uicode.postit.postitserver.entity.postit.PostitNote;
@@ -84,7 +85,7 @@ public class PostitServiceTest {
     }
 
     @Test
-    public void saveNote() throws NotFoundException, InvalidDataException, FunctionnalException {
+    public void saveNoteError() throws NotFoundException, InvalidDataException, FunctionnalException {
         PostitNoteDto noteDto = new PostitNoteDto();
         Assertions.assertThatThrownBy(() -> postitNoteService.saveNote(noteDto.getId(), noteDto))
                 .isInstanceOf(InvalidDataException.class);
@@ -97,7 +98,7 @@ public class PostitServiceTest {
         noteDto.setBoardId(1l);
         Assertions.assertThatThrownBy(() -> postitNoteService.saveNote(noteDto.getId(), noteDto))
                 .isInstanceOf(InvalidDataException.class);
-        
+
         Long noteMax = Long.valueOf(globalService.getParameterValue(ParameterConst.NOTE_MAX)
                 .orElseThrow(() -> new InvalidDataException("noteMax")));
         for (int i = 0; i < noteMax; i++) {
@@ -108,6 +109,40 @@ public class PostitServiceTest {
         noteDto.setName("No more");
         Assertions.assertThatThrownBy(() -> postitNoteService.saveNote(noteDto.getId(), noteDto))
                 .isInstanceOf(FunctionnalException.class);
+    }
+
+    @Test
+    public void changeBoard() throws NotFoundException, FunctionnalException, InvalidDataException {
+        BoardDto boardOneDto = new BoardDto();
+        boardOneDto.setName("board1");
+        boardOneDto = postitNoteService.saveBoard(null, boardOneDto);
+
+        BoardDto boardTwoDto = new BoardDto();
+        boardTwoDto.setName("board2");
+        boardTwoDto = postitNoteService.saveBoard(null, boardTwoDto);
+
+        // Create note on boardOne
+        PostitNoteDto noteDto = new PostitNoteDto();
+        noteDto.setBoardId(boardOneDto.getId());
+        noteDto.setName("Note");
+        noteDto = postitNoteService.saveNote(null, noteDto);
+
+        List<PostitNoteDto> noteListOnBoard1 = postitNoteService.getNoteList(boardOneDto.getId());
+        Assertions.assertThat(noteListOnBoard1).hasSize(1);
+        Assertions.assertThat(noteListOnBoard1.get(0)).isNotNull();
+        Assertions.assertThat(noteListOnBoard1.get(0).getId()).isEqualTo(noteDto.getId());
+
+        // Move note on boardTwo
+        noteDto.setBoardId(boardTwoDto.getId());
+        noteDto = postitNoteService.saveNote(noteDto.getId(), noteDto);
+
+        noteListOnBoard1 = postitNoteService.getNoteList(boardOneDto.getId());
+        Assertions.assertThat(noteListOnBoard1).hasSize(0);
+
+        List<PostitNoteDto> noteListOnBoard2 = postitNoteService.getNoteList(boardTwoDto.getId());
+        Assertions.assertThat(noteListOnBoard2).hasSize(1);
+        Assertions.assertThat(noteListOnBoard2.get(0)).isNotNull();
+        Assertions.assertThat(noteListOnBoard2.get(0).getId()).isEqualTo(noteDto.getId());
     }
 
 }
