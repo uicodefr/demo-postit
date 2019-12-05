@@ -27,10 +27,9 @@ describe('AppComponent', () => {
     const likeSpy = jasmine.createSpyObj('LikeService', ['getCountLikeObservable', 'listenCountLikeTimer']);
     likeSpy.getCountLikeObservable.and.returnValue(of());
 
-    const authSpy = jasmine.createSpyObj('AuthService', ['getCurrentUser', 'getRefreshedCurrentUser', 'getUserObservable']);
-    authSpy.getCurrentUser.and.returnValue(null);
+    const authSpy = jasmine.createSpyObj('AuthService', ['getCurrentUser', 'getRefreshedCurrentUser']);
     authSpy.getRefreshedCurrentUser.and.returnValue(Promise.resolve(null));
-    authSpy.getUserObservable.and.returnValue(of());
+    authSpy.getCurrentUser.and.returnValue(of());
 
     TestBed.configureTestingModule({
       declarations: [

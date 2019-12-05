@@ -24,12 +24,10 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private translateService: TranslateService,
     private globalInfoService: GlobalInfoService
-  ) {
-  }
+  ) { }
 
   public ngOnInit() {
-    this.userConnected = this.authService.getCurrentUser();
-    this.authService.getRefreshedCurrentUser().then(user => {
+    this.authService.getCurrentUser().subscribe(user => {
       this.userConnected = user;
     });
 
@@ -49,7 +47,6 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(valueForm.username, valueForm.password).then(isSignIn => {
       this.loginInProgress = false;
-      this.userConnected = this.authService.getCurrentUser();
       if (!isSignIn) {
         this.globalInfoService.showAlert(AlertType.WARNING,
           this.translateService.get('Sign-in Failed : Incorrect username or password'), 3000);
@@ -58,9 +55,7 @@ export class LoginComponent implements OnInit {
   }
 
   public logout() {
-    this.authService.logout().then(() => {
-      this.userConnected = this.authService.getCurrentUser();
-    });
+    this.authService.logout();
   }
 
 }

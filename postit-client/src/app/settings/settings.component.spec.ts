@@ -12,7 +12,8 @@ describe('SettingsComponent', () => {
   let fixture: ComponentFixture<SettingsComponent>;
 
   beforeEach(async(() => {
-    const authSpy = jasmine.createSpyObj('AuthService', ['getRefreshedCurrentUser', 'hasRoles']);
+    const authSpy = jasmine.createSpyObj('AuthService', ['getRefreshedCurrentUser', 'userHasRoles']);
+    authSpy.userHasRoles.and.returnValue(Promise.resolve(false));
 
     TestBed.configureTestingModule({
       declarations: [SettingsComponent, HasRoleDirective],

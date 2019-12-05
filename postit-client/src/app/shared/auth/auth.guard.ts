@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -18,15 +17,13 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    const currentUser = this.authService.getCurrentUser();
     const roles = next.data.roles as Array<string>;
-
-    const activate = currentUser && (!roles || roles.every(role => currentUser.roleList.includes(role)));
-    if (!activate) {
-      this.authService.redirectToLogin(next);
-    }
-
-    return activate;
+    return this.authService.userHasRoles(roles).then(activate => {
+      if (!activate) {
+        this.authService.redirectToLogin(next);
+      }
+      return activate;
+    });
   }
 
 }

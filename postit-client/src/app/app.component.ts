@@ -55,7 +55,7 @@ export class AppComponent implements OnInit, OnDestroy {
     });
 
     // Get User and init app
-    this.userSubscription = this.authService.getUserObservable().subscribe(user => {
+    this.userSubscription = this.authService.getCurrentUser().subscribe(user => {
       this.isLoggedIn = !!user;
     });
     this.authService.getRefreshedCurrentUser().finally(() => {

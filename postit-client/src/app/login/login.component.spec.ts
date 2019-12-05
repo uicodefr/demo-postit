@@ -4,7 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { of } from 'rxjs';
 import { LoginComponent } from './login.component';
 import { AuthService } from '../shared/auth/auth.service';
 import { TranslateService } from '../shared/service/utils/translate.service';
@@ -16,8 +16,8 @@ describe('LoginComponent', () => {
   let fixture: ComponentFixture<LoginComponent>;
 
   beforeEach(async(() => {
-    const authSpy = jasmine.createSpyObj('AuthService', ['getCurrentUser', 'getRefreshedCurrentUser']);
-    authSpy.getRefreshedCurrentUser.and.returnValue(Promise.resolve(null));
+    const authSpy = jasmine.createSpyObj('AuthService', ['getCurrentUser']);
+    authSpy.getCurrentUser.and.returnValue(of(null));
 
     const globalInfoSpy = jasmine.createSpyObj('GlobalInfoService', ['showAlert']);
 
