@@ -3,11 +3,11 @@
 <mat-dialog-content>
   <ng-container *ngIf="editedNote">
     <mat-form-field class="formField">
-      <input type="text" matInput placeholder="Title" [(ngModel)]="editedNote.name">
+      <input type="text" matInput placeholder="Title" i18n-placeholder [(ngModel)]="editedNote.name">
     </mat-form-field>
 
     <mat-form-field class="formField">
-      <textarea matInput placeholder="Message" [(ngModel)]="editedNote.text"></textarea>
+      <textarea matInput placeholder="Message" i18n-placeholder [(ngModel)]="editedNote.text"></textarea>
     </mat-form-field>
   </ng-container>
 </mat-dialog-content>

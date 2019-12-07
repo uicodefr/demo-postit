@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/postit-client",
+            "outputPath": "dist/postit-client/en",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -57,6 +57,53 @@
                   "maximumError": "5mb"
                 }
               ]
+            },
+            "production-fr": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                },
+                {
+                  "replace": "src/environments/translation.ts",
+                  "with": "src/locale/translation.fr.ts"
+                }
+              ],
+              "outputPath": "dist/postit-client/fr",
+              "i18nFile": "src/locale/messages.fr.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "fr",
+              "i18nMissingTranslation": "error",
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            },
+            "fr": {
+              "aot": true,
+              "outputPath": "dist/postit-client/fr",
+              "i18nFile": "src/locale/messages.fr.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "fr",
+              "i18nMissingTranslation": "error",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/translation.ts",
+                  "with": "src/locale/translation.fr.ts"
+                }
+              ]
             }
           }
         },
@@ -69,6 +116,9 @@
           "configurations": {
             "production": {
               "browserTarget": "postit-client:build:production"
+            },
+            "fr": {
+              "browserTarget": "postit-client:build:fr"
             }
           }
         },

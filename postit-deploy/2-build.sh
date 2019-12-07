@@ -35,7 +35,8 @@ if [ $buildTarget == 'client' ] || [ $buildTarget == 'all' ]; then
 	echo "# - build angular client"
 	cd ../postit-client
 	npm install
-	npm run ng -- build --prod --base-href /demo/postit/
+	npm run ng -- build --prod --base-href /demo/postit/en/
+	npm run ng -- build --configuration=production-fr --base-href /demo/postit/fr/
 	
 	cd ../postit-deploy
 	rm -R ./clientImage/postit-client/*

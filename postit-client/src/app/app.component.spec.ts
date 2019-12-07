@@ -13,6 +13,7 @@ import { GlobalService } from './shared/service/global/global.service';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AuthService } from './shared/auth/auth.service';
 import { LikeService } from './shared/service/global/like.service';
+import { MatMenuModule } from '@angular/material/menu';
 
 describe('AppComponent', () => {
 
@@ -45,7 +46,7 @@ describe('AppComponent', () => {
         RouterModule.forRoot([{
           path: '',
           component: PageNotFoundComponent
-        }]), MatToolbarModule, MatIconModule, MatProgressSpinnerModule, MatSnackBarModule
+        }]), MatToolbarModule, MatIconModule, MatProgressSpinnerModule, MatSnackBarModule, MatMenuModule
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();

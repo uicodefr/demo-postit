@@ -85,6 +85,12 @@ export class AppComponent implements OnInit, OnDestroy {
     this.likeService.addLike();
   }
 
+  public changeLang(lang: string) {
+    const currentLocationUrl = window.location.toString();
+    const regexLangInUrl = /\/(en|fr)\//g;
+    window.location.assign(currentLocationUrl.replace(regexLangInUrl, '/' + lang + '/'));
+  }
+
   public logout() {
     if (!this.authService.getCurrentUser()) {
       return;

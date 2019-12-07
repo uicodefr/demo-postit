@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.uicode.postit</groupId>
 	<artifactId>postit-server</artifactId>
-	<version>0.3.4</version>
+	<version>0.4.0</version>
 	<name>postit-server</name>
 	<description>PostIt Server</description>
 
@@ -75,6 +75,13 @@
 			<artifactId>h2</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
