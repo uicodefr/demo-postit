@@ -13,7 +13,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Streams;
@@ -55,7 +54,7 @@ public class PostitNoteServiceImpl implements IPostitNoteService {
 
     @Override
     public List<BoardDto> getBoardList() {
-        Iterable<Board> boardIterable = boardDao.findAll(new Sort(Direction.ASC, "id"));
+        Iterable<Board> boardIterable = boardDao.findAll(Sort.by("id").ascending());
         return Streams.stream(boardIterable).map(BoardMapper.INSTANCE::toDto).collect(Collectors.toList());
     }
 

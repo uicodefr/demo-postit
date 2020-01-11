@@ -8,7 +8,7 @@ INSERT INTO global_parameter (name, value, client_view) VALUES
 
 -- # POST IT # --
 
-INSERT INTO global_parameter (name, value, client_view) VALUES
+INSERT INTO global_parameter (name, value, client_view) VALUES 
     ('board.max', '5', true);
 
 INSERT INTO global_parameter (name, value, client_view) VALUES
@@ -19,8 +19,7 @@ INSERT INTO global_parameter (name, value, client_view) VALUES
 
 -- # ONE BOARD # --
 
-INSERT INTO postit_board
-(id, name, creation_date, update_date) VALUES
+INSERT INTO postit_board (id, name, creation_date, update_date) VALUES
     (nextval('postit_board_id_seq'), 'Test Board', NOW(), NOW());
 
 -- # ONE NOTE # --

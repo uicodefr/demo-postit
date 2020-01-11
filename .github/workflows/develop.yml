@@ -1,0 +1,84 @@
+name: Develop CI
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build-server:
+    runs-on: ubuntu-latest
+    env:
+      CI: true
+      NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+      NEXUS_SETTINGS: ${{ secrets.NEXUS_SETTINGS }}
+      working-directory: postit-server
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up JDK
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+
+    - name: Init
+      run: |
+        version=$(sed "s/^\t<version>\(.*\)<\/version>$/\1/;t;d" pom.xml)
+        echo "Version: "$version
+        if [[ ! $version =~ "SNAPSHOT" ]]; then
+          echo ERROR: Wrong version 1>&2
+          exit 1
+        fi
+        mkdir -p ~/.m2
+        echo $NEXUS_SETTINGS > ~/.m2/settings.xml
+      working-directory: ${{ env.working-directory }}
+
+    - name: Test
+      run: make test
+      working-directory: ${{ env.working-directory }}
+
+    - name : Build
+      run: make build
+      working-directory: ${{ env.working-directory }}
+
+    - name : Containerize
+      run: make containerize
+      working-directory: ${{ env.working-directory }}
+
+
+  build-client:
+    runs-on: ubuntu-latest
+    env:
+      CI: true
+      NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+      working-directory: postit-client
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+
+    - name: Init
+      run: |
+        version=$(sed "s/^  \"version\": \"\(.*\)\",$/\1/;t;d" package.json)
+        echo "Version: "$version
+        if [[ ! $version =~ "SNAPSHOT" ]]; then
+          echo ERROR: Wrong version 1>&2
+          exit 1
+        fi
+      working-directory: ${{ env.working-directory }}
+
+    - name: Test
+      run: make test
+      working-directory: ${{ env.working-directory }}
+
+    - name : Build
+      run: make build
+      working-directory: ${{ env.working-directory }}
+
+    - name : Containerize
+      run: make containerize
+      working-directory: ${{ env.working-directory }}
+

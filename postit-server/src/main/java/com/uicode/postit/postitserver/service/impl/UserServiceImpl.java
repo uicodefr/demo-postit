@@ -14,7 +14,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -75,7 +74,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public List<UserDto> getUserList() {
-        Iterable<User> userIterable = userDao.findAll(new Sort(Direction.ASC, "username"));
+        Iterable<User> userIterable = userDao.findAll(Sort.by("username").ascending());
         return Streams.stream(userIterable).map(UserMapper.INSTANCE::toDto).collect(Collectors.toList());
     }
 
@@ -147,7 +146,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public List<String> getRoleList() {
-        Iterable<UserAuthority> userAuthorityIterable = userAuthorityDao.findAll(new Sort(Direction.ASC, "authority"));
+        Iterable<UserAuthority> userAuthorityIterable = userAuthorityDao.findAll(Sort.by("authority").ascending());
         return Streams.stream(userAuthorityIterable).map(UserAuthority::getAuthority).collect(Collectors.toList());
     }
 

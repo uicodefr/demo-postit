@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.uicode.postit.postitserver.dto.postit.BoardDto;
 import com.uicode.postit.postitserver.dto.postit.PostitNoteDto;
-import com.uicode.postit.postitserver.test.tools.TestRestTemplateWithHeaders;
+import com.uicode.postit.postitserver.util.TestRestTemplateWithHeaders;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)

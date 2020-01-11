@@ -1,4 +1,4 @@
-package com.uicode.postit.postitserver.test.tools;
+package com.uicode.postit.postitserver.util;
 
 import org.assertj.core.api.Assertions;
 import org.springframework.boot.test.web.client.TestRestTemplate;

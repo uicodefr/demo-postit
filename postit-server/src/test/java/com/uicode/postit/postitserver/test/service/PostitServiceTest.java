@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,10 +73,10 @@ public class PostitServiceTest {
         Integer previous = null;
         for (PostitNote note : noteList) {
             if (previous != null) {
-                Assert.assertTrue("Sort: previous < actual", previous < note.getOrderNum());
+                Assertions.assertThat(previous).isLessThan(note.getOrderNum());
             }
             if (note.getId().equals(changeDto.getId())) {
-                Assert.assertEquals(note.getOrderNum(), changeDto.getOrderNum());
+                Assertions.assertThat(note.getOrderNum()).isEqualTo(changeDto.getOrderNum());
             }
             previous = note.getOrderNum();
         }

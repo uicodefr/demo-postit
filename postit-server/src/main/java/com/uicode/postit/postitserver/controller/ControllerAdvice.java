@@ -21,9 +21,9 @@ import com.uicode.postit.postitserver.utils.exception.InvalidDataException;
 import com.uicode.postit.postitserver.utils.exception.NotFoundException;
 
 @RestControllerAdvice
-public class ControllerExceptionHandler {
+public class ControllerAdvice {
 
-    private static final Logger LOGGER = LogManager.getLogger(ControllerExceptionHandler.class);
+    private static final Logger LOGGER = LogManager.getLogger(ControllerAdvice.class);
 
     @Autowired
     private IUserService userService;

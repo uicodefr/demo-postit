@@ -18,7 +18,7 @@ import org.springframework.util.LinkedMultiValueMap;
 
 import com.uicode.postit.postitserver.dto.postit.BoardDto;
 import com.uicode.postit.postitserver.dto.user.UserDto;
-import com.uicode.postit.postitserver.test.tools.TestRestTemplateWithHeaders;
+import com.uicode.postit.postitserver.util.TestRestTemplateWithHeaders;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
