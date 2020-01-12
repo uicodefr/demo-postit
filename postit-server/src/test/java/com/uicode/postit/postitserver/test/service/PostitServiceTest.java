@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.uicode.postit.postitserver.dto.postit.BoardDto;
 import com.uicode.postit.postitserver.dto.postit.PostitNoteDto;
@@ -22,8 +20,8 @@ import com.uicode.postit.postitserver.utils.exception.InvalidDataException;
 import com.uicode.postit.postitserver.utils.exception.NotFoundException;
 import com.uicode.postit.postitserver.utils.parameter.ParameterConst;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.MOCK)
+@SpringBootTest
+@AutoConfigureTestDatabase
 public class PostitServiceTest {
 
     @Autowired

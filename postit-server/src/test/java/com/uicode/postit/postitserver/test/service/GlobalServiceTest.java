@@ -3,14 +3,12 @@ package com.uicode.postit.postitserver.test.service;
 import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.uicode.postit.postitserver.dao.global.IParameterDao;
 import com.uicode.postit.postitserver.dto.global.GlobalStatusDto;
@@ -20,8 +18,8 @@ import com.uicode.postit.postitserver.utils.exception.ForbiddenException;
 import com.uicode.postit.postitserver.utils.exception.NotFoundException;
 import com.uicode.postit.postitserver.utils.parameter.ParameterConst;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.MOCK)
+@SpringBootTest
+@AutoConfigureTestDatabase
 public class GlobalServiceTest {
 
     @MockBean
