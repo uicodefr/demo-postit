@@ -29,6 +29,7 @@ jobs:
           echo ERROR: Wrong version 1>&2
           exit 1
         fi
+        echo $version > ../server-version.txt
         mkdir -p ~/.m2
         echo $NEXUS_SETTINGS > ~/.m2/settings.xml
       working-directory: ${{ env.working-directory }}
@@ -44,6 +45,12 @@ jobs:
     - name : Containerize
       run: make containerize
       working-directory: ${{ env.working-directory }}
+
+    - name : Prepare Deploy
+      uses: actions/upload-artifact@v1
+      with:
+        name: server-version
+        path: server-version.txt
 
 
   build-client:
@@ -68,6 +75,7 @@ jobs:
           echo ERROR: Wrong version 1>&2
           exit 1
         fi
+        echo $version > ../client-version.txt
       working-directory: ${{ env.working-directory }}
 
     - name: Test
@@ -81,4 +89,37 @@ jobs:
     - name : Containerize
       run: make containerize
       working-directory: ${{ env.working-directory }}
+
+    - name : Prepare Deploy
+      uses: actions/upload-artifact@v1
+      with:
+        name: client-version
+        path: client-version.txt
+
+
+  deploy:
+    needs: [build-server, build-client]
+    runs-on: ubuntu-latest
+    env:
+      SSH_HOST: ${{ secrets.QA_HOST }}
+      SSH_KEY: ${{ secrets.QA_SSH_KEY }}
+
+    steps:
+      - uses: actions/download-artifact@v1
+        with:
+          name: server-version
+
+      - uses: actions/download-artifact@v1
+        with:
+          name: client-version
+
+      - name: Deploy
+        run: |
+          serverVersion=$(cat server-version/server-version.txt)
+          clientVersion=$(cat client-version/client-version.txt)
+          echo "server: $serverVersion // client: $clientVersion"
+          which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )
+          eval $(ssh-agent)
+          echo "$SSH_KEY" | tr -d '\r' | ssh-add -
+          ssh -o StrictHostKeyChecking=no $SSH_HOST "sudo ./RUN.sh server $serverVersion && sudo ./RUN.sh client $clientVersion && exit"
 
