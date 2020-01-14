@@ -32,7 +32,7 @@ public class GlobalServiceImpl implements IGlobalService {
 
     private static final Logger LOGGER = LogManager.getLogger(GlobalServiceImpl.class);
 
-    private static final String VERSION = "0.4.4-SNAPSHOT";
+    private static final String VERSION = "0.4.5-SNAPSHOT";
     private static final Date UPDATE = new Date();
     private static final String WS_LIKE_PATH = "/listen/likes:count";
 
