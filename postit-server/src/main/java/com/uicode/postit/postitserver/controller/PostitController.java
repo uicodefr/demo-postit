@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.uicode.postit.postitserver.dto.postit.BoardDto;
 import com.uicode.postit.postitserver.dto.postit.PostitNoteDto;
+import com.uicode.postit.postitserver.exception.FunctionnalException;
+import com.uicode.postit.postitserver.exception.InvalidDataException;
+import com.uicode.postit.postitserver.exception.NotFoundException;
 import com.uicode.postit.postitserver.service.IPostitNoteService;
-import com.uicode.postit.postitserver.utils.exception.FunctionnalException;
-import com.uicode.postit.postitserver.utils.exception.InvalidDataException;
-import com.uicode.postit.postitserver.utils.exception.NotFoundException;
 
 @RestController
 @RequestMapping("/postit")

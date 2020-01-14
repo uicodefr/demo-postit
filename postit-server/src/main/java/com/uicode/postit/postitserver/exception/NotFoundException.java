@@ -1,4 +1,4 @@
-package com.uicode.postit.postitserver.utils.exception;
+package com.uicode.postit.postitserver.exception;
 
 public class NotFoundException extends Exception {
 

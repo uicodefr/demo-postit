@@ -1,4 +1,4 @@
-package com.uicode.postit.postitserver.utils.parameter;
+package com.uicode.postit.postitserver.util.parameter;
 
 public class ParameterConst {
 

@@ -20,11 +20,11 @@ import com.uicode.postit.postitserver.dto.global.CountLikesDto;
 import com.uicode.postit.postitserver.dto.global.GlobalStatusDto;
 import com.uicode.postit.postitserver.entity.global.Like;
 import com.uicode.postit.postitserver.entity.global.Parameter;
+import com.uicode.postit.postitserver.exception.ForbiddenException;
+import com.uicode.postit.postitserver.exception.NotFoundException;
 import com.uicode.postit.postitserver.service.IGlobalService;
-import com.uicode.postit.postitserver.utils.exception.ForbiddenException;
-import com.uicode.postit.postitserver.utils.exception.NotFoundException;
-import com.uicode.postit.postitserver.utils.parameter.ParameterConst;
-import com.uicode.postit.postitserver.utils.parameter.ParameterUtils;
+import com.uicode.postit.postitserver.util.parameter.ParameterConst;
+import com.uicode.postit.postitserver.util.parameter.ParameterUtil;
 
 @Service
 @Transactional
@@ -32,7 +32,7 @@ public class GlobalServiceImpl implements IGlobalService {
 
     private static final Logger LOGGER = LogManager.getLogger(GlobalServiceImpl.class);
 
-    private static final String VERSION = "0.4.3-SNAPSHOT";
+    private static final String VERSION = "0.4.4-SNAPSHOT";
     private static final Date UPDATE = new Date();
     private static final String WS_LIKE_PATH = "/listen/likes:count";
 
@@ -101,7 +101,7 @@ public class GlobalServiceImpl implements IGlobalService {
         IdEntityDto result = new IdEntityDto();
 
         Optional<String> maxLikeParameter = getParameterValue(ParameterConst.LIKE_MAX);
-        Long maxLike = ParameterUtils.getLong(maxLikeParameter, 0l);
+        Long maxLike = ParameterUtil.getLong(maxLikeParameter, 0l);
 
         if (countLikes().getCount() > maxLike) {
             return result;

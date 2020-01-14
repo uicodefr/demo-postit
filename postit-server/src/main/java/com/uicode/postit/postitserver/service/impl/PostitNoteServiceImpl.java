@@ -23,16 +23,16 @@ import com.uicode.postit.postitserver.dto.postit.BoardDto;
 import com.uicode.postit.postitserver.dto.postit.PostitNoteDto;
 import com.uicode.postit.postitserver.entity.postit.Board;
 import com.uicode.postit.postitserver.entity.postit.PostitNote;
+import com.uicode.postit.postitserver.exception.FunctionnalException;
+import com.uicode.postit.postitserver.exception.InvalidDataException;
+import com.uicode.postit.postitserver.exception.NotFoundException;
 import com.uicode.postit.postitserver.mapper.postit.BoardMapper;
 import com.uicode.postit.postitserver.mapper.postit.PostitNoteMapper;
 import com.uicode.postit.postitserver.service.IGlobalService;
 import com.uicode.postit.postitserver.service.IPostitNoteService;
-import com.uicode.postit.postitserver.utils.CheckDataUtils;
-import com.uicode.postit.postitserver.utils.exception.FunctionnalException;
-import com.uicode.postit.postitserver.utils.exception.InvalidDataException;
-import com.uicode.postit.postitserver.utils.exception.NotFoundException;
-import com.uicode.postit.postitserver.utils.parameter.ParameterConst;
-import com.uicode.postit.postitserver.utils.parameter.ParameterUtils;
+import com.uicode.postit.postitserver.util.CheckDataUtil;
+import com.uicode.postit.postitserver.util.parameter.ParameterConst;
+import com.uicode.postit.postitserver.util.parameter.ParameterUtil;
 
 @Service
 @Transactional
@@ -65,7 +65,7 @@ public class PostitNoteServiceImpl implements IPostitNoteService {
         if (boardId == null) {
             // Creation
             Optional<String> maxBoardParameter = globalService.getParameterValue(ParameterConst.BOARD_MAX);
-            Long maxBoard = ParameterUtils.getLong(maxBoardParameter, 0l);
+            Long maxBoard = ParameterUtil.getLong(maxBoardParameter, 0l);
             if (boardDao.count() > maxBoard) {
                 throw new FunctionnalException("Max Board achieved : creation is blocked");
             }
@@ -115,10 +115,10 @@ public class PostitNoteServiceImpl implements IPostitNoteService {
 
         if (noteId == null) {
             // Creation
-            CheckDataUtils.checkNotNull("boardId", noteDto.getBoardId());
-            CheckDataUtils.checkNotNull("name", noteDto.getName());
+            CheckDataUtil.checkNotNull("boardId", noteDto.getBoardId());
+            CheckDataUtil.checkNotNull("name", noteDto.getName());
             Optional<String> maxNoteParameter = globalService.getParameterValue(ParameterConst.NOTE_MAX);
-            Long maxNote = ParameterUtils.getLong(maxNoteParameter, 0l);
+            Long maxNote = ParameterUtil.getLong(maxNoteParameter, 0l);
             if (postitNoteDao.countByBoardId(noteDto.getBoardId()) > maxNote) {
                 throw new FunctionnalException("Max Postit Note achieved : creation is blocked");
             }

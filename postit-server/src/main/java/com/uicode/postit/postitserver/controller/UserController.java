@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.uicode.postit.postitserver.dto.user.UserDto;
+import com.uicode.postit.postitserver.exception.FunctionnalException;
+import com.uicode.postit.postitserver.exception.NotFoundException;
 import com.uicode.postit.postitserver.service.IUserService;
-import com.uicode.postit.postitserver.utils.exception.FunctionnalException;
-import com.uicode.postit.postitserver.utils.exception.NotFoundException;
 
 @RestController
 @RequestMapping("/users")

@@ -13,10 +13,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import com.uicode.postit.postitserver.dao.global.IParameterDao;
 import com.uicode.postit.postitserver.dto.global.GlobalStatusDto;
 import com.uicode.postit.postitserver.entity.global.Parameter;
+import com.uicode.postit.postitserver.exception.ForbiddenException;
+import com.uicode.postit.postitserver.exception.NotFoundException;
 import com.uicode.postit.postitserver.service.IGlobalService;
-import com.uicode.postit.postitserver.utils.exception.ForbiddenException;
-import com.uicode.postit.postitserver.utils.exception.NotFoundException;
-import com.uicode.postit.postitserver.utils.parameter.ParameterConst;
+import com.uicode.postit.postitserver.util.parameter.ParameterConst;
 
 @SpringBootTest
 @AutoConfigureTestDatabase

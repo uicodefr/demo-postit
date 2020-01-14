@@ -13,12 +13,12 @@ import com.uicode.postit.postitserver.dto.postit.BoardDto;
 import com.uicode.postit.postitserver.dto.postit.PostitNoteDto;
 import com.uicode.postit.postitserver.entity.postit.Board;
 import com.uicode.postit.postitserver.entity.postit.PostitNote;
+import com.uicode.postit.postitserver.exception.FunctionnalException;
+import com.uicode.postit.postitserver.exception.InvalidDataException;
+import com.uicode.postit.postitserver.exception.NotFoundException;
 import com.uicode.postit.postitserver.service.IGlobalService;
 import com.uicode.postit.postitserver.service.IPostitNoteService;
-import com.uicode.postit.postitserver.utils.exception.FunctionnalException;
-import com.uicode.postit.postitserver.utils.exception.InvalidDataException;
-import com.uicode.postit.postitserver.utils.exception.NotFoundException;
-import com.uicode.postit.postitserver.utils.parameter.ParameterConst;
+import com.uicode.postit.postitserver.util.parameter.ParameterConst;
 
 @SpringBootTest
 @AutoConfigureTestDatabase

@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.uicode.postit.postitserver.dto.global.ErrorDto;
+import com.uicode.postit.postitserver.exception.ForbiddenException;
+import com.uicode.postit.postitserver.exception.FunctionnalException;
+import com.uicode.postit.postitserver.exception.InvalidDataException;
+import com.uicode.postit.postitserver.exception.NotFoundException;
 import com.uicode.postit.postitserver.service.IUserService;
-import com.uicode.postit.postitserver.utils.exception.ForbiddenException;
-import com.uicode.postit.postitserver.utils.exception.FunctionnalException;
-import com.uicode.postit.postitserver.utils.exception.InvalidDataException;
-import com.uicode.postit.postitserver.utils.exception.NotFoundException;
 
 @RestControllerAdvice
 public class ControllerAdvice {

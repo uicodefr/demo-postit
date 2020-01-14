@@ -1,10 +1,10 @@
-package com.uicode.postit.postitserver.utils.parameter;
+package com.uicode.postit.postitserver.util.parameter;
 
 import java.util.Optional;
 
-public class ParameterUtils {
+public class ParameterUtil {
 
-    private ParameterUtils() {
+    private ParameterUtil() {
     }
 
     public static Long getLong(Optional<String> parameterValue, Long defaultValue) {

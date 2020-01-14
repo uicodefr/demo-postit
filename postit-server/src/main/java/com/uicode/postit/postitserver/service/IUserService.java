@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.uicode.postit.postitserver.dto.user.UserDto;
-import com.uicode.postit.postitserver.utils.exception.FunctionnalException;
-import com.uicode.postit.postitserver.utils.exception.NotFoundException;
+import com.uicode.postit.postitserver.exception.FunctionnalException;
+import com.uicode.postit.postitserver.exception.NotFoundException;
 
 public interface IUserService extends UserDetailsService {
 

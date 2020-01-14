@@ -27,13 +27,13 @@ import com.uicode.postit.postitserver.dao.user.IUserDao;
 import com.uicode.postit.postitserver.dto.user.UserDto;
 import com.uicode.postit.postitserver.entity.user.User;
 import com.uicode.postit.postitserver.entity.user.UserAuthority;
+import com.uicode.postit.postitserver.exception.FunctionnalException;
+import com.uicode.postit.postitserver.exception.NotFoundException;
 import com.uicode.postit.postitserver.mapper.user.UserMapper;
 import com.uicode.postit.postitserver.service.IGlobalService;
 import com.uicode.postit.postitserver.service.IUserService;
-import com.uicode.postit.postitserver.utils.exception.FunctionnalException;
-import com.uicode.postit.postitserver.utils.exception.NotFoundException;
-import com.uicode.postit.postitserver.utils.parameter.ParameterConst;
-import com.uicode.postit.postitserver.utils.parameter.ParameterUtils;
+import com.uicode.postit.postitserver.util.parameter.ParameterConst;
+import com.uicode.postit.postitserver.util.parameter.ParameterUtil;
 
 @Service
 @Transactional
@@ -85,7 +85,7 @@ public class UserServiceImpl implements IUserService {
         if (userId == null) {
             // Creation
             Optional<String> maxUserParameter = globalService.getParameterValue(ParameterConst.USER_MAX);
-            Long maxUser = ParameterUtils.getLong(maxUserParameter, 0l);
+            Long maxUser = ParameterUtil.getLong(maxUserParameter, 0l);
             if (userDao.count() > maxUser) {
                 throw new FunctionnalException("Max User achieved : creation is blocked");
             }

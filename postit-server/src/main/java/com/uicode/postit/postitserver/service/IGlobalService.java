@@ -5,8 +5,8 @@ import java.util.Optional;
 import com.uicode.postit.postitserver.dto.IdEntityDto;
 import com.uicode.postit.postitserver.dto.global.CountLikesDto;
 import com.uicode.postit.postitserver.dto.global.GlobalStatusDto;
-import com.uicode.postit.postitserver.utils.exception.ForbiddenException;
-import com.uicode.postit.postitserver.utils.exception.NotFoundException;
+import com.uicode.postit.postitserver.exception.ForbiddenException;
+import com.uicode.postit.postitserver.exception.NotFoundException;
 
 public interface IGlobalService {
 
