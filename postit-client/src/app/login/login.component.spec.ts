@@ -7,8 +7,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 import { LoginComponent } from './login.component';
 import { AuthService } from '../shared/auth/auth.service';
-import { TranslateService } from '../shared/service/utils/translate.service';
-import { GlobalInfoService } from '../shared/service/utils/global-info.service';
+import { TranslateService } from '../shared/service/util/translate.service';
+import { GlobalInfoService } from '../shared/service/util/global-info.service';
 
 
 describe('LoginComponent', () => {

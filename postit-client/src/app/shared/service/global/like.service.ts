@@ -3,7 +3,7 @@ import { Subject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Client, StompConfig } from '@stomp/stompjs';
 
-import { RestClientService } from '../utils/rest-client.service';
+import { RestClientService } from '../util/rest-client.service';
 import { UrlConstant } from '../../const/url-constant';
 import { CountLikes } from '../../model/global/count-likes';
 

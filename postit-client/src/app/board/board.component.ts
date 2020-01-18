@@ -5,10 +5,10 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { PostitService } from '../shared/service/postit/postit.service';
 import { PostitNote } from '../shared/model/postit/postit-note';
 import { Board } from '../shared/model/postit/board';
-import { GlobalInfoService } from '../shared/service/utils/global-info.service';
+import { GlobalInfoService } from '../shared/service/util/global-info.service';
 import { AlertType } from '../shared/const/alert-type';
 import { ArrayUtils } from '../shared/utils/array-utils';
-import { TranslateService } from '../shared/service/utils/translate.service';
+import { TranslateService } from '../shared/service/util/translate.service';
 import { GlobalService } from '../shared/service/global/global.service';
 import { GlobalConstant } from '../shared/const/global-constant';
 

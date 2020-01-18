@@ -4,12 +4,12 @@ import { MatPaginator } from '@angular/material/paginator';
 
 import { User } from 'src/app/shared/model/user/user';
 import { MatDialog } from '@angular/material/dialog';
-import { TranslateService } from 'src/app/shared/service/utils/translate.service';
+import { TranslateService } from 'src/app/shared/service/util/translate.service';
 import { ConfirmDialogData, ConfirmDialogComponent } from 'src/app/shared/component/dialog/confirm-dialog/confirm-dialog.component';
 import { GlobalConstant } from 'src/app/shared/const/global-constant';
 import { UserService } from 'src/app/shared/service/user/user.service';
 import { AlertType } from 'src/app/shared/const/alert-type';
-import { GlobalInfoService } from 'src/app/shared/service/utils/global-info.service';
+import { GlobalInfoService } from 'src/app/shared/service/util/global-info.service';
 
 @Component({
   selector: 'app-user-settings',

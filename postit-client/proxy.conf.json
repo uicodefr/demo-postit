@@ -1,19 +1,17 @@
 {
     "/postit-server": {
         "target": "http://localhost:8080/",
-        "secure": false,
         "changeOrigin": true,
         "pathRewrite": {
-            "/postit-server": ""
+            "^/postit-server": ""
         }
     },
     "/postit-server/websocket": {
         "target": "ws://localhost:8080/websocket",
-        "secure": false,
         "ws": true,
         "changeOrigin": true,
         "pathRewrite": {
-            "/postit-server": ""
+            "^/postit-server": ""
         }
     }
 }

@@ -5,9 +5,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 
 import { BoardComponent } from './board.component';
-import { GlobalInfoService } from '../shared/service/utils/global-info.service';
+import { GlobalInfoService } from '../shared/service/util/global-info.service';
 import { PostitService } from '../shared/service/postit/postit.service';
-import { TranslateService } from '../shared/service/utils/translate.service';
+import { TranslateService } from '../shared/service/util/translate.service';
 import { GlobalService } from '../shared/service/global/global.service';
 import { of } from 'rxjs';
 

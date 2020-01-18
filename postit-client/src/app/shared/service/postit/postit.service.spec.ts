@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 
 import { PostitService } from './postit.service';
-import { RestClientService } from '../utils/rest-client.service';
+import { RestClientService } from '../util/rest-client.service';
 import { Board } from '../../model/postit/board';
 
 let postitService: PostitService;

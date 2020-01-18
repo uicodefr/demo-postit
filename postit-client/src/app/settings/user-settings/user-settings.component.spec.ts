@@ -9,9 +9,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { UserSettingsComponent } from './user-settings.component';
-import { TranslateService } from 'src/app/shared/service/utils/translate.service';
+import { TranslateService } from 'src/app/shared/service/util/translate.service';
 import { UserService } from 'src/app/shared/service/user/user.service';
-import { GlobalInfoService } from 'src/app/shared/service/utils/global-info.service';
+import { GlobalInfoService } from 'src/app/shared/service/util/global-info.service';
 
 describe('UserSettingsComponent', () => {
   let component: UserSettingsComponent;

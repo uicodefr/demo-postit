@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { LikeService } from './like.service';
-import { RestClientService } from '../utils/rest-client.service';
+import { RestClientService } from '../util/rest-client.service';
 
 let likeService: LikeService;
 let restClientSpy: jasmine.SpyObj<RestClientService>;

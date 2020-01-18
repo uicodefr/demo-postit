@@ -7,9 +7,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { BoardSettingsComponent } from './board-settings.component';
-import { GlobalInfoService } from 'src/app/shared/service/utils/global-info.service';
+import { GlobalInfoService } from 'src/app/shared/service/util/global-info.service';
 import { PostitService } from 'src/app/shared/service/postit/postit.service';
-import { TranslateService } from 'src/app/shared/service/utils/translate.service';
+import { TranslateService } from 'src/app/shared/service/util/translate.service';
 
 describe('BoardSettingsComponent', () => {
   let component: BoardSettingsComponent;

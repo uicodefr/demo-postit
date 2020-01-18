@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { RestClientService } from '../utils/rest-client.service';
+import { RestClientService } from '../util/rest-client.service';
 import { UrlConstant } from '../../const/url-constant';
 import { GlobalStatus } from '../../model/global/global-status';
 

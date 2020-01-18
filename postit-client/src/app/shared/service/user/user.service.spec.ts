@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { UserService } from './user.service';
-import { RestClientService } from '../utils/rest-client.service';
+import { RestClientService } from '../util/rest-client.service';
 
 describe('UserService', () => {
 

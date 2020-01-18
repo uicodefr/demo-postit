@@ -3,12 +3,12 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { Board } from 'src/app/shared/model/postit/board';
 import { PostitService } from 'src/app/shared/service/postit/postit.service';
-import { TranslateService } from 'src/app/shared/service/utils/translate.service';
+import { TranslateService } from 'src/app/shared/service/util/translate.service';
 import { ConfirmDialogData, ConfirmDialogComponent } from 'src/app/shared/component/dialog/confirm-dialog/confirm-dialog.component';
 import { GlobalConstant } from 'src/app/shared/const/global-constant';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { GlobalInfoService } from 'src/app/shared/service/utils/global-info.service';
+import { GlobalInfoService } from 'src/app/shared/service/util/global-info.service';
 import { AlertType } from 'src/app/shared/const/alert-type';
 
 @Component({

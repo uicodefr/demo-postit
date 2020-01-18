@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
 import { of } from 'rxjs';
 
 import { AppComponent } from './app.component';
-import { GlobalInfoService } from './shared/service/utils/global-info.service';
+import { GlobalInfoService } from './shared/service/util/global-info.service';
 import { GlobalService } from './shared/service/global/global.service';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AuthService } from './shared/auth/auth.service';

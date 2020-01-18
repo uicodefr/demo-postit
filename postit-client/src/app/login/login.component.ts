@@ -3,9 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { AuthService } from '../shared/auth/auth.service';
 import { User } from '../shared/model/user/user';
-import { GlobalInfoService } from '../shared/service/utils/global-info.service';
+import { GlobalInfoService } from '../shared/service/util/global-info.service';
 import { AlertType } from '../shared/const/alert-type';
-import { TranslateService } from '../shared/service/utils/translate.service';
+import { TranslateService } from '../shared/service/util/translate.service';
 
 @Component({
   selector: 'app-login',
