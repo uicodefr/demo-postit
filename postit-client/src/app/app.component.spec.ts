@@ -8,11 +8,11 @@ import { RouterModule } from '@angular/router';
 import { of } from 'rxjs';
 
 import { AppComponent } from './app.component';
-import { GlobalInfoService } from './shared/service/util/global-info.service';
-import { GlobalService } from './shared/service/global/global.service';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { AuthService } from './shared/auth/auth.service';
-import { LikeService } from './shared/service/global/like.service';
+import { GlobalInfoService } from './service/util/global-info.service';
+import { GlobalService } from './service/global/global.service';
+import { PageNotFoundComponent } from './component/page-not-found/page-not-found.component';
+import { AuthService } from './service/auth/auth.service';
+import { LikeService } from './service/global/like.service';
 import { MatMenuModule } from '@angular/material/menu';
 
 describe('AppComponent', () => {

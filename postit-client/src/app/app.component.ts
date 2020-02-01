@@ -2,12 +2,12 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { GlobalInfoService } from './shared/service/util/global-info.service';
-import { GlobalService } from './shared/service/global/global.service';
-import { UrlConstant } from './shared/const/url-constant';
+import { GlobalInfoService } from './service/util/global-info.service';
+import { GlobalService } from './service/global/global.service';
+import { UrlConstant } from './const/url-constant';
 import { debounceTime } from 'rxjs/operators';
-import { AuthService } from './shared/auth/auth.service';
-import { LikeService } from './shared/service/global/like.service';
+import { AuthService } from './service/auth/auth.service';
+import { LikeService } from './service/global/like.service';
 
 @Component({
   selector: 'app-root',
@@ -70,13 +70,13 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy() {
-    if (this.loadingSubscription != null) {
+    if (this.loadingSubscription) {
       this.loadingSubscription.unsubscribe();
     }
-    if (this.userSubscription != null) {
+    if (this.userSubscription) {
       this.userSubscription.unsubscribe();
     }
-    if (this.likesSubscription != null) {
+    if (this.likesSubscription) {
       this.likesSubscription.unsubscribe();
     }
   }

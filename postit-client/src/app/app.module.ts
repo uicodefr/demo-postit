@@ -5,21 +5,21 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { BoardComponent } from './board/board.component';
-import { BoardNoteComponent } from './board/board-note/board-note.component';
-import { ConfirmDialogComponent } from './shared/component/dialog/confirm-dialog/confirm-dialog.component';
-import { ColorizeNoteDialogComponent } from './board/colorize-note-dialog/colorize-note-dialog.component';
-import { EditNoteDialogComponent } from './board/edit-note-dialog/edit-note-dialog.component';
+import { BoardComponent } from './component/board/board.component';
+import { BoardNoteComponent } from './component/board/board-note/board-note.component';
+import { ConfirmDialogComponent } from './component/shared/dialog/confirm-dialog/confirm-dialog.component';
+import { ColorizeNoteDialogComponent } from './component/board/colorize-note-dialog/colorize-note-dialog.component';
+import { EditNoteDialogComponent } from './component/board/edit-note-dialog/edit-note-dialog.component';
 import { AppRoutingModule } from './app-routing.module';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { SettingsComponent } from './settings/settings.component';
-import { HighlightDirective } from './shared/directive/highlight.directive';
-import { BoardSettingsComponent } from './settings/board-settings/board-settings.component';
-import { UserSettingsComponent } from './settings/user-settings/user-settings.component';
-import { LoginComponent } from './login/login.component';
+import { PageNotFoundComponent } from './component/page-not-found/page-not-found.component';
+import { SettingsComponent } from './component/settings/settings.component';
+import { HighlightDirective } from './directive/highlight.directive';
+import { BoardSettingsComponent } from './component/settings/board-settings/board-settings.component';
+import { UserSettingsComponent } from './component/settings/user-settings/user-settings.component';
+import { LoginComponent } from './component/login/login.component';
 import { AppMaterialModule } from './app-material.module';
-import { HasRoleDirective } from './shared/directive/has-role.directive';
-import { AuthInterceptor } from './shared/auth/auth.interceptor';
+import { HasRoleDirective } from './directive/has-role.directive';
+import { AuthInterceptor } from './service/auth/auth.interceptor';
 
 @NgModule({
   declarations: [
