@@ -4,6 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.uicode.postit.postitserver.entity.global.Parameter;
 
-public interface IParameterDao extends CrudRepository<Parameter, String> {
+public interface ParameterDao extends CrudRepository<Parameter, String> {
 
 }

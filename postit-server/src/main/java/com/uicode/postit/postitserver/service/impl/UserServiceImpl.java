@@ -22,35 +22,35 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Streams;
-import com.uicode.postit.postitserver.dao.user.IUserAuthorityDao;
-import com.uicode.postit.postitserver.dao.user.IUserDao;
+import com.uicode.postit.postitserver.dao.user.UserAuthorityDao;
+import com.uicode.postit.postitserver.dao.user.UserDao;
 import com.uicode.postit.postitserver.dto.user.UserDto;
 import com.uicode.postit.postitserver.entity.user.User;
 import com.uicode.postit.postitserver.entity.user.UserAuthority;
 import com.uicode.postit.postitserver.exception.FunctionnalException;
 import com.uicode.postit.postitserver.exception.NotFoundException;
 import com.uicode.postit.postitserver.mapper.user.UserMapper;
-import com.uicode.postit.postitserver.service.IGlobalService;
-import com.uicode.postit.postitserver.service.IUserService;
+import com.uicode.postit.postitserver.service.GlobalService;
+import com.uicode.postit.postitserver.service.UserService;
 import com.uicode.postit.postitserver.util.parameter.ParameterConst;
 import com.uicode.postit.postitserver.util.parameter.ParameterUtil;
 
 @Service
 @Transactional
-public class UserServiceImpl implements IUserService {
+public class UserServiceImpl implements UserService {
 
     private static final Logger LOGGER = LogManager.getLogger(UserServiceImpl.class);
 
     private static final Integer MIN_PASSWORD_LENGTH = 5;
 
     @Autowired
-    private IUserDao userDao;
+    private UserDao userDao;
 
     @Autowired
-    private IUserAuthorityDao userAuthorityDao;
+    private UserAuthorityDao userAuthorityDao;
 
     @Autowired
-    private IGlobalService globalService;
+    private GlobalService globalService;
 
     @Override
     public UserDetails loadUserByUsername(String username) {

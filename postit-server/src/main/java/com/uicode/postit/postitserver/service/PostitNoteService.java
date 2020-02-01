@@ -12,7 +12,7 @@ import com.uicode.postit.postitserver.exception.InvalidDataException;
 import com.uicode.postit.postitserver.exception.NotFoundException;
 
 
-public interface IPostitNoteService {
+public interface PostitNoteService {
 
     List<BoardDto> getBoardList();
 

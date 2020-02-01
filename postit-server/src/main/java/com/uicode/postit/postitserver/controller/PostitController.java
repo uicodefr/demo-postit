@@ -22,14 +22,14 @@ import com.uicode.postit.postitserver.dto.postit.PostitNoteDto;
 import com.uicode.postit.postitserver.exception.FunctionnalException;
 import com.uicode.postit.postitserver.exception.InvalidDataException;
 import com.uicode.postit.postitserver.exception.NotFoundException;
-import com.uicode.postit.postitserver.service.IPostitNoteService;
+import com.uicode.postit.postitserver.service.PostitNoteService;
 
 @RestController
 @RequestMapping("/postit")
 public class PostitController {
 
     @Autowired
-    private IPostitNoteService postitNoteService;
+    private PostitNoteService postitNoteService;
 
     // Boards
 

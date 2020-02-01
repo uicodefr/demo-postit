@@ -18,7 +18,7 @@ import com.uicode.postit.postitserver.exception.ForbiddenException;
 import com.uicode.postit.postitserver.exception.FunctionnalException;
 import com.uicode.postit.postitserver.exception.InvalidDataException;
 import com.uicode.postit.postitserver.exception.NotFoundException;
-import com.uicode.postit.postitserver.service.IUserService;
+import com.uicode.postit.postitserver.service.UserService;
 
 @RestControllerAdvice
 public class ControllerAdvice {
@@ -26,7 +26,7 @@ public class ControllerAdvice {
     private static final Logger LOGGER = LogManager.getLogger(ControllerAdvice.class);
 
     @Autowired
-    private IUserService userService;
+    private UserService userService;
 
     @ExceptionHandler(ForbiddenException.class)
     public ResponseEntity<ErrorDto> handleForbidden(final ForbiddenException exception) {

@@ -8,7 +8,7 @@ import com.uicode.postit.postitserver.dto.user.UserDto;
 import com.uicode.postit.postitserver.exception.FunctionnalException;
 import com.uicode.postit.postitserver.exception.NotFoundException;
 
-public interface IUserService extends UserDetailsService {
+public interface UserService extends UserDetailsService {
 
     UserDto getCurrentUser();
 

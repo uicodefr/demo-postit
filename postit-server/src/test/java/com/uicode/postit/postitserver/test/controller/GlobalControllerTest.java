@@ -28,7 +28,7 @@ import org.springframework.web.socket.sockjs.client.Transport;
 import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 
 import com.google.common.primitives.Ints;
-import com.uicode.postit.postitserver.dao.global.ILikeDao;
+import com.uicode.postit.postitserver.dao.global.LikeDao;
 import com.uicode.postit.postitserver.dto.IdEntityDto;
 import com.uicode.postit.postitserver.dto.global.CountLikesDto;
 import com.uicode.postit.postitserver.dto.global.ErrorDto;
@@ -45,7 +45,7 @@ public class GlobalControllerTest {
     private TestRestTemplate restTemplate;
 
     @Autowired
-    private ILikeDao likeDao;
+    private LikeDao likeDao;
 
     @Test
     public void getStatus() {

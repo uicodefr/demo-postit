@@ -16,8 +16,8 @@ import com.uicode.postit.postitserver.entity.postit.PostitNote;
 import com.uicode.postit.postitserver.exception.FunctionnalException;
 import com.uicode.postit.postitserver.exception.InvalidDataException;
 import com.uicode.postit.postitserver.exception.NotFoundException;
-import com.uicode.postit.postitserver.service.IGlobalService;
-import com.uicode.postit.postitserver.service.IPostitNoteService;
+import com.uicode.postit.postitserver.service.GlobalService;
+import com.uicode.postit.postitserver.service.PostitNoteService;
 import com.uicode.postit.postitserver.util.parameter.ParameterConst;
 
 @SpringBootTest
@@ -25,10 +25,10 @@ import com.uicode.postit.postitserver.util.parameter.ParameterConst;
 public class PostitServiceTest {
 
     @Autowired
-    private IPostitNoteService postitNoteService;
+    private PostitNoteService postitNoteService;
 
     @Autowired
-    private IGlobalService globalService;
+    private GlobalService globalService;
 
     @Test
     public void reorderBoard() {

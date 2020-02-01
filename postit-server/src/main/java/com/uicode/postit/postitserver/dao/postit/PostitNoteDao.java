@@ -6,7 +6,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.uicode.postit.postitserver.entity.postit.PostitNote;
 
-public interface IPostitNoteDao extends CrudRepository<PostitNote, Long> {
+public interface PostitNoteDao extends CrudRepository<PostitNote, Long> {
 
     long countByBoardId(Long boardId);
 

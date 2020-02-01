@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.uicode.postit.postitserver.entity.user.UserAuthority;
 
-public interface IUserAuthorityDao extends CrudRepository<UserAuthority, Long> {
+public interface UserAuthorityDao extends CrudRepository<UserAuthority, Long> {
 
     Iterable<UserAuthority> findAll(Sort sort);
 

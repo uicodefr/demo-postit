@@ -8,7 +8,7 @@ import com.uicode.postit.postitserver.dto.global.GlobalStatusDto;
 import com.uicode.postit.postitserver.exception.ForbiddenException;
 import com.uicode.postit.postitserver.exception.NotFoundException;
 
-public interface IGlobalService {
+public interface GlobalService {
 
     GlobalStatusDto getStatus();
 

@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.uicode.postit.postitserver.entity.postit.Board;
 
-public interface IBoardDao extends CrudRepository<Board, Long> {
+public interface BoardDao extends CrudRepository<Board, Long> {
 
     Iterable<Board> findAll(Sort sort);
 

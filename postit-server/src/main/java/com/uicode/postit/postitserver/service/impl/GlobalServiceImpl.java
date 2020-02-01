@@ -13,8 +13,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import com.uicode.postit.postitserver.dao.global.ILikeDao;
-import com.uicode.postit.postitserver.dao.global.IParameterDao;
+import com.uicode.postit.postitserver.dao.global.LikeDao;
+import com.uicode.postit.postitserver.dao.global.ParameterDao;
 import com.uicode.postit.postitserver.dto.IdEntityDto;
 import com.uicode.postit.postitserver.dto.global.CountLikesDto;
 import com.uicode.postit.postitserver.dto.global.GlobalStatusDto;
@@ -22,17 +22,17 @@ import com.uicode.postit.postitserver.entity.global.Like;
 import com.uicode.postit.postitserver.entity.global.Parameter;
 import com.uicode.postit.postitserver.exception.ForbiddenException;
 import com.uicode.postit.postitserver.exception.NotFoundException;
-import com.uicode.postit.postitserver.service.IGlobalService;
+import com.uicode.postit.postitserver.service.GlobalService;
 import com.uicode.postit.postitserver.util.parameter.ParameterConst;
 import com.uicode.postit.postitserver.util.parameter.ParameterUtil;
 
 @Service
 @Transactional
-public class GlobalServiceImpl implements IGlobalService {
+public class GlobalServiceImpl implements GlobalService {
 
     private static final Logger LOGGER = LogManager.getLogger(GlobalServiceImpl.class);
 
-    private static final String VERSION = "0.4.6-SNAPSHOT";
+    private static final String VERSION = "0.4.7-SNAPSHOT";
     private static final Date UPDATE = new Date();
     private static final String WS_LIKE_PATH = "/listen/likes:count";
 
@@ -40,10 +40,10 @@ public class GlobalServiceImpl implements IGlobalService {
     private CacheManager cacheManager;
 
     @Autowired
-    private IParameterDao parameterDao;
+    private ParameterDao parameterDao;
 
     @Autowired
-    private ILikeDao likeDao;
+    private LikeDao likeDao;
 
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;

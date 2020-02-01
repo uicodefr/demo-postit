@@ -15,7 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.uicode.postit.postitserver.config.security.RestAuthenticationEntryPoint;
 import com.uicode.postit.postitserver.config.security.RestAuthenticationFailureHandler;
 import com.uicode.postit.postitserver.config.security.RestAuthenticationSuccessHandler;
-import com.uicode.postit.postitserver.service.IUserService;
+import com.uicode.postit.postitserver.service.UserService;
 
 @Configuration
 @EnableWebSecurity
@@ -30,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String LOGOUT_URL = "/logout";
 
     @Autowired
-    private IUserService userService;
+    private UserService userService;
 
     @Autowired
     private RestAuthenticationEntryPoint authenticationEntryPoint;

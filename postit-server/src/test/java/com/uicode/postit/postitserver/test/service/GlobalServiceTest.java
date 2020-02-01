@@ -10,12 +10,12 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import com.uicode.postit.postitserver.dao.global.IParameterDao;
+import com.uicode.postit.postitserver.dao.global.ParameterDao;
 import com.uicode.postit.postitserver.dto.global.GlobalStatusDto;
 import com.uicode.postit.postitserver.entity.global.Parameter;
 import com.uicode.postit.postitserver.exception.ForbiddenException;
 import com.uicode.postit.postitserver.exception.NotFoundException;
-import com.uicode.postit.postitserver.service.IGlobalService;
+import com.uicode.postit.postitserver.service.GlobalService;
 import com.uicode.postit.postitserver.util.parameter.ParameterConst;
 
 @SpringBootTest
@@ -23,10 +23,10 @@ import com.uicode.postit.postitserver.util.parameter.ParameterConst;
 public class GlobalServiceTest {
 
     @MockBean
-    private IParameterDao parameterDao;
+    private ParameterDao parameterDao;
 
     @Autowired
-    private IGlobalService globalService;
+    private GlobalService globalService;
 
     @Test
     public void getStatus() {

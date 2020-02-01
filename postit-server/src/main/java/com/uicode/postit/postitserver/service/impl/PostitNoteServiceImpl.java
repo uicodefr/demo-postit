@@ -17,8 +17,8 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Streams;
 import com.opencsv.CSVWriter;
-import com.uicode.postit.postitserver.dao.postit.IBoardDao;
-import com.uicode.postit.postitserver.dao.postit.IPostitNoteDao;
+import com.uicode.postit.postitserver.dao.postit.BoardDao;
+import com.uicode.postit.postitserver.dao.postit.PostitNoteDao;
 import com.uicode.postit.postitserver.dto.postit.BoardDto;
 import com.uicode.postit.postitserver.dto.postit.PostitNoteDto;
 import com.uicode.postit.postitserver.entity.postit.Board;
@@ -28,15 +28,15 @@ import com.uicode.postit.postitserver.exception.InvalidDataException;
 import com.uicode.postit.postitserver.exception.NotFoundException;
 import com.uicode.postit.postitserver.mapper.postit.BoardMapper;
 import com.uicode.postit.postitserver.mapper.postit.PostitNoteMapper;
-import com.uicode.postit.postitserver.service.IGlobalService;
-import com.uicode.postit.postitserver.service.IPostitNoteService;
+import com.uicode.postit.postitserver.service.GlobalService;
+import com.uicode.postit.postitserver.service.PostitNoteService;
 import com.uicode.postit.postitserver.util.CheckDataUtil;
 import com.uicode.postit.postitserver.util.parameter.ParameterConst;
 import com.uicode.postit.postitserver.util.parameter.ParameterUtil;
 
 @Service
 @Transactional
-public class PostitNoteServiceImpl implements IPostitNoteService {
+public class PostitNoteServiceImpl implements PostitNoteService {
 
     private static final Logger LOGGER = LogManager.getLogger(PostitNoteServiceImpl.class);
 
@@ -44,13 +44,13 @@ public class PostitNoteServiceImpl implements IPostitNoteService {
             "note color", "note order" };
 
     @Autowired
-    private IBoardDao boardDao;
+    private BoardDao boardDao;
 
     @Autowired
-    private IPostitNoteDao postitNoteDao;
+    private PostitNoteDao postitNoteDao;
 
     @Autowired
-    private IGlobalService globalService;
+    private GlobalService globalService;
 
     @Override
     public List<BoardDto> getBoardList() {
