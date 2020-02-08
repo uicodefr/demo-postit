@@ -10,17 +10,15 @@ import { TranslateService } from './translate.service';
   providedIn: 'root'
 })
 export class GlobalInfoService {
-
   private loaderSubject = new Subject<boolean>();
-  private loaderObservable = this.loaderSubject.asObservable();
 
   public constructor(
     private snackBar: MatSnackBar,
     private translateService: TranslateService
-  ) { }
+  ) {}
 
   public getLoaderObservable(): Observable<boolean> {
-    return this.loaderObservable;
+    return this.loaderSubject.asObservable();
   }
 
   public notifLoader(displayLoader: boolean) {
@@ -48,5 +46,4 @@ export class GlobalInfoService {
         return 'alertDefault';
     }
   }
-
 }

@@ -11,27 +11,26 @@ import { CountLikes } from '../../model/global/count-likes';
   providedIn: 'root'
 })
 export class LikeService {
-
   private static readonly COUNT_LIKE_TIMER = environment.likeTimerSecond;
   private static readonly LIKE_WEB_SOCKET = environment.likeWebSocket;
 
   private countLikeSubject = new Subject<number>();
-  private countLikeObservable = this.countLikeSubject.asObservable();
 
   private stompClient: Client;
 
-  public constructor(
-    private restClientService: RestClientService
-  ) { }
+  public constructor(private restClientService: RestClientService) {}
 
   public getCountLikeObservable(): Observable<number> {
-    return this.countLikeObservable;
+    return this.countLikeSubject.asObservable();
   }
 
   private countLike() {
-    this.restClientService.get<CountLikes>(UrlConstant.Global.LIKE_COUNT).toPromise().then(countLikes => {
-      this.countLikeSubject.next(countLikes.count);
-    });
+    this.restClientService
+      .get<CountLikes>(UrlConstant.Global.LIKE_COUNT)
+      .toPromise()
+      .then(countLikes => {
+        this.countLikeSubject.next(countLikes.count);
+      });
   }
 
   public listenCountLikeTimer() {
@@ -41,7 +40,7 @@ export class LikeService {
       // Use WebSocket (with Stomp)
       const config = new StompConfig();
       config.brokerURL = this.convertToWebSocketUrl(UrlConstant.WebSocket.CONNECTION);
-      config.onConnect = (receipt) => {
+      config.onConnect = receipt => {
         this.countLike();
 
         this.stompClient.subscribe(UrlConstant.WebSocket.LISTEN_LIKE_COUNT, countLikesMsg => {
@@ -52,11 +51,9 @@ export class LikeService {
             console.warn('Wrong message from the websocket', countLikesMsg);
           }
         });
-
       };
       this.stompClient = new Client(config);
       this.stompClient.activate();
-
     } else {
       // Use HTTP GET periodically
       if (LikeService.COUNT_LIKE_TIMER > 0) {
@@ -78,11 +75,13 @@ export class LikeService {
   }
 
   public addLike() {
-    this.restClientService.post<void>(UrlConstant.Global.LIKE).toPromise().then(() => {
-      if (!LikeService.LIKE_WEB_SOCKET) {
-        this.countLike();
-      }
-    });
+    this.restClientService
+      .post<void>(UrlConstant.Global.LIKE)
+      .toPromise()
+      .then(() => {
+        if (!LikeService.LIKE_WEB_SOCKET) {
+          this.countLike();
+        }
+      });
   }
-
 }

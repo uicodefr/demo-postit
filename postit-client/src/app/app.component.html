@@ -6,15 +6,14 @@
       </a>
     </h1>
     <button mat-icon-button (click)="like()" title="Like" i18n-title>
-      <mat-icon [matBadge]="likes" matBadgePosition="above after" matBadgeColor="accent" matBadgeOverlap="false">
+      <mat-icon [matBadge]="likes | async" matBadgePosition="above after" matBadgeColor="accent" matBadgeOverlap="false">
         thumb_up
       </mat-icon>
     </button>
 
     <span class="fill-remaining-space"></span>
 
-    <mat-progress-spinner *ngIf="loading" mode="indeterminate" color="accent" diameter="40">
-    </mat-progress-spinner>
+    <mat-progress-spinner *ngIf="loading | async" mode="indeterminate" color="accent" diameter="40"> </mat-progress-spinner>
     <button mat-icon-button title="Change language" i18n-title [matMenuTriggerFor]="langMenu">
       <mat-icon>language</mat-icon>
     </button>
@@ -43,4 +42,4 @@
   </div>
 </div>
 
-<div style="display: none;">version: '0.4.7-SNAPSHOT'</div>
+<div style="display: none;">version: '0.4.8-SNAPSHOT'</div>
