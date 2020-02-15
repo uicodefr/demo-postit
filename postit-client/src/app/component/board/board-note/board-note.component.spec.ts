@@ -5,10 +5,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { BoardNoteComponent } from './board-note.component';
-import { TranslateService } from 'src/app/service/util/translate.service';
 import { GlobalInfoService } from 'src/app/service/util/global-info.service';
 import { PostitService } from 'src/app/service/postit/postit.service';
-
 
 describe('BoardNoteComponent', () => {
   let component: BoardNoteComponent;
@@ -23,12 +21,10 @@ describe('BoardNoteComponent', () => {
       providers: [
         MatDialog,
         { provide: GlobalInfoService, useValue: globalInfoSpy },
-        TranslateService,
         { provide: PostitService, useValue: postitSpy }
       ],
       imports: [MatIconModule, MatDialogModule, MatCardModule, MatMenuModule]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -12,14 +12,12 @@ test:
 buildOnly:
 	@echo "buildOnly (version: $(VERSION))"
 	npm install
-	npm run ng -- build --configuration=production --base-href /demo/postit/en/
-	npm run ng -- build --configuration=production-fr --base-href /demo/postit/fr/
+	npm run ng -- build --prod --localize
 
 build:
 	@echo "build (version: $(VERSION))"
 	npm install
-	npm run ng -- build --configuration=production --base-href /demo/postit/en/
-	npm run ng -- build --configuration=production-fr --base-href /demo/postit/fr/
+	npm run ng -- build --prod --localize
 	cd ./dist && zip -r ../postit-client-$(VERSION).zip ./postit-client
 	curl -v --progress-bar -u $(NEXUS_USER):$$NEXUS_PASSWORD -F "raw.directory=demo/postit-client" -F "raw.asset1=@./postit-client-$(VERSION).zip" -F "raw.asset1.filename=postit-client-$(VERSION).zip" https://nexus.uicode.dev/service/rest/v1/components?repository=raw
 	rm postit-client-$(VERSION).zip

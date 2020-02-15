@@ -1,6 +1,3 @@
-
 export class IdEntity {
-
-    public id: number;
-
+  public id: number;
 }

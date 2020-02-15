@@ -6,7 +6,6 @@ import { ConfirmDialogComponent, ConfirmDialogData } from '../../shared/dialog/c
 import { PostitService } from '../../../service/postit/postit.service';
 import { GlobalInfoService } from '../../../service/util/global-info.service';
 import { AlertType } from '../../../const/alert-type';
-import { TranslateService } from '../../../service/util/translate.service';
 import { EditNoteDialogComponent } from '../edit-note-dialog/edit-note-dialog.component';
 import { GlobalConstant } from '../../../const/global-constant';
 import { ColorizeNoteDialogComponent } from '../colorize-note-dialog/colorize-note-dialog.component';
@@ -18,7 +17,6 @@ import { Board } from 'src/app/model/postit/board';
   styleUrls: ['./board-note.component.scss']
 })
 export class BoardNoteComponent implements OnInit {
-
   @Input()
   public note: PostitNote;
   @Input()
@@ -34,14 +32,12 @@ export class BoardNoteComponent implements OnInit {
   public constructor(
     private dialog: MatDialog,
     private globalInfoService: GlobalInfoService,
-    private translateService: TranslateService,
     private postitService: PostitService
   ) {
     this.note = new PostitNote();
   }
 
-  public ngOnInit() {
-  }
+  public ngOnInit() {}
 
   public getColorClass(): string {
     if (GlobalConstant.Functional.VALID_COLOR_LIST.includes(this.note.color)) {
@@ -72,7 +68,7 @@ export class BoardNoteComponent implements OnInit {
       });
 
       editDialog.afterClosed().subscribe(updatedNote => {
-        this.changeNoteAfterUpdate(updatedNote, 'Note updated');
+        this.changeNoteAfterUpdate(updatedNote, $localize`:@@boardNote.noteUpdated:Note updated`);
       });
     });
   }
@@ -96,16 +92,16 @@ export class BoardNoteComponent implements OnInit {
     moveNote.boardId = board.id;
 
     this.postitService.updateNote(moveNote).then(updatedNote => {
-      this.globalInfoService.showAlert(AlertType.SUCCESS, this.translateService.get('Note moved'));
+      this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@boardNote.noteMoved:Note moved`);
       this.changeNote.emit(null);
     });
   }
 
   public deleteNote() {
     const confirmDialogData = {
-      title: this.translateService.get('Delete note'),
-      message: this.translateService.get('Are you sure to delete this note ?'),
-      confirm: this.translateService.get('Delete'),
+      title: $localize`:@@boardNote.deleteNote:Delete note`,
+      message: $localize`:@@boardNote.deleteNoteConfirm:Are you sure to delete this note ?`,
+      confirm: $localize`:@@global.delete:Delete`
     } as ConfirmDialogData;
 
     const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
@@ -116,7 +112,7 @@ export class BoardNoteComponent implements OnInit {
     confirmDialog.afterClosed().subscribe(confirmation => {
       if (confirmation === true) {
         this.postitService.deleteNote(this.note.id).then(() => {
-          this.globalInfoService.showAlert(AlertType.SUCCESS, this.translateService.get('Note deleted'));
+          this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@boardNote.noteDeleted:Note deleted`);
           this.takeOffNote.emit(this.note);
         });
       }
@@ -128,9 +124,8 @@ export class BoardNoteComponent implements OnInit {
       Object.assign(this.note, updatedNote);
       this.changeNote.emit(this.note);
       if (message) {
-        this.globalInfoService.showAlert(AlertType.SUCCESS, this.translateService.get(message));
+        this.globalInfoService.showAlert(AlertType.SUCCESS, message);
       }
     }
   }
-
 }

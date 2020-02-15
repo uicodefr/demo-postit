@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PageNotFoundComponent } from './page-not-found.component';
+import { LocalizeDictionaryComponent } from './localize-dictionary.component';
 
-describe('PageNotFoundComponent', () => {
-  let component: PageNotFoundComponent;
-  let fixture: ComponentFixture<PageNotFoundComponent>;
+describe('LocalizeDictionaryComponent', () => {
+  let component: LocalizeDictionaryComponent;
+  let fixture: ComponentFixture<LocalizeDictionaryComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [PageNotFoundComponent]
+      declarations: [LocalizeDictionaryComponent]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PageNotFoundComponent);
+    fixture = TestBed.createComponent(LocalizeDictionaryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

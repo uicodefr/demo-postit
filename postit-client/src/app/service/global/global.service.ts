@@ -8,12 +8,9 @@ import { GlobalStatus } from '../../model/global/global-status';
   providedIn: 'root'
 })
 export class GlobalService {
-
   private parameterMap = new Map<string, string>();
 
-  public constructor(
-    private restClientService: RestClientService
-  ) { }
+  public constructor(private restClientService: RestClientService) {}
 
   // Status & Parameter
 
@@ -25,12 +22,13 @@ export class GlobalService {
     if (this.parameterMap.has(parameterName)) {
       return Promise.resolve(this.parameterMap.get(parameterName));
     } else {
-      return this.restClientService.get<string>(UrlConstant.Global.PARAMETERS + '/' + parameterName)
-        .toPromise().then(parameterValue => {
+      return this.restClientService
+        .get<string>(UrlConstant.Global.PARAMETERS + '/' + parameterName)
+        .toPromise()
+        .then(parameterValue => {
           this.parameterMap.set(parameterName, parameterValue);
           return parameterValue;
         });
     }
   }
-
 }

@@ -3,8 +3,10 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { Board } from 'src/app/model/postit/board';
 import { PostitService } from 'src/app/service/postit/postit.service';
-import { TranslateService } from 'src/app/service/util/translate.service';
-import { ConfirmDialogData, ConfirmDialogComponent } from 'src/app/component/shared/dialog/confirm-dialog/confirm-dialog.component';
+import {
+  ConfirmDialogData,
+  ConfirmDialogComponent
+} from 'src/app/component/shared/dialog/confirm-dialog/confirm-dialog.component';
 import { GlobalConstant } from 'src/app/const/global-constant';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -17,7 +19,6 @@ import { AlertType } from 'src/app/const/alert-type';
   styleUrls: ['./board-settings.component.scss']
 })
 export class BoardSettingsComponent implements OnInit {
-
   public displayedColumns = ['id', 'name', 'actions'];
   public dataSource = new MatTableDataSource<Board>();
   @ViewChild(MatPaginator, { static: true })
@@ -26,9 +27,8 @@ export class BoardSettingsComponent implements OnInit {
   public constructor(
     private dialog: MatDialog,
     private postitService: PostitService,
-    private globalInfoService: GlobalInfoService,
-    private translateService: TranslateService
-  ) { }
+    private globalInfoService: GlobalInfoService
+  ) {}
 
   public ngOnInit() {
     this.dataSource.paginator = this.paginator;
@@ -54,16 +54,16 @@ export class BoardSettingsComponent implements OnInit {
       return;
     }
     this.postitService.updateBoard(board).then(updatedBoard => {
-      this.globalInfoService.showAlert(AlertType.SUCCESS, this.translateService.get('Board updated'));
+      this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@boardSettings.boardUpdated:Board updated`);
       this.getBoardList();
     });
   }
 
   public deleteBoard(board: Board) {
     const confirmDialogData = {
-      title: this.translateService.get('Delete board'),
-      message: this.translateService.get('Are you sure to delete this board ?'),
-      confirm: this.translateService.get('Delete'),
+      title: $localize`:@@boardSettings.deleteBoard:Delete board`,
+      message: $localize`:@@boardSettings.deleteBoardConfirm:Are you sure to delete this board ?`,
+      confirm: $localize`:@@global.delete:Delete`
     } as ConfirmDialogData;
 
     const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
@@ -74,7 +74,7 @@ export class BoardSettingsComponent implements OnInit {
     confirmDialog.afterClosed().subscribe(confirmation => {
       if (confirmation === true) {
         this.postitService.deleteBoard(board.id).then(() => {
-          this.globalInfoService.showAlert(AlertType.SUCCESS, this.translateService.get('Board deleted'));
+          this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@boardSettings.boardDeleted:Board deleted`);
           this.getBoardList();
         });
       }
@@ -83,12 +83,11 @@ export class BoardSettingsComponent implements OnInit {
 
   public createBoard() {
     const newBoard = new Board();
-    newBoard.name = this.translateService.get('New board');
+    newBoard.name = $localize`:@@boardSettings.newBoard:New board`;
 
     this.postitService.createBoard(newBoard).then(createdBoard => {
-      this.globalInfoService.showAlert(AlertType.SUCCESS, this.translateService.get('Board created'));
+      this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@boardSettings.boardCreated:Board created`);
       this.getBoardList();
     });
   }
-
 }

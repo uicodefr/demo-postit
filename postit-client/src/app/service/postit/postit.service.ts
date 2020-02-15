@@ -9,10 +9,7 @@ import { PostitNote } from '../../model/postit/postit-note';
   providedIn: 'root'
 })
 export class PostitService {
-
-  public constructor(
-    private restClientService: RestClientService
-  ) { }
+  public constructor(private restClientService: RestClientService) {}
 
   // Boards
 
@@ -35,7 +32,9 @@ export class PostitService {
   // Notes
 
   public getNoteList(boardId: number): Promise<Array<PostitNote>> {
-    return this.restClientService.get<Array<PostitNote>>(UrlConstant.Postit.NOTES, { boardId: boardId }).toPromise();
+    return this.restClientService
+      .get<Array<PostitNote>>(UrlConstant.Postit.NOTES, { boardId: boardId })
+      .toPromise();
   }
 
   public getNote(noteId: number): Promise<PostitNote> {
@@ -53,5 +52,4 @@ export class PostitService {
   public deleteNote(noteId: number): Promise<void> {
     return this.restClientService.delete<void>(UrlConstant.Postit.NOTES + '/' + noteId).toPromise();
   }
-
 }

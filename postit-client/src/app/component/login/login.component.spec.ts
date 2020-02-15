@@ -7,9 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 import { LoginComponent } from './login.component';
 import { AuthService } from '../../service/auth/auth.service';
-import { TranslateService } from '../../service/util/translate.service';
 import { GlobalInfoService } from '../../service/util/global-info.service';
-
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -26,12 +24,10 @@ describe('LoginComponent', () => {
       providers: [
         FormBuilder,
         { provide: AuthService, useValue: authSpy },
-        TranslateService,
         { provide: GlobalInfoService, useValue: globalInfoSpy }
       ],
       imports: [BrowserAnimationsModule, ReactiveFormsModule, MatCardModule, MatInputModule, MatProgressBarModule]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

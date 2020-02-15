@@ -1,10 +1,8 @@
 import { NamedEntity } from '../named-entity';
 
 export class PostitNote extends NamedEntity {
-
-    public text: string;
-    public boardId: number;
-    public color: string;
-    public orderNum: number;
-
+  public text: string;
+  public boardId: number;
+  public color: string;
+  public orderNum: number;
 }

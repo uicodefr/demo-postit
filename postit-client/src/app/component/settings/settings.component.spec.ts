@@ -17,13 +17,10 @@ describe('SettingsComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [SettingsComponent, HasRoleDirective],
-      providers: [
-        { provide: AuthService, useValue: authSpy },
-      ],
+      providers: [{ provide: AuthService, useValue: authSpy }],
       imports: [MatExpansionModule, MatIconModule],
       schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

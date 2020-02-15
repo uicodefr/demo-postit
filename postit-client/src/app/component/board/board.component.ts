@@ -8,7 +8,6 @@ import { Board } from '../../model/postit/board';
 import { GlobalInfoService } from '../../service/util/global-info.service';
 import { AlertType } from '../../const/alert-type';
 import { ArrayUtils } from '../../utils/array-utils';
-import { TranslateService } from '../../service/util/translate.service';
 import { GlobalService } from '../../service/global/global.service';
 import { GlobalConstant } from '../../const/global-constant';
 
@@ -18,7 +17,6 @@ import { GlobalConstant } from '../../const/global-constant';
   styleUrls: ['./board.component.scss']
 })
 export class BoardComponent implements OnInit {
-
   public boardList: Array<Board>;
   public noteListMap = new Map<number, Array<PostitNote>>();
 
@@ -32,10 +30,9 @@ export class BoardComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private globalInfoService: GlobalInfoService,
-    private translateService: TranslateService,
     private globalService: GlobalService,
     private postitService: PostitService
-  ) { }
+  ) {}
 
   public ngOnInit() {
     this.globalService.getParameterValue(GlobalConstant.Parameter.NOTE_MAX).then(paramValue => {
@@ -74,11 +71,11 @@ export class BoardComponent implements OnInit {
   public addNote(board: Board) {
     const newNote = new PostitNote();
     newNote.boardId = board.id;
-    newNote.name = this.translateService.get('New note');
+    newNote.name = $localize`:@@board.newNote:New note`;
 
     this.postitService.createNote(newNote).then(noteCreated => {
       this.noteListMap.get(board.id).push(noteCreated);
-      this.globalInfoService.showAlert(AlertType.SUCCESS, this.translateService.get('New note created'));
+      this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@board.newNoteCreated:New note created`);
 
       this.loadNoteList(board.id);
     });
@@ -112,5 +109,4 @@ export class BoardComponent implements OnInit {
 
     this.loadNoteList(note.boardId);
   }
-
 }

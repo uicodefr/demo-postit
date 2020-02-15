@@ -20,42 +20,42 @@
         <source>Change language</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/app.component.html</context>
-          <context context-type="linenumber">18</context>
+          <context context-type="linenumber">23</context>
         </context-group>
       </trans-unit>
       <trans-unit id="a0843de0a64adcc7ee6a946408b6876cd8abdcae" datatype="html">
         <source>English</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/app.component.html</context>
-          <context context-type="linenumber">22</context>
+          <context context-type="linenumber">27</context>
         </context-group>
       </trans-unit>
       <trans-unit id="8293a584b57b870aca184a23bb8039c829acc4cf" datatype="html">
         <source>French</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/app.component.html</context>
-          <context context-type="linenumber">23</context>
+          <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5f19586aba912ec6eb123ec5ab609a3bcc073066" datatype="html">
         <source>Export</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/app.component.html</context>
-          <context context-type="linenumber">26</context>
+          <context context-type="linenumber">31</context>
         </context-group>
       </trans-unit>
       <trans-unit id="121cc5391cd2a5115bc2b3160379ee5b36cd7716" datatype="html">
         <source>Settings</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/app.component.html</context>
-          <context context-type="linenumber">31</context>
+          <context context-type="linenumber">36</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/app.component.html</context>
-          <context context-type="linenumber">29</context>
+          <context context-type="linenumber">34</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/settings/settings.component.html</context>
+          <context context-type="sourcefile">app/component/settings/settings.component.html</context>
           <context context-type="linenumber">3</context>
         </context-group>
       </trans-unit>
@@ -63,7 +63,7 @@
         <source>Logout</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/app.component.html</context>
-          <context context-type="linenumber">34</context>
+          <context context-type="linenumber">39</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3a7672367c6952d0752c85abaca7bd7c46f975fc" datatype="html">
@@ -72,13 +72,13 @@
   </source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/app.component.html</context>
-          <context context-type="linenumber">41</context>
+          <context context-type="linenumber">46</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cb7e30cef8f5b08f1ecea9b5923787284478b922" datatype="html">
         <source>Refresh board</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/board/board.component.html</context>
+          <context context-type="sourcefile">app/component/board/board.component.html</context>
           <context context-type="linenumber">21</context>
         </context-group>
       </trans-unit>
@@ -87,7 +87,7 @@
                 Add a note
               </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/board/board.component.html</context>
+          <context context-type="sourcefile">app/component/board/board.component.html</context>
           <context context-type="linenumber">26</context>
         </context-group>
       </trans-unit>
@@ -96,7 +96,7 @@
       Cancel
     </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/shared/component/dialog/confirm-dialog/confirm-dialog.component.html</context>
+          <context context-type="sourcefile">app/component/shared/dialog/confirm-dialog/confirm-dialog.component.html</context>
           <context context-type="linenumber">14</context>
         </context-group>
       </trans-unit>
@@ -105,184 +105,184 @@
       Confirm
     </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/shared/component/dialog/confirm-dialog/confirm-dialog.component.html</context>
+          <context context-type="sourcefile">app/component/shared/dialog/confirm-dialog/confirm-dialog.component.html</context>
           <context context-type="linenumber">22</context>
         </context-group>
       </trans-unit>
       <trans-unit id="e4408f1f1c0bb048bc80a5bceb7ff6d9bee42241" datatype="html">
         <source> Edit Note </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/board/edit-note-dialog/edit-note-dialog.component.html</context>
+          <context context-type="sourcefile">app/component/board/edit-note-dialog/edit-note-dialog.component.html</context>
           <context context-type="linenumber">1</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fdf7cbdc140d0aab0f0b6c06065a0fd448ed6a2e" datatype="html">
         <source>Title</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/board/edit-note-dialog/edit-note-dialog.component.html</context>
+          <context context-type="sourcefile">app/component/board/edit-note-dialog/edit-note-dialog.component.html</context>
           <context context-type="linenumber">6</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ccac601bf473fa28c9ac46794f1cd40542f74347" datatype="html">
         <source>Message</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/board/edit-note-dialog/edit-note-dialog.component.html</context>
+          <context context-type="sourcefile">app/component/board/edit-note-dialog/edit-note-dialog.component.html</context>
           <context context-type="linenumber">10</context>
         </context-group>
       </trans-unit>
       <trans-unit id="d7b35c384aecd25a516200d6921836374613dfe7" datatype="html">
         <source>Cancel</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/board/edit-note-dialog/edit-note-dialog.component.html</context>
+          <context context-type="sourcefile">app/component/board/edit-note-dialog/edit-note-dialog.component.html</context>
           <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit>
       <trans-unit id="52c9a103b812f258bcddc3d90a6e3f46871d25fe" datatype="html">
         <source>Save</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/board/edit-note-dialog/edit-note-dialog.component.html</context>
+          <context context-type="sourcefile">app/component/board/edit-note-dialog/edit-note-dialog.component.html</context>
           <context context-type="linenumber">18</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5f971016e45190de771bb34959008ab3623e5220" datatype="html">
         <source> Change Color </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/board/colorize-note-dialog/colorize-note-dialog.component.html</context>
+          <context context-type="sourcefile">app/component/board/colorize-note-dialog/colorize-note-dialog.component.html</context>
           <context context-type="linenumber">1</context>
         </context-group>
       </trans-unit>
       <trans-unit id="f61371ef20c6f460c4ec7552cf021823e4919d82" datatype="html">
         <source>White</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/board/colorize-note-dialog/colorize-note-dialog.component.html</context>
+          <context context-type="sourcefile">app/component/board/colorize-note-dialog/colorize-note-dialog.component.html</context>
           <context context-type="linenumber">5</context>
         </context-group>
       </trans-unit>
       <trans-unit id="54bf2ff92ee59f231d5a9076e30e8af20cd75e55" datatype="html">
         <source>Yellow</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/board/colorize-note-dialog/colorize-note-dialog.component.html</context>
+          <context context-type="sourcefile">app/component/board/colorize-note-dialog/colorize-note-dialog.component.html</context>
           <context context-type="linenumber">6</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3feadbed3b432d4f56049f0773b9005f253fe73e" datatype="html">
         <source>Orange</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/board/colorize-note-dialog/colorize-note-dialog.component.html</context>
+          <context context-type="sourcefile">app/component/board/colorize-note-dialog/colorize-note-dialog.component.html</context>
           <context context-type="linenumber">7</context>
         </context-group>
       </trans-unit>
       <trans-unit id="7f12fce1bf3707dc7e7a7ccafef738fabbc11c47" datatype="html">
         <source>Blue</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/board/colorize-note-dialog/colorize-note-dialog.component.html</context>
+          <context context-type="sourcefile">app/component/board/colorize-note-dialog/colorize-note-dialog.component.html</context>
           <context context-type="linenumber">8</context>
         </context-group>
       </trans-unit>
       <trans-unit id="c938dc19531dba7517d8eaeaa5fd3c39077fa7bd" datatype="html">
         <source>Green</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/board/colorize-note-dialog/colorize-note-dialog.component.html</context>
+          <context context-type="sourcefile">app/component/board/colorize-note-dialog/colorize-note-dialog.component.html</context>
           <context context-type="linenumber">9</context>
         </context-group>
       </trans-unit>
       <trans-unit id="d3978c58233de97ebb1586edeb00c6c1366c1024" datatype="html">
         <source>Pink</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/board/colorize-note-dialog/colorize-note-dialog.component.html</context>
+          <context context-type="sourcefile">app/component/board/colorize-note-dialog/colorize-note-dialog.component.html</context>
           <context context-type="linenumber">10</context>
         </context-group>
       </trans-unit>
       <trans-unit id="f5d502c5d44fd9d78ed4979a7efae43369b09dca" datatype="html">
         <source>Move up</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/board/board-note/board-note.component.html</context>
+          <context context-type="sourcefile">app/component/board/board-note/board-note.component.html</context>
           <context context-type="linenumber">14</context>
         </context-group>
       </trans-unit>
       <trans-unit id="7a91e24cda07c3ccff6a84d88c25de674bf288f0" datatype="html">
         <source>Move down</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/board/board-note/board-note.component.html</context>
+          <context context-type="sourcefile">app/component/board/board-note/board-note.component.html</context>
           <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit>
       <trans-unit id="c579a35156940ef439082b06bdaea30f4f778073" datatype="html">
         <source>EDIT</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/board/board-note/board-note.component.html</context>
+          <context context-type="sourcefile">app/component/board/board-note/board-note.component.html</context>
           <context context-type="linenumber">21</context>
         </context-group>
       </trans-unit>
       <trans-unit id="599ed0b9026862f23255bcfa71129a4040914b01" datatype="html">
         <source>Edit content</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/board/board-note/board-note.component.html</context>
+          <context context-type="sourcefile">app/component/board/board-note/board-note.component.html</context>
           <context context-type="linenumber">21</context>
         </context-group>
       </trans-unit>
       <trans-unit id="58da9c857decba41ff78e241457173ebd3f1335f" datatype="html">
         <source>Change color</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/board/board-note/board-note.component.html</context>
+          <context context-type="sourcefile">app/component/board/board-note/board-note.component.html</context>
           <context context-type="linenumber">23</context>
         </context-group>
       </trans-unit>
       <trans-unit id="9a22a9cb2a768a130bb35302661d70b97e3bf4bb" datatype="html">
         <source>Move to another board</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/board/board-note/board-note.component.html</context>
+          <context context-type="sourcefile">app/component/board/board-note/board-note.component.html</context>
           <context context-type="linenumber">27</context>
         </context-group>
       </trans-unit>
       <trans-unit id="826b25211922a1b46436589233cb6f1a163d89b7" datatype="html">
         <source>Delete</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/board/board-note/board-note.component.html</context>
+          <context context-type="sourcefile">app/component/board/board-note/board-note.component.html</context>
           <context context-type="linenumber">37</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/settings/board-settings/board-settings.component.html</context>
+          <context context-type="sourcefile">app/component/settings/board-settings/board-settings.component.html</context>
           <context context-type="linenumber">29</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/settings/user-settings/user-settings.component.html</context>
+          <context context-type="sourcefile">app/component/settings/user-settings/user-settings.component.html</context>
           <context context-type="linenumber">59</context>
         </context-group>
       </trans-unit>
       <trans-unit id="a2e01dc9f287775608e4d25d624df38080ca0a7d" datatype="html">
         <source> Id </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/settings/board-settings/board-settings.component.html</context>
+          <context context-type="sourcefile">app/component/settings/board-settings/board-settings.component.html</context>
           <context context-type="linenumber">8</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/settings/user-settings/user-settings.component.html</context>
+          <context context-type="sourcefile">app/component/settings/user-settings/user-settings.component.html</context>
           <context context-type="linenumber">8</context>
         </context-group>
       </trans-unit>
       <trans-unit id="20371277706eedf7fd8a3f51633ca5d801cd4fc2" datatype="html">
         <source> Name </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/settings/board-settings/board-settings.component.html</context>
+          <context context-type="sourcefile">app/component/settings/board-settings/board-settings.component.html</context>
           <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cff1428d10d59d14e45edec3c735a27b5482db59" datatype="html">
         <source>Name</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/settings/board-settings/board-settings.component.html</context>
+          <context context-type="sourcefile">app/component/settings/board-settings/board-settings.component.html</context>
           <context context-type="linenumber">16</context>
         </context-group>
       </trans-unit>
       <trans-unit id="59a8c38db3091a63ac1cb9590188dc3a972acfb3" datatype="html">
         <source> Actions </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/settings/board-settings/board-settings.component.html</context>
+          <context context-type="sourcefile">app/component/settings/board-settings/board-settings.component.html</context>
           <context context-type="linenumber">22</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/settings/user-settings/user-settings.component.html</context>
+          <context context-type="sourcefile">app/component/settings/user-settings/user-settings.component.html</context>
           <context context-type="linenumber">52</context>
         </context-group>
       </trans-unit>
@@ -291,82 +291,82 @@
               Save
             </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/settings/board-settings/board-settings.component.html</context>
+          <context context-type="sourcefile">app/component/settings/board-settings/board-settings.component.html</context>
           <context context-type="linenumber">26</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/settings/user-settings/user-settings.component.html</context>
+          <context context-type="sourcefile">app/component/settings/user-settings/user-settings.component.html</context>
           <context context-type="linenumber">56</context>
         </context-group>
       </trans-unit>
       <trans-unit id="404be830bafbc4664a58e10d766673b1c1939109" datatype="html">
         <source>Create board</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/settings/board-settings/board-settings.component.html</context>
+          <context context-type="sourcefile">app/component/settings/board-settings/board-settings.component.html</context>
           <context context-type="linenumber">43</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fec8de042d9645af8886e515b9c4e6334d4ab2c8" datatype="html">
         <source> Username </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/settings/user-settings/user-settings.component.html</context>
+          <context context-type="sourcefile">app/component/settings/user-settings/user-settings.component.html</context>
           <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
       <trans-unit id="08c74dc9762957593b91f6eb5d65efdfc975bf48" datatype="html">
         <source>Username</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/settings/user-settings/user-settings.component.html</context>
+          <context context-type="sourcefile">app/component/settings/user-settings/user-settings.component.html</context>
           <context context-type="linenumber">16</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/login/login.component.html</context>
+          <context context-type="sourcefile">app/component/login/login.component.html</context>
           <context context-type="linenumber">9</context>
         </context-group>
       </trans-unit>
       <trans-unit id="1f1f78b275fee6ac81f9c2d247499d83e8fb0d62" datatype="html">
         <source> Password </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/settings/user-settings/user-settings.component.html</context>
+          <context context-type="sourcefile">app/component/settings/user-settings/user-settings.component.html</context>
           <context context-type="linenumber">22</context>
         </context-group>
       </trans-unit>
       <trans-unit id="c32ef07f8803a223a83ed17024b38e8d82292407" datatype="html">
         <source>Password</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/settings/user-settings/user-settings.component.html</context>
+          <context context-type="sourcefile">app/component/settings/user-settings/user-settings.component.html</context>
           <context context-type="linenumber">25</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/login/login.component.html</context>
+          <context context-type="sourcefile">app/component/login/login.component.html</context>
           <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
       <trans-unit id="b6f6b6a18d069231b33f11b4e43fe77b6c5ed6fd" datatype="html">
         <source> Roles </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/settings/user-settings/user-settings.component.html</context>
+          <context context-type="sourcefile">app/component/settings/user-settings/user-settings.component.html</context>
           <context context-type="linenumber">31</context>
         </context-group>
       </trans-unit>
       <trans-unit id="abe44b93ca347e46a9b8cb48178c884672111ee4" datatype="html">
         <source> Enabled </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/settings/user-settings/user-settings.component.html</context>
+          <context context-type="sourcefile">app/component/settings/user-settings/user-settings.component.html</context>
           <context context-type="linenumber">45</context>
         </context-group>
       </trans-unit>
       <trans-unit id="31cf824034489eb42f6a388d5980b98b8e1de015" datatype="html">
         <source>Create user</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/settings/user-settings/user-settings.component.html</context>
+          <context context-type="sourcefile">app/component/settings/user-settings/user-settings.component.html</context>
           <context context-type="linenumber">73</context>
         </context-group>
       </trans-unit>
       <trans-unit id="c8d1785038d461ec66b5799db21864182b35900a" datatype="html">
         <source>Refresh</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/settings/settings.component.html</context>
+          <context context-type="sourcefile">app/component/settings/settings.component.html</context>
           <context context-type="linenumber">6</context>
         </context-group>
       </trans-unit>
@@ -375,7 +375,7 @@
           Board Configuration
         </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/settings/settings.component.html</context>
+          <context context-type="sourcefile">app/component/settings/settings.component.html</context>
           <context context-type="linenumber">16</context>
         </context-group>
       </trans-unit>
@@ -384,7 +384,7 @@
           Add, update and delete boards
         </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/settings/settings.component.html</context>
+          <context context-type="sourcefile">app/component/settings/settings.component.html</context>
           <context context-type="linenumber">19</context>
         </context-group>
       </trans-unit>
@@ -393,7 +393,7 @@
           User Configuration
         </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/settings/settings.component.html</context>
+          <context context-type="sourcefile">app/component/settings/settings.component.html</context>
           <context context-type="linenumber">30</context>
         </context-group>
       </trans-unit>
@@ -402,14 +402,14 @@
           Add, update and delete users
         </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/settings/settings.component.html</context>
+          <context context-type="sourcefile">app/component/settings/settings.component.html</context>
           <context context-type="linenumber">33</context>
         </context-group>
       </trans-unit>
       <trans-unit id="287d3301a32a65a1b31116bda5d3a6463158c42a" datatype="html">
         <source>Sign in</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/login/login.component.html</context>
+          <context context-type="sourcefile">app/component/login/login.component.html</context>
           <context context-type="linenumber">3</context>
         </context-group>
       </trans-unit>
@@ -418,14 +418,14 @@
           LOGIN
         </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/login/login.component.html</context>
+          <context context-type="sourcefile">app/component/login/login.component.html</context>
           <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bed261b69740c0fac9a1433994e2f7e9b7fbb39e" datatype="html">
         <source>You are connected as</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/login/login.component.html</context>
+          <context context-type="sourcefile">app/component/login/login.component.html</context>
           <context context-type="linenumber">31</context>
         </context-group>
       </trans-unit>
@@ -434,15 +434,190 @@
       LOGOUT
     </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/login/login.component.html</context>
+          <context context-type="sourcefile">app/component/login/login.component.html</context>
           <context context-type="linenumber">35</context>
         </context-group>
       </trans-unit>
       <trans-unit id="a0da0d89d666d11766efa18a6be00f450bf9f9d3" datatype="html">
         <source>Use the following username/password for Sign in :</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/login/login.component.html</context>
+          <context context-type="sourcefile">app/component/login/login.component.html</context>
           <context context-type="linenumber">41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="global.delete" datatype="html">
+        <source>Delete</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="global.close" datatype="html">
+        <source>Close</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="global.accessUnauthorized" datatype="html">
+        <source>Access Unauthorized. Please sign in.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="global.accessForbidden" datatype="html">
+        <source>Access Forbidden !</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="global.technicalError" datatype="html">
+        <source>Technical Error</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="board.newNote" datatype="html">
+        <source>New note</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="board.newNoteCreated" datatype="html">
+        <source>New note created</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="boardNote.noteMoved" datatype="html">
+        <source>Note moved</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="boardNote.deleteNote" datatype="html">
+        <source>Delete note</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="boardNote.deleteNoteConfirm" datatype="html">
+        <source>Are you sure to delete this note ?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="boardNote.noteDeleted" datatype="html">
+        <source>Note deleted</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="boardNote.noteUpdated" datatype="html">
+        <source>Note updated</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="login.signinFailed" datatype="html">
+        <source>Sign-in Failed : Incorrect username or password</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="boardSettings.boardUpdated" datatype="html">
+        <source>Board updated</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="boardSettings.deleteBoard" datatype="html">
+        <source>Delete board</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="boardSettings.deleteBoardConfirm" datatype="html">
+        <source>Are you sure to delete this board ?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="boardSettings.boardDeleted" datatype="html">
+        <source>Board deleted</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="boardSettings.newBoard" datatype="html">
+        <source>New board</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="boardSettings.boardCreated" datatype="html">
+        <source>Board created</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userSettings.userUpdated" datatype="html">
+        <source>User updated</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userSettings.deleteUser" datatype="html">
+        <source>Delete user</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userSettings.deleteUserConfirm" datatype="html">
+        <source>Are you sure to delete this user ?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userSettings.userDeleted" datatype="html">
+        <source>User deleted</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userSettings.username" datatype="html">
+        <source>username</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="userSettings.userCreated" datatype="html">
+        <source>User created</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
+          <context context-type="linenumber">30</context>
         </context-group>
       </trans-unit>
     </body>

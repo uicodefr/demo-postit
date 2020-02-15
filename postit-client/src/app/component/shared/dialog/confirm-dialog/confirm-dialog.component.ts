@@ -14,13 +14,10 @@ export interface ConfirmDialogData {
   styleUrls: ['./confirm-dialog.component.scss']
 })
 export class ConfirmDialogComponent implements OnInit {
-
   public constructor(
     public dialogRef: MatDialogRef<ConfirmDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ConfirmDialogData
-  ) { }
+  ) {}
 
-  public ngOnInit() {
-  }
-
+  public ngOnInit() {}
 }

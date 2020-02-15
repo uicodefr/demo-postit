@@ -9,7 +9,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { UserSettingsComponent } from './user-settings.component';
-import { TranslateService } from 'src/app/service/util/translate.service';
 import { UserService } from 'src/app/service/user/user.service';
 import { GlobalInfoService } from 'src/app/service/util/global-info.service';
 
@@ -28,13 +27,19 @@ describe('UserSettingsComponent', () => {
       providers: [
         MatDialog,
         { provide: UserService, useValue: userSpy },
-        { provide: GlobalInfoService, useValue: globalInfoSpy },
-        TranslateService
+        { provide: GlobalInfoService, useValue: globalInfoSpy }
       ],
-      imports: [BrowserAnimationsModule, FormsModule, MatDialogModule, MatInputModule, MatTableModule, MatPaginatorModule,
-        MatSelectModule, MatCheckboxModule]
-    })
-      .compileComponents();
+      imports: [
+        BrowserAnimationsModule,
+        FormsModule,
+        MatDialogModule,
+        MatInputModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSelectModule,
+        MatCheckboxModule
+      ]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

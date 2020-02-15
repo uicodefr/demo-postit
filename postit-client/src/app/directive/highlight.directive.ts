@@ -7,9 +7,10 @@ import { Directive, ElementRef, Renderer2, HostListener, Input } from '@angular/
   selector: '[appHighlight]'
 })
 export class HighlightDirective {
-
   @Input()
-  get appHighlight() { return this._appHighlight; }
+  get appHighlight() {
+    return this._appHighlight;
+  }
   set appHighlight(value) {
     if (value) {
       this._appHighlight = value;
@@ -17,10 +18,7 @@ export class HighlightDirective {
   }
   private _appHighlight = '0 8px 8px rgba(10,16,20,.24),0 0 8px rgba(10,16,20,.12)';
 
-  public constructor(
-    private el: ElementRef,
-    private renderer: Renderer2
-  ) {
+  public constructor(private el: ElementRef, private renderer: Renderer2) {
     this.renderer.setStyle(this.el.nativeElement, 'transition', 'box-shadow .5s');
   }
 
@@ -33,5 +31,4 @@ export class HighlightDirective {
   private onMouseLeave() {
     this.renderer.removeStyle(this.el.nativeElement, 'box-shadow');
   }
-
 }

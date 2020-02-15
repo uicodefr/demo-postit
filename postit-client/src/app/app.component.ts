@@ -37,7 +37,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public ngOnInit() {
     // Loading information
-    this.loading$ = this.globalInfoService.getLoaderObservable().pipe(debounceTime(AppComponent.LOADING_DEBOUNCE_TIME_MS));
+    this.loading$ = this.globalInfoService
+      .getLoaderObservable()
+      .pipe(debounceTime(AppComponent.LOADING_DEBOUNCE_TIME_MS));
 
     // Check app status
     this.globalService
@@ -79,10 +81,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public logout() {
-    if (!this.authService.getCurrentUser()) {
-      return;
-    }
-
     this.authService.logout().then(() => {
       this.router.navigate(['']);
     });

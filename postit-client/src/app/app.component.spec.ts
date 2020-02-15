@@ -16,12 +16,16 @@ import { LikeService } from './service/global/like.service';
 import { MatMenuModule } from '@angular/material/menu';
 
 describe('AppComponent', () => {
-
   beforeEach(async(() => {
     const globalInfoSpy = jasmine.createSpyObj('GlobalInfoService', ['getLoaderObservable']);
     globalInfoSpy.getLoaderObservable.and.returnValue(of());
 
-    const globalSpy = jasmine.createSpyObj('GlobalService', ['getStatus', 'launchCountLikeTimer', 'getCountLikeObservable', 'addLike']);
+    const globalSpy = jasmine.createSpyObj('GlobalService', [
+      'getStatus',
+      'launchCountLikeTimer',
+      'getCountLikeObservable',
+      'addLike'
+    ]);
     globalSpy.getStatus.and.returnValue(Promise.resolve({ status: 'true' }));
     globalSpy.getCountLikeObservable.and.returnValue(of());
 
@@ -33,9 +37,7 @@ describe('AppComponent', () => {
     authSpy.getCurrentUser.and.returnValue(of());
 
     TestBed.configureTestingModule({
-      declarations: [
-        AppComponent, PageNotFoundComponent
-      ],
+      declarations: [AppComponent, PageNotFoundComponent],
       providers: [
         { provide: GlobalInfoService, useValue: globalInfoSpy },
         { provide: GlobalService, useValue: globalSpy },
@@ -43,10 +45,17 @@ describe('AppComponent', () => {
         { provide: AuthService, useValue: authSpy }
       ],
       imports: [
-        RouterModule.forRoot([{
-          path: '',
-          component: PageNotFoundComponent
-        }]), MatToolbarModule, MatIconModule, MatProgressSpinnerModule, MatSnackBarModule, MatMenuModule
+        RouterModule.forRoot([
+          {
+            path: '',
+            component: PageNotFoundComponent
+          }
+        ]),
+        MatToolbarModule,
+        MatIconModule,
+        MatProgressSpinnerModule,
+        MatSnackBarModule,
+        MatMenuModule
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
@@ -83,5 +92,4 @@ describe('AppComponent', () => {
       expect(compiled.querySelector('h1').textContent).toContain('Post-It');
     });
   }));
-
 });

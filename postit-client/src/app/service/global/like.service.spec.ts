@@ -11,10 +11,7 @@ describe('LikeService', () => {
     restClientSpy = jasmine.createSpyObj('RestClientService', ['get', 'post', 'put', 'patch', 'delete']);
 
     TestBed.configureTestingModule({
-      providers: [
-        LikeService,
-        { provide: RestClientService, useValue: restClientSpy }
-      ]
+      providers: [LikeService, { provide: RestClientService, useValue: restClientSpy }]
     });
 
     likeService = TestBed.get(LikeService);
@@ -24,5 +21,4 @@ describe('LikeService', () => {
     const service: LikeService = TestBed.get(LikeService);
     expect(service).toBeTruthy();
   });
-
 });

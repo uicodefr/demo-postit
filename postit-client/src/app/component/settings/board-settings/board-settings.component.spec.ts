@@ -9,7 +9,6 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { BoardSettingsComponent } from './board-settings.component';
 import { GlobalInfoService } from 'src/app/service/util/global-info.service';
 import { PostitService } from 'src/app/service/postit/postit.service';
-import { TranslateService } from 'src/app/service/util/translate.service';
 
 describe('BoardSettingsComponent', () => {
   let component: BoardSettingsComponent;
@@ -25,12 +24,17 @@ describe('BoardSettingsComponent', () => {
       providers: [
         MatDialog,
         { provide: PostitService, useValue: postitSpy },
-        { provide: GlobalInfoService, useValue: globalInfoSpy },
-        TranslateService
+        { provide: GlobalInfoService, useValue: globalInfoSpy }
       ],
-      imports: [BrowserAnimationsModule, FormsModule, MatDialogModule, MatInputModule, MatTableModule, MatPaginatorModule]
-    })
-      .compileComponents();
+      imports: [
+        BrowserAnimationsModule,
+        FormsModule,
+        MatDialogModule,
+        MatInputModule,
+        MatTableModule,
+        MatPaginatorModule
+      ]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -10,7 +10,6 @@ let httpClientSpy: jasmine.SpyObj<HttpClient>;
 let globalInfoSpy: jasmine.SpyObj<GlobalInfoService>;
 
 describe('RestClientService', () => {
-
   beforeEach(() => {
     httpClientSpy = jasmine.createSpyObj('HttpClient', ['get', 'post', 'put', 'patch', 'delete']);
     globalInfoSpy = jasmine.createSpyObj('GlobalInfoService', ['notifLoader']);
@@ -26,20 +25,26 @@ describe('RestClientService', () => {
     restClientService = TestBed.get(RestClientService);
   });
 
-  it('get use httpClient and use notifLoader', (done) => {
+  it('get use httpClient and use notifLoader', done => {
     const url = 'testUrl';
     const paramData = { dataName: 'dataValue' };
     const resultGet = { result: 'ok' };
 
-    httpClientSpy.get.and.returnValue(of(new HttpResponse<any>({ body: resultGet })));
+    httpClientSpy.get.and.returnValue(
+      of(
+        new HttpResponse<any>({ body: resultGet })
+      )
+    );
 
-    restClientService.get<any>(url, paramData).toPromise().then(result => {
-      expect(result).toEqual(resultGet);
-      expect(httpClientSpy.get).toHaveBeenCalled();
-      expect(globalInfoSpy.notifLoader).toHaveBeenCalledWith(true);
-      expect(globalInfoSpy.notifLoader).toHaveBeenCalledWith(false);
-      done();
-    });
+    restClientService
+      .get<any>(url, paramData)
+      .toPromise()
+      .then(result => {
+        expect(result).toEqual(resultGet);
+        expect(httpClientSpy.get).toHaveBeenCalled();
+        expect(globalInfoSpy.notifLoader).toHaveBeenCalledWith(true);
+        expect(globalInfoSpy.notifLoader).toHaveBeenCalledWith(false);
+        done();
+      });
   });
-
 });

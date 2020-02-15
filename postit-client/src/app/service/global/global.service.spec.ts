@@ -8,10 +8,7 @@ describe('GlobalService', () => {
     const restClientSpy = jasmine.createSpyObj('RestClientService', ['get', 'post', 'put', 'patch', 'delete']);
 
     TestBed.configureTestingModule({
-      providers: [
-        GlobalService,
-        { provide: RestClientService, useValue: restClientSpy }
-      ]
+      providers: [GlobalService, { provide: RestClientService, useValue: restClientSpy }]
     });
   });
 

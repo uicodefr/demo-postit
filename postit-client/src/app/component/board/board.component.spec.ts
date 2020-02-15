@@ -7,7 +7,6 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { BoardComponent } from './board.component';
 import { GlobalInfoService } from '../../service/util/global-info.service';
 import { PostitService } from '../../service/postit/postit.service';
-import { TranslateService } from '../../service/util/translate.service';
 import { GlobalService } from '../../service/global/global.service';
 import { of } from 'rxjs';
 
@@ -37,14 +36,12 @@ describe('BoardComponent', () => {
         },
         { provide: Router, useValue: routerSpy },
         { provide: GlobalInfoService, useValue: globalInfoSpy },
-        TranslateService,
         { provide: GlobalService, useValue: globalSpy },
         { provide: PostitService, useValue: postitSpy }
       ],
       imports: [MatTabsModule, MatCardModule],
       schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

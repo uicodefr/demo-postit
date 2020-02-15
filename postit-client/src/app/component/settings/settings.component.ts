@@ -10,16 +10,13 @@ import { UserSettingsComponent } from './user-settings/user-settings.component';
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent implements OnInit {
-
-  @ViewChild('boardSettings', { static: false })
+  @ViewChild('boardSettings')
   public boardSettings: BoardSettingsComponent;
 
-  @ViewChild('userSettings', { static: false })
+  @ViewChild('userSettings')
   public userSettings: UserSettingsComponent;
 
-  public constructor(
-    private authService: AuthService
-  ) { }
+  public constructor(private authService: AuthService) {}
 
   public ngOnInit() {
     this.authService.getRefreshedCurrentUser();
@@ -33,5 +30,4 @@ export class SettingsComponent implements OnInit {
       this.userSettings.refresh();
     }
   }
-
 }

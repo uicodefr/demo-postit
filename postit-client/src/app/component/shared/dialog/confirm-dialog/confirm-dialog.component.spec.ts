@@ -19,8 +19,7 @@ describe('ConfirmDialogComponent', () => {
         { provide: MAT_DIALOG_DATA, useValue: {} }
       ],
       imports: [MatDialogModule]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -32,5 +31,4 @@ describe('ConfirmDialogComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
 });

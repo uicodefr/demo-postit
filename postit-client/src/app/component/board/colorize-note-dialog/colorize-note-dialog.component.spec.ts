@@ -22,8 +22,7 @@ describe('ColorizeNoteDialogComponent', () => {
         { provide: PostitService, useValue: postitSpy }
       ],
       imports: [MatDialogModule]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -35,5 +34,4 @@ describe('ColorizeNoteDialogComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
 });

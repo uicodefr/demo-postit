@@ -4,15 +4,11 @@ import { UserService } from './user.service';
 import { RestClientService } from '../util/rest-client.service';
 
 describe('UserService', () => {
-
   beforeEach(() => {
     const restClientSpy = jasmine.createSpyObj('RestClientService', ['get', 'post', 'put', 'patch', 'delete']);
 
     TestBed.configureTestingModule({
-      providers: [
-        UserService,
-        { provide: RestClientService, useValue: restClientSpy }
-      ]
+      providers: [UserService, { provide: RestClientService, useValue: restClientSpy }]
     });
   });
 

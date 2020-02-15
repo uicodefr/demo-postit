@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -20,6 +20,7 @@ import { LoginComponent } from './component/login/login.component';
 import { AppMaterialModule } from './app-material.module';
 import { HasRoleDirective } from './directive/has-role.directive';
 import { AuthInterceptor } from './service/auth/auth.interceptor';
+import { LocalizeDictionaryComponent } from './component/shared/localize-dictionary/localize-dictionary.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { AuthInterceptor } from './service/auth/auth.interceptor';
     BoardSettingsComponent,
     UserSettingsComponent,
     LoginComponent,
-    HasRoleDirective
+    HasRoleDirective,
+    LocalizeDictionaryComponent
   ],
   imports: [
     BrowserModule,
@@ -46,18 +48,14 @@ import { AuthInterceptor } from './service/auth/auth.interceptor';
     AppRoutingModule,
     AppMaterialModule
   ],
-  entryComponents: [
-    ConfirmDialogComponent,
-    ColorizeNoteDialogComponent,
-    EditNoteDialogComponent
-  ],
+  entryComponents: [ConfirmDialogComponent, ColorizeNoteDialogComponent, EditNoteDialogComponent],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
-      multi: true,
+      multi: true
     }
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

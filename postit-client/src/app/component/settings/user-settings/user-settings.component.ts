@@ -4,8 +4,10 @@ import { MatPaginator } from '@angular/material/paginator';
 
 import { User } from 'src/app/model/user/user';
 import { MatDialog } from '@angular/material/dialog';
-import { TranslateService } from 'src/app/service/util/translate.service';
-import { ConfirmDialogData, ConfirmDialogComponent } from 'src/app/component/shared/dialog/confirm-dialog/confirm-dialog.component';
+import {
+  ConfirmDialogData,
+  ConfirmDialogComponent
+} from 'src/app/component/shared/dialog/confirm-dialog/confirm-dialog.component';
 import { GlobalConstant } from 'src/app/const/global-constant';
 import { UserService } from 'src/app/service/user/user.service';
 import { AlertType } from 'src/app/const/alert-type';
@@ -17,7 +19,6 @@ import { GlobalInfoService } from 'src/app/service/util/global-info.service';
   styleUrls: ['./user-settings.component.scss']
 })
 export class UserSettingsComponent implements OnInit {
-
   public PASSWORD_PATTERN = '^\\w{5,}$';
 
   public displayedColumns = ['id', 'username', 'password', 'roleList', 'enabled', 'actions'];
@@ -30,9 +31,8 @@ export class UserSettingsComponent implements OnInit {
   public constructor(
     private dialog: MatDialog,
     private userService: UserService,
-    private globalInfoService: GlobalInfoService,
-    private translateService: TranslateService
-  ) { }
+    private globalInfoService: GlobalInfoService
+  ) {}
 
   public ngOnInit() {
     this.dataSource.paginator = this.paginator;
@@ -57,8 +57,12 @@ export class UserSettingsComponent implements OnInit {
   }
 
   public isValidForSave(user: User): boolean {
-    return user && user.username && user.username.length > 1 &&
-      (!user.password || new RegExp(this.PASSWORD_PATTERN).test(user.password));
+    return (
+      user &&
+      user.username &&
+      user.username.length > 1 &&
+      (!user.password || new RegExp(this.PASSWORD_PATTERN).test(user.password))
+    );
   }
 
   public saveUser(user: User) {
@@ -66,16 +70,16 @@ export class UserSettingsComponent implements OnInit {
       return;
     }
     this.userService.updateUser(user).then(updatedUser => {
-      this.globalInfoService.showAlert(AlertType.SUCCESS, this.translateService.get('User updated'));
+      this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@userSettings.userUpdated:User updated`);
       this.getUserList();
     });
   }
 
   public deleteUser(user: User) {
     const confirmDialogData = {
-      title: this.translateService.get('Delete user'),
-      message: this.translateService.get('Are you sure to delete this user ?'),
-      confirm: this.translateService.get('Delete'),
+      title: $localize`:@@userSettings.deleteUser:Delete user`,
+      message: $localize`:@@userSettings.deleteUserConfirm:Are you sure to delete this user ?`,
+      confirm: $localize`:@@global.delete:Delete`
     } as ConfirmDialogData;
 
     const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
@@ -86,7 +90,7 @@ export class UserSettingsComponent implements OnInit {
     confirmDialog.afterClosed().subscribe(confirmation => {
       if (confirmation === true) {
         this.userService.deleteUser(user.id).then(() => {
-          this.globalInfoService.showAlert(AlertType.SUCCESS, this.translateService.get('User deleted'));
+          this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@userSettings.userDeleted:User deleted`);
           this.getUserList();
         });
       }
@@ -95,13 +99,12 @@ export class UserSettingsComponent implements OnInit {
 
   public createUser() {
     const newUser = new User();
-    newUser.username = this.translateService.get('username');
+    newUser.username = $localize`:@@userSettings.username:username`;
     newUser.enabled = false;
 
     this.userService.createUser(newUser).then(createdUser => {
-      this.globalInfoService.showAlert(AlertType.SUCCESS, this.translateService.get('User created'));
+      this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@userSettings.userCreated:User created`);
       this.getUserList();
     });
   }
-
 }

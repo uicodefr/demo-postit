@@ -14,15 +14,13 @@ export interface ColorizeNoteDialogData {
   styleUrls: ['./colorize-note-dialog.component.scss']
 })
 export class ColorizeNoteDialogComponent implements OnInit {
-
   public constructor(
     private dialogRef: MatDialogRef<ColorizeNoteDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ColorizeNoteDialogData,
     private postitService: PostitService
-  ) { }
+  ) {}
 
-  public ngOnInit() {
-  }
+  public ngOnInit() {}
 
   public chooseColor(color: string) {
     const saveNote = new PostitNote();
@@ -33,5 +31,4 @@ export class ColorizeNoteDialogComponent implements OnInit {
       this.dialogRef.close(updatedNote);
     });
   }
-
 }

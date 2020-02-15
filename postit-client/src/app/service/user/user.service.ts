@@ -8,10 +8,7 @@ import { UrlConstant } from '../../const/url-constant';
   providedIn: 'root'
 })
 export class UserService {
-
-  public constructor(
-    private restClientService: RestClientService
-  ) { }
+  public constructor(private restClientService: RestClientService) {}
 
   public getCurrentUser(): Promise<User> {
     return this.restClientService.get<User>(UrlConstant.User.CURRENT_USER).toPromise();
@@ -36,5 +33,4 @@ export class UserService {
   public getRoleList(): Promise<Array<string>> {
     return this.restClientService.get<Array<string>>(UrlConstant.User.ROLES).toPromise();
   }
-
 }
