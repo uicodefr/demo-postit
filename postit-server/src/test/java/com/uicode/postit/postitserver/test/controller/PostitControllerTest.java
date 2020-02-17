@@ -10,7 +10,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 
 import com.uicode.postit.postitserver.dto.postit.BoardDto;
 import com.uicode.postit.postitserver.dto.postit.PostitNoteDto;
-import com.uicode.postit.postitserver.util.TestRestTemplateWithHeaders;
+import com.uicode.postit.postitserver.util.AppTestRequestInterceptor;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
@@ -27,44 +27,48 @@ public class PostitControllerTest {
         int boardCount = boardList.length;
 
         // Connect as admin
-        TestRestTemplateWithHeaders restTemplateConnected = TestRestTemplateWithHeaders.login(restTemplate,
-                "admin", "admin");
+        AppTestRequestInterceptor appTestRequestInterceptor = AppTestRequestInterceptor.addInterceptor(restTemplate);
+        appTestRequestInterceptor.simpleGetForCsrf();
+        appTestRequestInterceptor.login("admin", "admin");
 
         // Insert
         BoardDto board = new BoardDto();
         board.setName("New Board");
 
-        BoardDto createdBoard = restTemplateConnected.postForObject("/postit/boards", board, BoardDto.class);
+        BoardDto createdBoard = restTemplate.postForObject("/postit/boards", board, BoardDto.class);
         Assertions.assertThat(createdBoard).isNotNull();
         Assertions.assertThat(createdBoard.getId()).isNotNull();
         Assertions.assertThat(createdBoard.getName()).isEqualTo(board.getName());
 
         // Update
         createdBoard.setName("Update Board");
-        BoardDto updatedBoard = restTemplateConnected.patchForObject("/postit/boards/{id}", createdBoard,
-                BoardDto.class, createdBoard.getId());
+        BoardDto updatedBoard = restTemplate.patchForObject("/postit/boards/{id}", createdBoard, BoardDto.class,
+                createdBoard.getId());
         Assertions.assertThat(updatedBoard).isNotNull();
         Assertions.assertThat(updatedBoard.getId()).isEqualTo(createdBoard.getId());
         Assertions.assertThat(updatedBoard.getName()).isEqualTo(createdBoard.getName());
 
         // Delete
-        restTemplateConnected.delete("/postit/boards/{id}", createdBoard.getId());
+        restTemplate.delete("/postit/boards/{id}", createdBoard.getId());
 
         // Final Check
         boardList = restTemplate.getForObject("/postit/boards", BoardDto[].class);
         Assertions.assertThat(boardList).isNotNull().hasSize(boardCount);
+
+        appTestRequestInterceptor.clear();
     }
 
     @Test
     public void noteCrud() {
         // Connect as admin
-        TestRestTemplateWithHeaders restTemplateConnected = TestRestTemplateWithHeaders.login(restTemplate, "admin",
-                "admin");
+        AppTestRequestInterceptor appTestRequestInterceptor = AppTestRequestInterceptor.addInterceptor(restTemplate);
+        appTestRequestInterceptor.simpleGetForCsrf();
+        appTestRequestInterceptor.login("admin", "admin");
 
         // Insert
         BoardDto boardDto = new BoardDto();
         boardDto.setName("New Board");
-        BoardDto createdBoard = restTemplateConnected.postForObject("/postit/boards", boardDto, BoardDto.class);
+        BoardDto createdBoard = restTemplate.postForObject("/postit/boards", boardDto, BoardDto.class);
         Assertions.assertThat(createdBoard).isNotNull();
         Assertions.assertThat(createdBoard.getId()).isNotNull();
 
@@ -137,6 +141,8 @@ public class PostitControllerTest {
         noteList = restTemplate.getForObject("/postit/notes?boardId={boardId}", PostitNoteDto[].class,
                 updatedNote.getBoardId());
         Assertions.assertThat(noteList).isNotNull().isEmpty();
+
+        appTestRequestInterceptor.clear();
     }
 
     @Test

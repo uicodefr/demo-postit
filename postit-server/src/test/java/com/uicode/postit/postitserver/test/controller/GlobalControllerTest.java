@@ -16,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompFrameHandler;
 import org.springframework.messaging.simp.stomp.StompHeaders;
@@ -33,6 +34,7 @@ import com.uicode.postit.postitserver.dto.IdEntityDto;
 import com.uicode.postit.postitserver.dto.global.CountLikesDto;
 import com.uicode.postit.postitserver.dto.global.ErrorDto;
 import com.uicode.postit.postitserver.dto.global.GlobalStatusDto;
+import com.uicode.postit.postitserver.util.AppTestRequestInterceptor;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
@@ -73,7 +75,11 @@ public class GlobalControllerTest {
 
     @Test
     public void clearCache() {
-        restTemplate.getForObject("/global:clearCache", String.class);
+        AppTestRequestInterceptor appTestRequestInterceptor = AppTestRequestInterceptor.addInterceptor(restTemplate);
+        appTestRequestInterceptor.simpleGetForCsrf();
+        Assertions.assertThat(restTemplate.postForEntity("/global/:clearCache", null, String.class).getStatusCodeValue())
+                .isEqualTo(200);
+        appTestRequestInterceptor.clear();
     }
 
     @Test
@@ -85,10 +91,21 @@ public class GlobalControllerTest {
 
     @Test
     public void addLike() {
-        IdEntityDto idEntityDto = restTemplate.postForObject("/global/likes", "", IdEntityDto.class);
+        ResponseEntity<IdEntityDto> responseEntity = restTemplate.postForEntity("/global/likes", "", IdEntityDto.class);
+        // 403 because we don't have a CSRF token => Unique test for csrf
+        Assertions.assertThat(responseEntity.getStatusCodeValue()).isEqualTo(403);
+
+        AppTestRequestInterceptor appTestRequestInterceptor = AppTestRequestInterceptor.addInterceptor(restTemplate);
+        appTestRequestInterceptor.simpleGetForCsrf();
+
+        responseEntity = restTemplate.postForEntity("/global/likes", "", IdEntityDto.class);
+        Assertions.assertThat(responseEntity.getStatusCodeValue()).isEqualTo(200);
+        IdEntityDto idEntityDto = responseEntity.getBody();
         Assertions.assertThat(idEntityDto).isNotNull();
         Assertions.assertThat(idEntityDto.getId()).isNotNull();
+
         likeDao.deleteById(idEntityDto.getId());
+        appTestRequestInterceptor.clear();
     }
 
     @Test

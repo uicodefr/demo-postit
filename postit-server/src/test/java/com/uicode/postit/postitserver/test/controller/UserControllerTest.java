@@ -17,7 +17,7 @@ import org.springframework.util.LinkedMultiValueMap;
 
 import com.uicode.postit.postitserver.dto.postit.BoardDto;
 import com.uicode.postit.postitserver.dto.user.UserDto;
-import com.uicode.postit.postitserver.util.TestRestTemplateWithHeaders;
+import com.uicode.postit.postitserver.util.AppTestRequestInterceptor;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
@@ -38,8 +38,9 @@ public class UserControllerTest {
         int userCount = userList.length;
 
         // Connect as superadmin
-        TestRestTemplateWithHeaders restTemplateConnected = TestRestTemplateWithHeaders.login(restTemplate,
-                "superadmin", "superadmin");
+        AppTestRequestInterceptor appTestRequestInterceptor = AppTestRequestInterceptor.addInterceptor(restTemplate);
+        appTestRequestInterceptor.simpleGetForCsrf();
+        appTestRequestInterceptor.login("superadmin", "superadmin");
 
         // Insert
         UserDto user = new UserDto();
@@ -48,7 +49,7 @@ public class UserControllerTest {
         user.setEnabled(false);
         user.setRoleList(Arrays.asList("ROLE_BOARD_WRITE"));
 
-        UserDto createdUser = restTemplateConnected.postForObject("/users", user, UserDto.class);
+        UserDto createdUser = restTemplate.postForObject("/users", user, UserDto.class);
         Assertions.assertThat(createdUser).isNotNull();
         Assertions.assertThat(createdUser.getId()).isNotNull();
         Assertions.assertThat(createdUser.getUsername()).isEqualTo(user.getUsername());
@@ -58,7 +59,7 @@ public class UserControllerTest {
         createdUser.setUsername("username2");
         createdUser.setPassword("password2");
         createdUser.setRoleList(Arrays.asList("ROLE_BOARD_WRITE", "ROLE_USER_WRITE"));
-        UserDto updatedUser = restTemplateConnected.patchForObject("/users/{id}", createdUser, UserDto.class,
+        UserDto updatedUser = restTemplate.patchForObject("/users/{id}", createdUser, UserDto.class,
                 createdUser.getId());
         Assertions.assertThat(updatedUser).isNotNull();
         Assertions.assertThat(updatedUser.getId()).isEqualTo(createdUser.getId());
@@ -66,18 +67,21 @@ public class UserControllerTest {
         Assertions.assertThat(updatedUser.getRoleList()).isEqualTo(createdUser.getRoleList());
 
         // Delete
-        restTemplateConnected.delete("/users/{id}", createdUser.getId());
+        restTemplate.delete("/users/{id}", createdUser.getId());
 
         // Final Check
         userList = restTemplate.getForObject("/users", UserDto[].class);
         Assertions.assertThat(userList).isNotNull().hasSize(userCount);
+
+        appTestRequestInterceptor.clear();
     }
 
     @Test
     public void loginLogout() {
         // Connect as superadmin
-        TestRestTemplateWithHeaders restTemplateConnected = TestRestTemplateWithHeaders.login(restTemplate,
-                "superadmin", "superadmin");
+        AppTestRequestInterceptor appTestRequestInterceptor = AppTestRequestInterceptor.addInterceptor(restTemplate);
+        appTestRequestInterceptor.simpleGetForCsrf();
+        appTestRequestInterceptor.login("superadmin", "superadmin");
 
         String username = "test";
         String password = "abcdefg";
@@ -88,7 +92,7 @@ public class UserControllerTest {
         user.setPassword(password);
         user.setEnabled(true);
         user.setRoleList(Arrays.asList("ROLE_BOARD_WRITE"));
-        UserDto createdUser = restTemplateConnected.postForObject("/users", user, UserDto.class);
+        UserDto createdUser = restTemplate.postForObject("/users", user, UserDto.class);
         Assertions.assertThat(createdUser).isNotNull();
         Assertions.assertThat(createdUser.getId()).isNotNull();
 
@@ -103,8 +107,8 @@ public class UserControllerTest {
         Assertions.assertThat(responseLogin.getStatusCodeValue()).isEqualTo(401);
 
         // Connect with the good password
-        restTemplateConnected = TestRestTemplateWithHeaders.login(restTemplate, username, password);
-        UserDto connectedUser = restTemplateConnected.getForObject("/users/me", UserDto.class);
+        appTestRequestInterceptor.login(username, password);
+        UserDto connectedUser = restTemplate.getForObject("/users/me", UserDto.class);
         Assertions.assertThat(connectedUser).isNotNull();
         Assertions.assertThat(connectedUser.getId()).isNotNull();
         Assertions.assertThat(connectedUser.getUsername()).isEqualTo(username);
@@ -112,19 +116,21 @@ public class UserControllerTest {
         // Test ROLE_BOARD_WRITE
         BoardDto board = new BoardDto();
         board.setName("New Board");
-        BoardDto createdBoard = restTemplateConnected.postForObject("/postit/boards", board, BoardDto.class);
+        BoardDto createdBoard = restTemplate.postForObject("/postit/boards", board, BoardDto.class);
         Assertions.assertThat(createdBoard).isNotNull();
         Assertions.assertThat(createdBoard.getId()).isNotNull();
 
         // Test ROLE_USER_WRITE
         user.setUsername("otherusername");
-        UserDto testUser = restTemplateConnected.postForObject("/users", user, UserDto.class);
+        UserDto testUser = restTemplate.postForObject("/users", user, UserDto.class);
         Assertions.assertThat(testUser.getId()).isNull();
 
         // Logout
-        restTemplateConnected.getForObject("/logout", String.class);
-        connectedUser = restTemplateConnected.getForObject("/users/me", UserDto.class);
+        restTemplate.postForObject("/logout", null, String.class);
+        connectedUser = restTemplate.getForObject("/users/me", UserDto.class);
         Assertions.assertThat(connectedUser).isNull();
+
+        appTestRequestInterceptor.clear();
     }
 
 }
