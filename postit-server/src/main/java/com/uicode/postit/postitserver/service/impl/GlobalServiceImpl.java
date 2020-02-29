@@ -32,7 +32,7 @@ public class GlobalServiceImpl implements GlobalService {
 
     private static final Logger LOGGER = LogManager.getLogger(GlobalServiceImpl.class);
 
-    private static final String VERSION = "0.5.0-SNAPSHOT";
+    private static final String VERSION = "0.5.1-SNAPSHOT";
     private static final Date UPDATE = new Date();
     private static final String WS_LIKE_PATH = "/listen/likes:count";
 
@@ -60,6 +60,7 @@ public class GlobalServiceImpl implements GlobalService {
         Optional<Parameter> parameterStatusOpt = parameterDao.findById(ParameterConst.GENERAL_STATUS);
         parameterStatusOpt.map(Parameter::getValue).ifPresent(status::setStatus);
 
+        LOGGER.info("Global Status asked");
         return status;
     }
 
@@ -75,6 +76,7 @@ public class GlobalServiceImpl implements GlobalService {
     @Cacheable("parameter")
     public Optional<String> getParameterValue(String parameterName) {
         Optional<Parameter> parameter = parameterDao.findById(parameterName);
+        LOGGER.info("Get ParameterValue for : {}", parameterName);
         return parameter.map(Parameter::getValue);
     }
 
@@ -83,7 +85,7 @@ public class GlobalServiceImpl implements GlobalService {
     public String getParameterValueForClient(String parameterName) throws NotFoundException, ForbiddenException {
         Optional<Parameter> parameterOpt = parameterDao.findById(parameterName);
         Parameter parameter = parameterOpt.orElseThrow(() -> new NotFoundException("Parameter"));
-        if (!parameter.getClientView()) {
+        if (Boolean.FALSE.equals(parameter.getClientView())) {
             throw new ForbiddenException("parameter.getClientView == false");
         }
         return parameter.getValue();
@@ -93,6 +95,7 @@ public class GlobalServiceImpl implements GlobalService {
     public CountLikesDto countLikes() {
         CountLikesDto countLikesDto = new CountLikesDto();
         countLikesDto.setCount(likeDao.count());
+        LOGGER.info("CountLikes return the value : {}", countLikesDto.getCount());
         return countLikesDto;
     }
 
@@ -104,6 +107,7 @@ public class GlobalServiceImpl implements GlobalService {
         Long maxLike = ParameterUtil.getLong(maxLikeParameter, 0l);
 
         if (countLikes().getCount() > maxLike) {
+            LOGGER.warn("AddLike : the maximum of likes is reached");
             return result;
         }
 
@@ -116,7 +120,7 @@ public class GlobalServiceImpl implements GlobalService {
 
         // Send Result to WebSocket
         simpMessagingTemplate.convertAndSend(WS_LIKE_PATH, countLikes());
-
+        LOGGER.info("AddLike successful");
         return result;
     }
 

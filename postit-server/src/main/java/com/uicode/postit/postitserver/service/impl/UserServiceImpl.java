@@ -74,6 +74,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getUserList() {
+        LOGGER.info("GetUserList");
         Iterable<User> userIterable = userDao.findAll(Sort.by("username").ascending());
         return Streams.stream(userIterable).map(UserMapper.INSTANCE::toDto).collect(Collectors.toList());
     }
@@ -92,11 +93,13 @@ public class UserServiceImpl implements UserService {
 
             user = new User();
             user.setEnabled(false);
+            LOGGER.info("Create user with the id : {}", userId);
 
         } else {
             // Update
             Optional<User> userOpt = userDao.findById(userId);
             user = userOpt.orElseThrow(() -> new NotFoundException("User"));
+            LOGGER.info("Update user with the id : {}", userId);
         }
 
         updatePassword(userDto.getPassword(), user);
@@ -142,10 +145,12 @@ public class UserServiceImpl implements UserService {
             return;
         }
         userDao.delete(userOpt.get());
+        LOGGER.info("Delete user with the id : {}", userId);
     }
 
     @Override
     public List<String> getRoleList() {
+        LOGGER.info("getRoleList");
         Iterable<UserAuthority> userAuthorityIterable = userAuthorityDao.findAll(Sort.by("authority").ascending());
         return Streams.stream(userAuthorityIterable).map(UserAuthority::getAuthority).collect(Collectors.toList());
     }

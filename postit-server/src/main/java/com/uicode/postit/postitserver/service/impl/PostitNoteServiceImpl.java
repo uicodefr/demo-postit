@@ -71,11 +71,13 @@ public class PostitNoteServiceImpl implements PostitNoteService {
             }
 
             board = new Board();
+            LOGGER.info("Create board with the id : {}", boardId);
 
         } else {
             // Update
             Optional<Board> boardOpt = boardDao.findById(boardId);
             board = boardOpt.orElseThrow(() -> new NotFoundException("Board"));
+            LOGGER.info("Update board with the id : {}", boardId);
         }
 
         board.setName(boardDto.getName());
@@ -94,16 +96,19 @@ public class PostitNoteServiceImpl implements PostitNoteService {
         Board board = boardOpt.get();
         board.getNoteList().forEach(postitNoteDao::delete);
         boardDao.delete(board);
+        LOGGER.info("Delete board with the id : {}", boardId);
     }
 
     @Override
     public List<PostitNoteDto> getNoteList(Long boardId) {
+        LOGGER.info("Get NoteList for the board : {}", boardId);
         Iterable<PostitNote> noteIterable = postitNoteDao.findByBoardIdOrderByOrderNum(boardId);
         return Streams.stream(noteIterable).map(PostitNoteMapper.INSTANCE::toDto).collect(Collectors.toList());
     }
 
     @Override
     public PostitNoteDto getNote(Long noteId) throws NotFoundException {
+        LOGGER.info("Get Note with the id : {}", noteId);
         Optional<PostitNote> noteOpt = postitNoteDao.findById(noteId);
         return PostitNoteMapper.INSTANCE.toDto(noteOpt.orElseThrow(() -> new NotFoundException("Note")));
     }
@@ -125,6 +130,7 @@ public class PostitNoteServiceImpl implements PostitNoteService {
 
             note = new PostitNote();
             note.setOrderNum(postitNoteDao.getMaxOrderForByBoardId(noteDto.getBoardId()) + 1);
+            LOGGER.info("Create note with the id : {}", noteId);
 
         } else {
             // Update
@@ -133,6 +139,7 @@ public class PostitNoteServiceImpl implements PostitNoteService {
             if (noteDto.getOrderNum() != null) {
                 reorderBoard(note, noteDto);
             }
+            LOGGER.info("Update note with the id : {}", noteId);
         }
 
         if (noteDto.getBoardId() != null) {
@@ -168,6 +175,7 @@ public class PostitNoteServiceImpl implements PostitNoteService {
     @Override
     public void deleteNote(Long noteId) {
         postitNoteDao.deleteById(noteId);
+        LOGGER.info("Delete note with the id : {}", noteId);
     }
 
     @Override
@@ -192,6 +200,7 @@ public class PostitNoteServiceImpl implements PostitNoteService {
         }
 
         csvWriter.close();
+        LOGGER.info("Export notes to csv");
     }
 
 }
