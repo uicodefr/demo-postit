@@ -1,5 +1,11 @@
 VERSION=$(shell sed "s/^\t<version>\(.*\)<\/version>/\1/;t;d" pom.xml)
 NEXUS_USER=deployment
+NEXUS_URL=nexus.uicode.dev:8123
+
+MVN_GROUP_ID=com.uicode.demo.postit
+MVN_ARTIFACT_ID=postit-server
+JAR_NAME=postit-server-*.jar
+DOCKER_IMG_NAME=postit-server
 
 all:
 	@echo "do nothing (version: $(VERSION))"
@@ -22,11 +28,11 @@ build:
 containerize:
 	@echo "containerize (version: $(VERSION))"
 	chmod u+x mvnw
-	./mvnw dependency:get -DrepoUrl=https://nexus.uicode.dev/repository/maven-public/ -Dartifact=com.uicode.demo.postit:postit-server:$(VERSION)
-	./mvnw dependency:copy -Dartifact=com.uicode.demo.postit:postit-server:$(VERSION) -DoutputDirectory=.
-	mv postit-server-*.jar server.jar
-	echo $$NEXUS_PASSWORD | docker login --username $(NEXUS_USER) --password-stdin nexus.uicode.dev:8123
-	docker build --tag postit-server:$(VERSION) --tag postit-server:latest ./
-	docker tag postit-server nexus.uicode.dev:8123/postit-server:$(VERSION)
-	docker push nexus.uicode.dev:8123/postit-server:$(VERSION)
+	./mvnw dependency:get -DrepoUrl=https://nexus.uicode.dev/repository/maven-public/ -Dartifact=$(MVN_GROUP_ID):$(MVN_ARTIFACT_ID):$(VERSION)
+	./mvnw dependency:copy -Dartifact=$(MVN_GROUP_ID):$(MVN_ARTIFACT_ID):$(VERSION) -DoutputDirectory=.
+	mv $(JAR_NAME) server.jar
+	echo $$NEXUS_PASSWORD | docker login --username $(NEXUS_USER) --password-stdin $(NEXUS_URL)
+	docker build --tag $(DOCKER_IMG_NAME):$(VERSION) --tag $(DOCKER_IMG_NAME):latest ./
+	docker tag $(DOCKER_IMG_NAME) $(NEXUS_URL)/$(DOCKER_IMG_NAME):$(VERSION)
+	docker push $(NEXUS_URL)/$(DOCKER_IMG_NAME):$(VERSION)
 	rm server.jar
