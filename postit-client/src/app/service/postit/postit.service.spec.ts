@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, async } from '@angular/core/testing';
 import { PostitService } from './postit.service';
 import { Board } from '../../model/postit/board';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
@@ -17,14 +17,13 @@ describe('PostitService', () => {
     httpMock = TestBed.inject(HttpTestingController);
   });
 
-  it('getBoardList should call httpClient and return result', done => {
+  it('getBoardList should call the correct url', async(() => {
     const boardList: Array<Board> = [];
     boardList.push({ id: 1, name: 'Test 1' });
     boardList.push({ id: 2, name: 'Test 2' });
 
     postitService.getBoardList().then(result => {
       expect(result).toBe(boardList);
-      done();
     });
 
     const mockRequest = httpMock.expectOne(UrlConstant.Postit.BOARDS);
@@ -32,5 +31,5 @@ describe('PostitService', () => {
     expect(mockRequest.request.responseType).toEqual('json');
     mockRequest.flush(boardList);
     httpMock.verify();
-  });
+  }));
 });

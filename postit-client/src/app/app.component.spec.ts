@@ -12,12 +12,6 @@ import { CountLikes } from './model/global/count-likes';
 
 let httpMock: HttpTestingController;
 
-function setTimeoutPromise(milliseconds: number): Promise<void> {
-  return new Promise(resolve => {
-    setTimeout(resolve, milliseconds);
-  });
-}
-
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -47,11 +41,16 @@ describe('AppComponent', () => {
     });
   }));
 
-  it('should render a h1 tag', async(async () => {
+  it('should init properly', async(() => {
     const fixture = TestBed.createComponent(AppComponent);
-    fixture.autoDetectChanges(true);
     const app = fixture.debugElement.componentInstance;
+    const compiled = fixture.debugElement.nativeElement;
+    fixture.autoDetectChanges(true);
+
     expect(app.initApp).toEqual(false);
+    app.likes$.subscribe(countLikes => {
+      expect(countLikes).toEqual(12);
+    });
 
     const mockRequestUser = httpMock.expectOne(UrlConstant.User.CURRENT_USER);
     mockRequestUser.flush({ id: 1, username: 'user', enabled: true, roleList: ['ROLE_USER'] } as User);
@@ -59,16 +58,11 @@ describe('AppComponent', () => {
     mockRequestStatus.flush({ status: 'true' } as GlobalStatus);
     const mockRequestLikeCount = httpMock.expectOne(UrlConstant.Global.LIKE_COUNT);
     mockRequestLikeCount.flush({ count: 12 } as CountLikes);
-
     httpMock.verify();
-    // Wait 1s because the observable $likes
-    await setTimeoutPromise(1000);
 
     fixture.whenStable().then(() => {
       expect(app.initApp).toEqual(true);
-      const compiled = fixture.debugElement.nativeElement;
       expect(compiled.querySelector('h1').textContent).toContain('Post-It');
-      expect(compiled.querySelector('.mat-badge-content').textContent).toEqual(12);
     });
   }));
 });
