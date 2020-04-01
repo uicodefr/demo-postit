@@ -21,6 +21,8 @@ import { AppMaterialModule } from './app-material.module';
 import { HasRoleDirective } from './directive/has-role.directive';
 import { AppHttpInterceptor } from './service/util/app-http.interceptor';
 import { LocalizeDictionaryComponent } from './component/shared/localize-dictionary/localize-dictionary.component';
+import { ViewListComponent } from './component/board/view-list/view-list.component';
+import { BoardPanelComponent } from './component/board/board-panel/board-panel.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,9 @@ import { LocalizeDictionaryComponent } from './component/shared/localize-diction
     UserSettingsComponent,
     LoginComponent,
     HasRoleDirective,
-    LocalizeDictionaryComponent
+    LocalizeDictionaryComponent,
+    ViewListComponent,
+    BoardPanelComponent
   ],
   imports: [
     BrowserModule,

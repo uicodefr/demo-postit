@@ -46,7 +46,7 @@ export class BoardSettingsComponent implements OnInit {
   }
 
   public isValidForSave(board: Board): boolean {
-    return board && board.name && board.name.length > 1;
+    return !!(board && board.name && board.name.length > 1);
   }
 
   public saveBoard(board: Board) {

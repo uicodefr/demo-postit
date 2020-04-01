@@ -17,6 +17,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatListModule } from '@angular/material/list';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 
 @NgModule({
   exports: [
@@ -36,7 +38,9 @@ import { MatMenuModule } from '@angular/material/menu';
     MatSelectModule,
     MatCheckboxModule,
     MatProgressBarModule,
-    MatMenuModule
+    MatMenuModule,
+    MatListModule,
+    MatBottomSheetModule
   ]
 })
 export class AppMaterialModule {}

@@ -28,6 +28,8 @@ export class BoardNoteComponent implements OnInit {
   public changeNote = new EventEmitter<PostitNote>();
   @Output()
   public orderNote = new EventEmitter<PostitNote>();
+  @Output()
+  public moveNote = new EventEmitter<PostitNote>();
 
   public constructor(
     private dialog: MatDialog,
@@ -93,7 +95,7 @@ export class BoardNoteComponent implements OnInit {
 
     this.postitService.updateNote(moveNote).then(updatedNote => {
       this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@boardNote.noteMoved:Note moved`);
-      this.changeNote.emit(null);
+      this.moveNote.emit(updatedNote);
     });
   }
 

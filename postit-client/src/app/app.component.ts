@@ -25,7 +25,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public loading$: Observable<boolean>;
   public likes$: Observable<number>;
 
-  private userSubscription: Subscription = null;
+  private userSubscription: Subscription;
 
   public constructor(
     private router: Router,

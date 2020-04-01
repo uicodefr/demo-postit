@@ -12,9 +12,9 @@ import { AlertType } from '../../const/alert-type';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  public userConnected: User;
+  public userConnected: User | null;
 
-  public loginForm: FormGroup = null;
+  public loginForm: FormGroup;
   public loginInProgress = false;
 
   public constructor(

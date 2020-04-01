@@ -17,7 +17,7 @@ export class GlobalService {
     return this.httpClient.get<GlobalStatus>(UrlConstant.Global.STATUS).toPromise();
   }
 
-  public getParameterValue(parameterName: string): Promise<string> {
+  public getParameterValue(parameterName: string): Promise<string | undefined> {
     if (this.parameterMap.has(parameterName)) {
       return Promise.resolve(this.parameterMap.get(parameterName));
     } else {

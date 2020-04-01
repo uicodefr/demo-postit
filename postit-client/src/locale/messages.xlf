@@ -75,20 +75,60 @@
           <context context-type="linenumber">46</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cb7e30cef8f5b08f1ecea9b5923787284478b922" datatype="html">
-        <source>Refresh board</source>
+      <trans-unit id="cf6ff48f794c02123e431c70694805722f249e6e" datatype="html">
+        <source>Tabs</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/component/board/board.component.html</context>
-          <context context-type="linenumber">21</context>
+          <context context-type="sourcefile">app/component/board/view-list/view-list.component.html</context>
+          <context context-type="linenumber">3</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="1b0fc959e601682684467847f48db685ce1705ca" datatype="html">
-        <source>
-                Add a note
-              </source>
+      <trans-unit id="3b0d9f9dee53acd2bc53f9e02483b2003c815ca5" datatype="html">
+        <source>individually display with a tab for each board</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/board/view-list/view-list.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="c0d74f2b90e6fa59ee56509518189b30e5d917b0" datatype="html">
+        <source>Panels</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/board/view-list/view-list.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7ab1129fca7db891925a942e1878c4cf0030743d" datatype="html">
+        <source>each board in a panel which can be displayed or hidden</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/board/view-list/view-list.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5c8ea0443990792280e53ee2cc87e577940c95cf" datatype="html">
+        <source>Table</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/board/view-list/view-list.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5f89462b048ee9d65ba0c46b951f361a522aafcc" datatype="html">
+        <source>all boards in column</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/board/view-list/view-list.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="903a50623ba38e82df97fffaf3562cd6676d246f" datatype="html">
+        <source>Change view</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/board/board.component.html</context>
-          <context context-type="linenumber">26</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="88ae9409fa9617a5dcd8d962f49becd3c30c2fdf" datatype="html">
+        <source>Change boards view</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/board/board.component.html</context>
+          <context context-type="linenumber">3</context>
         </context-group>
       </trans-unit>
       <trans-unit id="da44efc7b658c318651866454d258bbbe57ff21c" datatype="html">
@@ -197,49 +237,49 @@
         <source>Move up</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/board/board-note/board-note.component.html</context>
-          <context context-type="linenumber">14</context>
+          <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
       <trans-unit id="7a91e24cda07c3ccff6a84d88c25de674bf288f0" datatype="html">
         <source>Move down</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/board/board-note/board-note.component.html</context>
-          <context context-type="linenumber">17</context>
+          <context context-type="linenumber">16</context>
         </context-group>
       </trans-unit>
       <trans-unit id="c579a35156940ef439082b06bdaea30f4f778073" datatype="html">
         <source>EDIT</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/board/board-note/board-note.component.html</context>
-          <context context-type="linenumber">21</context>
+          <context context-type="linenumber">20</context>
         </context-group>
       </trans-unit>
       <trans-unit id="599ed0b9026862f23255bcfa71129a4040914b01" datatype="html">
         <source>Edit content</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/board/board-note/board-note.component.html</context>
-          <context context-type="linenumber">21</context>
+          <context context-type="linenumber">20</context>
         </context-group>
       </trans-unit>
       <trans-unit id="58da9c857decba41ff78e241457173ebd3f1335f" datatype="html">
         <source>Change color</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/board/board-note/board-note.component.html</context>
-          <context context-type="linenumber">23</context>
+          <context context-type="linenumber">22</context>
         </context-group>
       </trans-unit>
       <trans-unit id="9a22a9cb2a768a130bb35302661d70b97e3bf4bb" datatype="html">
         <source>Move to another board</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/board/board-note/board-note.component.html</context>
-          <context context-type="linenumber">27</context>
+          <context context-type="linenumber">26</context>
         </context-group>
       </trans-unit>
       <trans-unit id="826b25211922a1b46436589233cb6f1a163d89b7" datatype="html">
         <source>Delete</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/board/board-note/board-note.component.html</context>
-          <context context-type="linenumber">37</context>
+          <context context-type="linenumber">36</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/settings/board-settings/board-settings.component.html</context>
@@ -618,6 +658,22 @@
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
           <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cb7e30cef8f5b08f1ecea9b5923787284478b922" datatype="html">
+        <source>Refresh board</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/board/board-panel/board-panel.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="85ece5675030ab3439558d0e67671e75bba9f39b" datatype="html">
+        <source>
+          Add a note
+        </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/board/board-panel/board-panel.component.html</context>
+          <context context-type="linenumber">27</context>
         </context-group>
       </trans-unit>
     </body>

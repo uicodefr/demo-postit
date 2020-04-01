@@ -1,15 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-
 import { PostitService } from '../../service/postit/postit.service';
 import { PostitNote } from '../../model/postit/postit-note';
 import { Board } from '../../model/postit/board';
-import { GlobalInfoService } from '../../service/util/global-info.service';
-import { AlertType } from '../../const/alert-type';
-import { ArrayUtils } from '../../utils/array-utils';
 import { GlobalService } from '../../service/global/global.service';
 import { GlobalConstant } from '../../const/global-constant';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { ViewListComponent } from './view-list/view-list.component';
 
 @Component({
   selector: 'app-board',
@@ -20,93 +18,66 @@ export class BoardComponent implements OnInit {
   public boardList: Array<Board>;
   public noteListMap = new Map<number, Array<PostitNote>>();
 
+  public view: string;
   public selectedIndex = 0;
-  public currentBoard: Board;
-  public otherBoardList: Array<Board> = [];
 
   public parameterNoteMax: number;
 
   public constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private globalInfoService: GlobalInfoService,
     private globalService: GlobalService,
-    private postitService: PostitService
+    private postitService: PostitService,
+    private matBottomSheet: MatBottomSheet
   ) {}
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.globalService.getParameterValue(GlobalConstant.Parameter.NOTE_MAX).then(paramValue => {
       this.parameterNoteMax = Number(paramValue);
     });
 
     this.postitService.getBoardList().then(boardList => {
       this.boardList = boardList;
-
-      this.route.params.subscribe(routeParams => {
-        const selectedBoardId = parseInt(routeParams['id'], 10);
-        this.selectedIndex = this.boardList.findIndex(board => board.id === selectedBoardId);
+      this.route.params.subscribe(params => {
+        this.view = params['view'];
+        if (!this.boardList || this.boardList.length === 0) {
+          return;
+        }
+        if (this.view === 'table') {
+          // In view "table", we load all boards
+          this.boardList.forEach(board => this.loadNoteList(board.id));
+        } else if (this.view !== 'panels') {
+          // In view "tabs" (default view), we load the selected tab
+          if (params['id']) {
+            const selectedBoardId = parseInt(params['id'], 10);
+            this.loadNoteList(selectedBoardId);
+            this.selectedIndex = this.boardList.findIndex(board => board.id === selectedBoardId);
+          } else {
+            this.router.navigate(['board', { id: '' + this.boardList[0].id }]);
+          }
+        }
       });
     });
   }
 
-  public changeBoard(event: MatTabChangeEvent) {
+  public changeTabBoard(event: MatTabChangeEvent): void {
     if (event.index < this.boardList.length) {
-      this.currentBoard = this.boardList[event.index];
-      this.otherBoardList = this.boardList.filter(board => board.id !== this.currentBoard.id);
-      this.loadNoteList(this.currentBoard.id);
-      this.router.navigate(['board', this.currentBoard.id]);
+      const currentBoard = this.boardList[event.index];
+      this.router.navigate(['board', { id: '' + currentBoard.id }]);
     }
   }
 
-  private loadNoteList(boardId: number) {
+  public loadNoteList(boardId: number): void {
     this.postitService.getNoteList(boardId).then(noteList => {
       this.noteListMap.set(boardId, noteList);
     });
   }
 
-  public refreshCurrentBoard() {
-    this.loadNoteList(this.currentBoard.id);
+  public getOtherBoardList(boardId: number) {
+    return this.boardList.filter(board => board.id !== boardId);
   }
 
-  public addNote(board: Board) {
-    const newNote = new PostitNote();
-    newNote.boardId = board.id;
-    newNote.name = $localize`:@@board.newNote:New note`;
-
-    this.postitService.createNote(newNote).then(noteCreated => {
-      this.noteListMap.get(board.id).push(noteCreated);
-      this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@board.newNoteCreated:New note created`);
-
-      this.loadNoteList(board.id);
-    });
-  }
-
-  public reorderBoard(note: PostitNote) {
-    let orderNum = 1;
-    for (const noteOfBoard of this.noteListMap.get(note.boardId)) {
-      if (noteOfBoard.id === note.id) {
-        noteOfBoard.orderNum = note.orderNum;
-      } else {
-        if (note.orderNum === orderNum) {
-          orderNum++;
-        }
-        noteOfBoard.orderNum = orderNum++;
-      }
-    }
-
-    this.noteListMap.get(note.boardId).sort((note1, note2) => {
-      return note1.orderNum - note2.orderNum;
-    });
-
-    this.loadNoteList(note.boardId);
-  }
-
-  public takeOffNote(note: PostitNote) {
-    const noteList = this.noteListMap.get(note.boardId);
-    ArrayUtils.removeElement(noteList, value => {
-      return value.id === note.id;
-    });
-
-    this.loadNoteList(note.boardId);
+  public openChangeView(): void {
+    this.matBottomSheet.open(ViewListComponent);
   }
 }

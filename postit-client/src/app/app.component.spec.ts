@@ -9,6 +9,7 @@ import { UrlConstant } from './const/url-constant';
 import { User } from './model/user/user';
 import { GlobalStatus } from './model/global/global-status';
 import { CountLikes } from './model/global/count-likes';
+import { Observable } from 'rxjs';
 
 let httpMock: HttpTestingController;
 
@@ -48,7 +49,7 @@ describe('AppComponent', () => {
     fixture.autoDetectChanges(true);
 
     expect(app.initApp).toEqual(false);
-    app.likes$.subscribe(countLikes => {
+    (app.likes$ as Observable<number>).subscribe(countLikes => {
       expect(countLikes).toEqual(12);
     });
 

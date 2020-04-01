@@ -10,14 +10,15 @@ import { AuthGuard } from './service/auth/auth.guard';
 const routes: Routes = [
   {
     path: '',
-    component: BoardComponent
+    redirectTo: '/board',
+    pathMatch: 'full'
   },
   {
     path: 'login',
     component: LoginComponent
   },
   {
-    path: 'board/:id',
+    path: 'board',
     component: BoardComponent
   },
   {

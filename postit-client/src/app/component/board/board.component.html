@@ -1,38 +1,68 @@
-<mat-tab-group mat-stretch-tabs [(selectedIndex)]="selectedIndex" (selectedTabChange)="changeBoard($event)">
+<div class="board">
+  <div class="changeDisplayMenu">
+    <button mat-raised-button color="accent" (click)="openChangeView()" title="Change boards view" i18n-title>
+      <mat-icon>view_list</mat-icon> &nbsp;
+      <ng-container i18n>Change view</ng-container>
+    </button>
+  </div>
 
-  <mat-tab *ngFor="let board of boardList">
-    <ng-template mat-tab-label>
-      <span class="tabTitle">
-        {{ board.name }}
-      </span>
-    </ng-template>
+  <ng-container [ngSwitch]="view">
+    <!-- Panels View -->
+    <mat-accordion *ngSwitchCase="'panels'" multi="true" togglePosition="before">
+      <mat-expansion-panel *ngFor="let board of boardList" (opened)="loadNoteList(board.id)">
+        <mat-expansion-panel-header>
+          <span class="boardTitle">
+            {{ board.name }}
+          </span>
+        </mat-expansion-panel-header>
+        <app-board-panel
+          [board]="board"
+          [noteList]="noteListMap.get(board.id)"
+          [otherBoardList]="getOtherBoardList(board.id)"
+          [parameterNoteMax]="parameterNoteMax"
+          (askRefreshBoard)="loadNoteList($event)"
+        ></app-board-panel>
+      </mat-expansion-panel>
+    </mat-accordion>
 
-    <ng-template matTabContent>
-      <div class="cardBoard" *ngIf="noteListMap.get(board.id)">
-
-        <app-board-note *ngFor="let note of noteListMap.get(board.id)" [note]="note" [otherBoardList]="otherBoardList"
-          (takeOffNote)="takeOffNote($event)" (changeNote)="refreshCurrentBoard()" (orderNote)="reorderBoard($event)">
-        </app-board-note>
-
-        <mat-card class="cardButtons">
-          <mat-card-content>
-            <div class="buttonCard">
-
-              <button (click)="refreshCurrentBoard()" mat-mini-fab color="primary" title="Refresh board" i18n-title>
-                <mat-icon>refresh</mat-icon>
-              </button>
-
-              <button *ngIf="parameterNoteMax && parameterNoteMax > noteListMap.get(board.id).length"
-                (click)="addNote(board)" mat-raised-button color="primary" appHighlight i18n>
-                Add a note
-              </button>
-
-            </div>
-          </mat-card-content>
-        </mat-card>
-
+    <!-- Table View-->
+    <div *ngSwitchCase="'table'" class="flexTable">
+      <div *ngFor="let board of boardList" class="flexPanel">
+        <div class="boardTitle">{{ board.name }}</div>
+        <app-board-panel
+          [board]="board"
+          [noteList]="noteListMap.get(board.id)"
+          [otherBoardList]="getOtherBoardList(board.id)"
+          [parameterNoteMax]="parameterNoteMax"
+          (askRefreshBoard)="loadNoteList($event)"
+        ></app-board-panel>
       </div>
-    </ng-template>
-  </mat-tab>
+    </div>
 
-</mat-tab-group>
+    <!-- Tabs View (default) -->
+    <mat-tab-group
+      *ngSwitchDefault
+      mat-stretch-tabs
+      [(selectedIndex)]="selectedIndex"
+      (selectedTabChange)="changeTabBoard($event)"
+    >
+      <mat-tab *ngFor="let board of boardList">
+        <ng-template mat-tab-label>
+          <span class="boardTitle">
+            {{ board.name }}
+          </span>
+        </ng-template>
+
+        <ng-template matTabContent>
+          <app-board-panel
+            [board]="board"
+            [noteList]="noteListMap.get(board.id)"
+            [otherBoardList]="getOtherBoardList(board.id)"
+            [parameterNoteMax]="parameterNoteMax"
+            (askRefreshBoard)="loadNoteList($event)"
+          ></app-board-panel>
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
+  </ng-container>
+</div>

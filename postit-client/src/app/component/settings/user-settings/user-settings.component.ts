@@ -57,7 +57,7 @@ export class UserSettingsComponent implements OnInit {
   }
 
   public isValidForSave(user: User): boolean {
-    return (
+    return !!(
       user &&
       user.username &&
       user.username.length > 1 &&
