@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ColorizeNoteDialogComponent } from './colorize-note-dialog.component';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { PostitService } from 'src/app/service/postit/postit.service';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AppMaterialModule } from 'src/app/app-material.module';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ColorizeNoteDialogComponent', () => {
   let component: ColorizeNoteDialogComponent;
@@ -12,16 +12,14 @@ describe('ColorizeNoteDialogComponent', () => {
     const mockDialogRef = {
       close: jasmine.createSpy('close')
     };
-    const postitSpy = jasmine.createSpyObj('PostitService', ['updateNote']);
 
     TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, AppMaterialModule],
       declarations: [ColorizeNoteDialogComponent],
       providers: [
-        { provide: MatDialogRef, useValue: mockDialogRef },
         { provide: MAT_DIALOG_DATA, useValue: {} },
-        { provide: PostitService, useValue: postitSpy }
-      ],
-      imports: [MatDialogModule]
+        { provide: MatDialogRef, useValue: mockDialogRef }
+      ]
     }).compileComponents();
   }));
 

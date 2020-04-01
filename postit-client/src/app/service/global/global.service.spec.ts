@@ -1,14 +1,11 @@
 import { TestBed, inject } from '@angular/core/testing';
-
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { GlobalService } from './global.service';
-import { RestClientService } from '../util/rest-client.service';
 
 describe('GlobalService', () => {
   beforeEach(() => {
-    const restClientSpy = jasmine.createSpyObj('RestClientService', ['get', 'post', 'put', 'patch', 'delete']);
-
     TestBed.configureTestingModule({
-      providers: [GlobalService, { provide: RestClientService, useValue: restClientSpy }]
+      imports: [HttpClientTestingModule]
     });
   });
 

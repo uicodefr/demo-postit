@@ -1,64 +1,33 @@
-import { TestBed, async, tick } from '@angular/core/testing';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { TestBed, async } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { of } from 'rxjs';
-
 import { AppComponent } from './app.component';
-import { GlobalInfoService } from './service/util/global-info.service';
-import { GlobalService } from './service/global/global.service';
 import { PageNotFoundComponent } from './component/page-not-found/page-not-found.component';
-import { AuthService } from './service/auth/auth.service';
-import { LikeService } from './service/global/like.service';
-import { MatMenuModule } from '@angular/material/menu';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { AppMaterialModule } from './app-material.module';
+import { UrlConstant } from './const/url-constant';
+import { User } from './model/user/user';
+import { GlobalStatus } from './model/global/global-status';
+import { CountLikes } from './model/global/count-likes';
+
+let httpMock: HttpTestingController;
+
+function setTimeoutPromise(milliseconds: number): Promise<void> {
+  return new Promise(resolve => {
+    setTimeout(resolve, milliseconds);
+  });
+}
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
-    const globalInfoSpy = jasmine.createSpyObj('GlobalInfoService', ['getLoaderObservable']);
-    globalInfoSpy.getLoaderObservable.and.returnValue(of());
-
-    const globalSpy = jasmine.createSpyObj('GlobalService', [
-      'getStatus',
-      'launchCountLikeTimer',
-      'getCountLikeObservable',
-      'addLike'
-    ]);
-    globalSpy.getStatus.and.returnValue(Promise.resolve({ status: 'true' }));
-    globalSpy.getCountLikeObservable.and.returnValue(of());
-
-    const likeSpy = jasmine.createSpyObj('LikeService', ['getCountLikeObservable', 'listenCountLikeTimer']);
-    likeSpy.getCountLikeObservable.and.returnValue(of());
-
-    const authSpy = jasmine.createSpyObj('AuthService', ['getCurrentUser', 'getRefreshedCurrentUser']);
-    authSpy.getRefreshedCurrentUser.and.returnValue(Promise.resolve(null));
-    authSpy.getCurrentUser.and.returnValue(of());
-
     TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, RouterTestingModule, AppMaterialModule],
       declarations: [AppComponent, PageNotFoundComponent],
-      providers: [
-        { provide: GlobalInfoService, useValue: globalInfoSpy },
-        { provide: GlobalService, useValue: globalSpy },
-        { provide: LikeService, useValue: likeSpy },
-        { provide: AuthService, useValue: authSpy }
-      ],
-      imports: [
-        RouterModule.forRoot([
-          {
-            path: '',
-            component: PageNotFoundComponent
-          }
-        ]),
-        MatToolbarModule,
-        MatIconModule,
-        MatProgressSpinnerModule,
-        MatSnackBarModule,
-        MatMenuModule
-      ],
+      providers: [],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
+
+    httpMock = TestBed.inject(HttpTestingController);
   }));
 
   it('should create the app', async(() => {
@@ -78,18 +47,28 @@ describe('AppComponent', () => {
     });
   }));
 
-  it('should render a h1 tag', async(() => {
+  it('should render a h1 tag', async(async () => {
     const fixture = TestBed.createComponent(AppComponent);
+    fixture.autoDetectChanges(true);
     const app = fixture.debugElement.componentInstance;
-
     expect(app.initApp).toEqual(false);
-    fixture.detectChanges();
+
+    const mockRequestUser = httpMock.expectOne(UrlConstant.User.CURRENT_USER);
+    mockRequestUser.flush({ id: 1, username: 'user', enabled: true, roleList: ['ROLE_USER'] } as User);
+    const mockRequestStatus = httpMock.expectOne(UrlConstant.Global.STATUS);
+    mockRequestStatus.flush({ status: 'true' } as GlobalStatus);
+    const mockRequestLikeCount = httpMock.expectOne(UrlConstant.Global.LIKE_COUNT);
+    mockRequestLikeCount.flush({ count: 12 } as CountLikes);
+
+    httpMock.verify();
+    // Wait 1s because the observable $likes
+    await setTimeoutPromise(1000);
 
     fixture.whenStable().then(() => {
       expect(app.initApp).toEqual(true);
-      fixture.detectChanges();
       const compiled = fixture.debugElement.nativeElement;
       expect(compiled.querySelector('h1').textContent).toContain('Post-It');
+      expect(compiled.querySelector('.mat-badge-content').textContent).toEqual(12);
     });
   }));
 });

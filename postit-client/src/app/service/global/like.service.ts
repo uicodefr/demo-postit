@@ -1,11 +1,10 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Client, StompConfig } from '@stomp/stompjs';
-
-import { RestClientService } from '../util/rest-client.service';
 import { UrlConstant } from '../../const/url-constant';
 import { CountLikes } from '../../model/global/count-likes';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -18,14 +17,14 @@ export class LikeService {
 
   private stompClient: Client;
 
-  public constructor(private restClientService: RestClientService) {}
+  public constructor(private httpClient: HttpClient) {}
 
   public getCountLikeObservable(): Observable<number> {
     return this.countLikeSubject.asObservable();
   }
 
   private countLike() {
-    this.restClientService
+    this.httpClient
       .get<CountLikes>(UrlConstant.Global.LIKE_COUNT)
       .toPromise()
       .then(countLikes => {
@@ -75,8 +74,8 @@ export class LikeService {
   }
 
   public addLike() {
-    this.restClientService
-      .post<void>(UrlConstant.Global.LIKE)
+    this.httpClient
+      .post<void>(UrlConstant.Global.LIKE, null)
       .toPromise()
       .then(() => {
         if (!LikeService.LIKE_WEB_SOCKET) {

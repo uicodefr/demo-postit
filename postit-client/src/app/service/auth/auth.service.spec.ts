@@ -1,28 +1,18 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClient } from '@angular/common/http';
-
 import { AuthService } from './auth.service';
-import { UserService } from '../user/user.service';
-import { Router } from '@angular/router';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('AuthService', () => {
   beforeEach(() => {
-    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
-    const httpClientSpy = jasmine.createSpyObj('HttpClient', ['get', 'post', 'put', 'patch', 'delete']);
-    const userSpy = jasmine.createSpyObj('PostitService', ['getUserList']);
-    userSpy.getUserList.and.returnValue(Promise.resolve([]));
-
     TestBed.configureTestingModule({
-      providers: [
-        { provide: Router, useValue: routerSpy },
-        { provide: HttpClient, useValue: httpClientSpy },
-        { provide: UserService, useValue: userSpy }
-      ]
+      imports: [HttpClientTestingModule, RouterTestingModule],
+      providers: []
     });
   });
 
   it('should be created', () => {
-    const service: AuthService = TestBed.get(AuthService);
+    const service: AuthService = TestBed.inject(AuthService);
     expect(service).toBeTruthy();
   });
 });

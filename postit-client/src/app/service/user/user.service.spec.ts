@@ -1,19 +1,17 @@
 import { TestBed } from '@angular/core/testing';
 
 import { UserService } from './user.service';
-import { RestClientService } from '../util/rest-client.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('UserService', () => {
   beforeEach(() => {
-    const restClientSpy = jasmine.createSpyObj('RestClientService', ['get', 'post', 'put', 'patch', 'delete']);
-
     TestBed.configureTestingModule({
-      providers: [UserService, { provide: RestClientService, useValue: restClientSpy }]
+      imports: [HttpClientTestingModule]
     });
   });
 
   it('should be created', () => {
-    const service: UserService = TestBed.get(UserService);
+    const service: UserService = TestBed.inject(UserService);
     expect(service).toBeTruthy();
   });
 });

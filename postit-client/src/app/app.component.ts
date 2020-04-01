@@ -22,8 +22,8 @@ export class AppComponent implements OnInit, OnDestroy {
   public availableApp = true;
   public isLoggedIn = false;
 
-  private loading$: Observable<boolean>;
-  private likes$: Observable<number>;
+  public loading$: Observable<boolean>;
+  public likes$: Observable<number>;
 
   private userSubscription: Subscription = null;
 

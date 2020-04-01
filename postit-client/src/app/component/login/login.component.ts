@@ -27,6 +27,7 @@ export class LoginComponent implements OnInit {
     this.authService.getCurrentUser().subscribe(user => {
       this.userConnected = user;
     });
+    this.authService.getRefreshedCurrentUser();
 
     this.loginForm = this.formBuilder.group({
       username: ['', [Validators.required]],

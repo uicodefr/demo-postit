@@ -1,36 +1,36 @@
 import { TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
-
 import { PostitService } from './postit.service';
-import { RestClientService } from '../util/rest-client.service';
 import { Board } from '../../model/postit/board';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { UrlConstant } from 'src/app/const/url-constant';
 
 let postitService: PostitService;
-let restClientSpy: jasmine.SpyObj<RestClientService>;
+let httpMock: HttpTestingController;
 
 describe('PostitService', () => {
   beforeEach(() => {
-    restClientSpy = jasmine.createSpyObj('RestClientService', ['get', 'post', 'put', 'patch', 'delete']);
-
     TestBed.configureTestingModule({
-      providers: [PostitService, { provide: RestClientService, useValue: restClientSpy }]
+      imports: [HttpClientTestingModule]
     });
 
-    postitService = TestBed.get(PostitService);
+    postitService = TestBed.inject(PostitService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
-  // Nice Tautological Tests
-  it('getBoardList should return value from a spy', done => {
+  it('getBoardList should call httpClient and return result', done => {
     const boardList: Array<Board> = [];
     boardList.push({ id: 1, name: 'Test 1' });
     boardList.push({ id: 2, name: 'Test 2' });
 
-    restClientSpy.get.and.returnValue(of(boardList));
-
     postitService.getBoardList().then(result => {
-      expect(restClientSpy.get).toHaveBeenCalled();
       expect(result).toBe(boardList);
       done();
     });
+
+    const mockRequest = httpMock.expectOne(UrlConstant.Postit.BOARDS);
+    expect(mockRequest.request.method).toEqual('GET');
+    expect(mockRequest.request.responseType).toEqual('json');
+    mockRequest.flush(boardList);
+    httpMock.verify();
   });
 });

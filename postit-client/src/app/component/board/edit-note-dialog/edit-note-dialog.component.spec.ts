@@ -1,10 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { EditNoteDialogComponent } from './edit-note-dialog.component';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatInputModule } from '@angular/material/input';
-import { PostitService } from 'src/app/service/postit/postit.service';
-import { FormsModule } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { AppMaterialModule } from 'src/app/app-material.module';
 
 describe('EditNoteDialogComponent', () => {
   let component: EditNoteDialogComponent;
@@ -14,18 +12,15 @@ describe('EditNoteDialogComponent', () => {
     const mockDialogRef = {
       close: jasmine.createSpy('close')
     };
-    const postitSpy = jasmine.createSpyObj('PostitService', ['updateNote']);
 
     TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, AppMaterialModule],
       declarations: [EditNoteDialogComponent],
       providers: [
-        { provide: MatDialogRef, useValue: mockDialogRef },
         { provide: MAT_DIALOG_DATA, useValue: {} },
-        { provide: PostitService, useValue: postitSpy }
-      ],
-      imports: [FormsModule, MatDialogModule, MatInputModule]
-    })
-      .compileComponents();
+        { provide: MatDialogRef, useValue: mockDialogRef }
+      ]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -37,5 +32,4 @@ describe('EditNoteDialogComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
 });

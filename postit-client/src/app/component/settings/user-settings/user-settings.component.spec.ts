@@ -1,44 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatSelectModule } from '@angular/material/select';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-
+import { MatDialog } from '@angular/material/dialog';
 import { UserSettingsComponent } from './user-settings.component';
-import { UserService } from 'src/app/service/user/user.service';
-import { GlobalInfoService } from 'src/app/service/util/global-info.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { AppMaterialModule } from 'src/app/app-material.module';
 
 describe('UserSettingsComponent', () => {
   let component: UserSettingsComponent;
   let fixture: ComponentFixture<UserSettingsComponent>;
 
   beforeEach(async(() => {
-    const globalInfoSpy = jasmine.createSpyObj('GlobalInfoService', ['showAlert']);
-    const userSpy = jasmine.createSpyObj('PostitService', ['getUserList', 'getRoleList']);
-    userSpy.getUserList.and.returnValue(Promise.resolve([]));
-    userSpy.getRoleList.and.returnValue(Promise.resolve([]));
-
     TestBed.configureTestingModule({
       declarations: [UserSettingsComponent],
-      providers: [
-        MatDialog,
-        { provide: UserService, useValue: userSpy },
-        { provide: GlobalInfoService, useValue: globalInfoSpy }
-      ],
-      imports: [
-        BrowserAnimationsModule,
-        FormsModule,
-        MatDialogModule,
-        MatInputModule,
-        MatTableModule,
-        MatPaginatorModule,
-        MatSelectModule,
-        MatCheckboxModule
-      ]
+      providers: [MatDialog],
+      imports: [HttpClientTestingModule, AppMaterialModule, BrowserAnimationsModule, FormsModule]
     }).compileComponents();
   }));
 

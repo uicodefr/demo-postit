@@ -20,8 +20,9 @@
 
     <mat-progress-spinner *ngIf="loading$ | async" mode="indeterminate" color="accent" diameter="40">
     </mat-progress-spinner>
-    <button mat-icon-button title="Change language" i18n-title [matMenuTriggerFor]="langMenu">
-      <mat-icon>language</mat-icon>
+    <button mat-button title="Change language" i18n-title [matMenuTriggerFor]="langMenu">
+      <mat-icon>language</mat-icon> &nbsp;
+      <ng-container i18n>Change language</ng-container>
     </button>
     <mat-menu #langMenu="matMenu">
       <button mat-menu-item i18n (click)="changeLang('en')">English</button>

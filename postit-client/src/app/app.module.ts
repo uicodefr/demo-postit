@@ -19,7 +19,7 @@ import { UserSettingsComponent } from './component/settings/user-settings/user-s
 import { LoginComponent } from './component/login/login.component';
 import { AppMaterialModule } from './app-material.module';
 import { HasRoleDirective } from './directive/has-role.directive';
-import { AuthInterceptor } from './service/auth/auth.interceptor';
+import { AppHttpInterceptor } from './service/util/app-http.interceptor';
 import { LocalizeDictionaryComponent } from './component/shared/localize-dictionary/localize-dictionary.component';
 
 @NgModule({
@@ -53,7 +53,7 @@ import { LocalizeDictionaryComponent } from './component/shared/localize-diction
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
+      useClass: AppHttpInterceptor,
       multi: true
     }
   ],
