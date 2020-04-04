@@ -92,9 +92,9 @@
           <context context-type="linenumber">3</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="3b0d9f9dee53acd2bc53f9e02483b2003c815ca5" datatype="html">
-        <source>individually display with a tab for each board</source>
-        <target state="translated">affichage individuel avec un onglet pour chaque tableau</target>
+      <trans-unit id="2118c1c561c987f5baec74cd7a808453e26b1ef0" datatype="html">
+        <source>individually display with a tab for each board (default)</source>
+        <target state="translated">affichage individuel avec un onglet pour chaque tableau (défaut)</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/board/view-list/view-list.component.html</context>
           <context context-type="linenumber">4</context>
@@ -105,7 +105,7 @@
         <target state="translated">Panneaux</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/board/view-list/view-list.component.html</context>
-          <context context-type="linenumber">10</context>
+          <context context-type="linenumber">15</context>
         </context-group>
       </trans-unit>
       <trans-unit id="7ab1129fca7db891925a942e1878c4cf0030743d" datatype="html">
@@ -113,7 +113,7 @@
         <target state="translated">chaque tableau dans un panneau qui peut être affiché ou caché</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/board/view-list/view-list.component.html</context>
-          <context context-type="linenumber">11</context>
+          <context context-type="linenumber">16</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5c8ea0443990792280e53ee2cc87e577940c95cf" datatype="html">
@@ -121,15 +121,15 @@
         <target state="translated">Tableau</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/board/view-list/view-list.component.html</context>
-          <context context-type="linenumber">17</context>
+          <context context-type="linenumber">27</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="5f89462b048ee9d65ba0c46b951f361a522aafcc" datatype="html">
-        <source>all boards in column</source>
-        <target state="translated">tous les tableaux en colonne</target>
+      <trans-unit id="fb7650fe27a051042ce6a248226a4184c4f6c082" datatype="html">
+        <source>all boards in column (support drag and drop)</source>
+        <target state="translated">tous les tableaux en colonne (supporte le glisser-déposer)</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/board/view-list/view-list.component.html</context>
-          <context context-type="linenumber">18</context>
+          <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
       <trans-unit id="903a50623ba38e82df97fffaf3562cd6676d246f" datatype="html">
@@ -194,7 +194,7 @@
       </trans-unit>
       <trans-unit id="d7b35c384aecd25a516200d6921836374613dfe7" datatype="html">
         <source>Cancel</source>
-        <target state="translated">Annuler</target>
+        <target state="needs-l10n">Annuler</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/board/edit-note-dialog/edit-note-dialog.component.html</context>
           <context context-type="linenumber">17</context>
@@ -202,7 +202,7 @@
       </trans-unit>
       <trans-unit id="52c9a103b812f258bcddc3d90a6e3f46871d25fe" datatype="html">
         <source>Save</source>
-        <target state="translated">Sauvegarder</target>
+        <target state="needs-l10n">Sauvegarder</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/board/edit-note-dialog/edit-note-dialog.component.html</context>
           <context context-type="linenumber">18</context>
@@ -298,7 +298,7 @@
       </trans-unit>
       <trans-unit id="58da9c857decba41ff78e241457173ebd3f1335f" datatype="html">
         <source>Change color</source>
-        <target state="translated">Changer de couleur</target>
+        <target state="needs-l10n">Changer de couleur</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/board/board-note/board-note.component.html</context>
           <context context-type="linenumber">22</context>
@@ -342,7 +342,7 @@
       </trans-unit>
       <trans-unit id="20371277706eedf7fd8a3f51633ca5d801cd4fc2" datatype="html">
         <source> Name </source>
-        <target state="translated">Nom</target>
+        <target state="needs-l10n">Nom</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/settings/board-settings/board-settings.component.html</context>
           <context context-type="linenumber">13</context>
@@ -350,7 +350,7 @@
       </trans-unit>
       <trans-unit id="cff1428d10d59d14e45edec3c735a27b5482db59" datatype="html">
         <source>Name</source>
-        <target state="needs-l10n">Nom</target>
+        <target state="translated">Nom</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/settings/board-settings/board-settings.component.html</context>
           <context context-type="linenumber">16</context>
@@ -372,7 +372,7 @@
         <source>
               Save
             </source>
-        <target state="needs-l10n">Sauvegarder</target>
+        <target state="translated">Sauvegarder</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/settings/board-settings/board-settings.component.html</context>
           <context context-type="linenumber">26</context>
@@ -392,7 +392,7 @@
       </trans-unit>
       <trans-unit id="fec8de042d9645af8886e515b9c4e6334d4ab2c8" datatype="html">
         <source> Username </source>
-        <target state="translated">Nom d'utilisateur</target>
+        <target state="needs-l10n">Nom d'utilisateur</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/settings/user-settings/user-settings.component.html</context>
           <context context-type="linenumber">13</context>
@@ -400,7 +400,7 @@
       </trans-unit>
       <trans-unit id="08c74dc9762957593b91f6eb5d65efdfc975bf48" datatype="html">
         <source>Username</source>
-        <target state="needs-l10n">Nom d'utilisateur</target>
+        <target state="translated">Nom d'utilisateur</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/settings/user-settings/user-settings.component.html</context>
           <context context-type="linenumber">16</context>
@@ -412,7 +412,7 @@
       </trans-unit>
       <trans-unit id="1f1f78b275fee6ac81f9c2d247499d83e8fb0d62" datatype="html">
         <source> Password </source>
-        <target state="translated">Mot de passe</target>
+        <target state="needs-l10n">Mot de passe</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/settings/user-settings/user-settings.component.html</context>
           <context context-type="linenumber">22</context>
@@ -420,7 +420,7 @@
       </trans-unit>
       <trans-unit id="c32ef07f8803a223a83ed17024b38e8d82292407" datatype="html">
         <source>Password</source>
-        <target state="needs-l10n">Mot de passe</target>
+        <target state="translated">Mot de passe</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/settings/user-settings/user-settings.component.html</context>
           <context context-type="linenumber">25</context>
@@ -602,12 +602,20 @@
           <context context-type="linenumber">8</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="board.noteMovedWithDragAndDrop" datatype="html">
+        <source>Note moved with drag-and-drop</source>
+        <target state="translated">Note déplacée avec le glisser-déposer</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="boardNote.noteMoved" datatype="html">
         <source>Note moved</source>
         <target state="translated">Note déplacée</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
-          <context context-type="linenumber">10</context>
+          <context context-type="linenumber">11</context>
         </context-group>
       </trans-unit>
       <trans-unit id="boardNote.deleteNote" datatype="html">
@@ -615,7 +623,7 @@
         <target state="translated">Supprimer la note</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
-          <context context-type="linenumber">11</context>
+          <context context-type="linenumber">12</context>
         </context-group>
       </trans-unit>
       <trans-unit id="boardNote.deleteNoteConfirm" datatype="html">
@@ -623,7 +631,7 @@
         <target state="translated">Voulez-vous vraiment supprimer cette note ?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
-          <context context-type="linenumber">12</context>
+          <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
       <trans-unit id="boardNote.noteDeleted" datatype="html">
@@ -631,7 +639,7 @@
         <target state="translated">Note supprimée</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
-          <context context-type="linenumber">13</context>
+          <context context-type="linenumber">14</context>
         </context-group>
       </trans-unit>
       <trans-unit id="boardNote.noteUpdated" datatype="html">
@@ -639,7 +647,7 @@
         <target state="translated">Note mise à jour</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
-          <context context-type="linenumber">14</context>
+          <context context-type="linenumber">15</context>
         </context-group>
       </trans-unit>
       <trans-unit id="login.signinFailed" datatype="html">
@@ -647,7 +655,7 @@
         <target state="translated">Utilisez le nom d'utilisateur / mot de passe suivant pour vous connecter :</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
-          <context context-type="linenumber">16</context>
+          <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit>
       <trans-unit id="boardSettings.boardUpdated" datatype="html">
@@ -655,7 +663,7 @@
         <target state="translated">Tableau mis à jour</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
-          <context context-type="linenumber">18</context>
+          <context context-type="linenumber">19</context>
         </context-group>
       </trans-unit>
       <trans-unit id="boardSettings.deleteBoard" datatype="html">
@@ -663,7 +671,7 @@
         <target state="translated">Supprimer le tableau</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
-          <context context-type="linenumber">19</context>
+          <context context-type="linenumber">20</context>
         </context-group>
       </trans-unit>
       <trans-unit id="boardSettings.deleteBoardConfirm" datatype="html">
@@ -671,7 +679,7 @@
         <target state="translated">Voulez-vous vraiment supprimer ce tableau ?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
-          <context context-type="linenumber">20</context>
+          <context context-type="linenumber">21</context>
         </context-group>
       </trans-unit>
       <trans-unit id="boardSettings.boardDeleted" datatype="html">
@@ -679,7 +687,7 @@
         <target state="translated">Tableau supprimé</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
-          <context context-type="linenumber">21</context>
+          <context context-type="linenumber">22</context>
         </context-group>
       </trans-unit>
       <trans-unit id="boardSettings.newBoard" datatype="html">
@@ -687,7 +695,7 @@
         <target state="translated">Nouveau Tableau</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
-          <context context-type="linenumber">22</context>
+          <context context-type="linenumber">23</context>
         </context-group>
       </trans-unit>
       <trans-unit id="boardSettings.boardCreated" datatype="html">
@@ -695,7 +703,7 @@
         <target state="translated">Tableau créé</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
-          <context context-type="linenumber">23</context>
+          <context context-type="linenumber">24</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userSettings.userUpdated" datatype="html">
@@ -703,7 +711,7 @@
         <target state="translated">Utilisateur mis à jour</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
-          <context context-type="linenumber">25</context>
+          <context context-type="linenumber">26</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userSettings.deleteUser" datatype="html">
@@ -711,7 +719,7 @@
         <target state="translated">Supprimer l'utilisateur</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
-          <context context-type="linenumber">26</context>
+          <context context-type="linenumber">27</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userSettings.deleteUserConfirm" datatype="html">
@@ -719,7 +727,7 @@
         <target state="translated">Voulez-vous vraiment supprimer cet utilisateur?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
-          <context context-type="linenumber">27</context>
+          <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userSettings.userDeleted" datatype="html">
@@ -727,7 +735,7 @@
         <target state="translated">Utilisateur supprimé</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
-          <context context-type="linenumber">28</context>
+          <context context-type="linenumber">29</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userSettings.username" datatype="html">
@@ -735,7 +743,7 @@
         <target state="needs-l10n">Nom d'utilisateur</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
-          <context context-type="linenumber">29</context>
+          <context context-type="linenumber">30</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userSettings.userCreated" datatype="html">
@@ -743,7 +751,7 @@
         <target state="translated">Utilisateur créé</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/shared/localize-dictionary/localize-dictionary.component.html</context>
-          <context context-type="linenumber">30</context>
+          <context context-type="linenumber">31</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cb7e30cef8f5b08f1ecea9b5923787284478b922" datatype="html">
@@ -751,7 +759,7 @@
         <target state="translated">Actualiser le tableau</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/board/board-panel/board-panel.component.html</context>
-          <context context-type="linenumber">16</context>
+          <context context-type="linenumber">31</context>
         </context-group>
       </trans-unit>
       <trans-unit id="85ece5675030ab3439558d0e67671e75bba9f39b" datatype="html">
@@ -761,7 +769,7 @@
         <target state="translated">Ajouter une note</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/component/board/board-panel/board-panel.component.html</context>
-          <context context-type="linenumber">27</context>
+          <context context-type="linenumber">42</context>
         </context-group>
       </trans-unit>
     </body>

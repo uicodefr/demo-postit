@@ -26,16 +26,19 @@
     </mat-accordion>
 
     <!-- Table View-->
-    <div *ngSwitchCase="'table'" class="flexTable">
+    <div *ngSwitchCase="'table'" class="flexTable" cdkDropListGroup>
       <div *ngFor="let board of boardList" class="flexPanel">
-        <div class="boardTitle">{{ board.name }}</div>
-        <app-board-panel
-          [board]="board"
-          [noteList]="noteListMap.get(board.id)"
-          [otherBoardList]="getOtherBoardList(board.id)"
-          [parameterNoteMax]="parameterNoteMax"
-          (askRefreshBoard)="loadNoteList($event)"
-        ></app-board-panel>
+        <div cdkDropList [cdkDropListData]="board" (cdkDropListDropped)="dropNote($event)">
+          <div class="boardTitle">{{ board.name }}</div>
+          <app-board-panel
+            [board]="board"
+            [noteList]="noteListMap.get(board.id)"
+            [otherBoardList]="getOtherBoardList(board.id)"
+            [parameterNoteMax]="parameterNoteMax"
+            (askRefreshBoard)="loadNoteList($event)"
+            noteDraggable="true"
+          ></app-board-panel>
+        </div>
       </div>
     </div>
 

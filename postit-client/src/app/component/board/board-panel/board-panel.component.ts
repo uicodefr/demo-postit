@@ -24,6 +24,9 @@ export class BoardPanelComponent implements OnInit {
   @Input()
   public parameterNoteMax: number;
 
+  @Input()
+  public noteDraggable = false;
+
   @Output()
   public askRefreshBoard = new EventEmitter<number>();
 

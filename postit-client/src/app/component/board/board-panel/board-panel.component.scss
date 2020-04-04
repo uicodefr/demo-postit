@@ -7,6 +7,10 @@
   align-items: flex-end;
   padding: $margin-base;
 
+  .noteDraggable {
+    cursor: move;
+  }
+
   .cardButtons {
     width: 200px;
     margin: $margin-small;

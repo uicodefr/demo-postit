@@ -1,14 +1,29 @@
 <div class="cardBoard" *ngIf="noteList">
-  <app-board-note
-    *ngFor="let note of noteList"
-    [note]="note"
-    [otherBoardList]="otherBoardList"
-    (takeOffNote)="takeOffNote($event)"
-    (changeNote)="refreshCurrentBoard()"
-    (orderNote)="reorderBoard($event)"
-    (moveNote)="moveNote($event)"
-  >
-  </app-board-note>
+  <ng-container *ngIf="!noteDraggable">
+    <app-board-note
+      *ngFor="let note of noteList"
+      [note]="note"
+      [otherBoardList]="otherBoardList"
+      (takeOffNote)="takeOffNote($event)"
+      (changeNote)="refreshCurrentBoard()"
+      (orderNote)="reorderBoard($event)"
+      (moveNote)="moveNote($event)"
+    ></app-board-note>
+  </ng-container>
+  <ng-container *ngIf="noteDraggable">
+    <app-board-note
+      *ngFor="let note of noteList"
+      [note]="note"
+      [otherBoardList]="otherBoardList"
+      (takeOffNote)="takeOffNote($event)"
+      (changeNote)="refreshCurrentBoard()"
+      (orderNote)="reorderBoard($event)"
+      (moveNote)="moveNote($event)"
+      cdkDrag
+      [cdkDragData]="note"
+      class="noteDraggable"
+    ></app-board-note>
+  </ng-container>
 
   <mat-card class="cardButtons">
     <mat-card-content>

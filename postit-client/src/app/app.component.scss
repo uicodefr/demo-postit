@@ -1,5 +1,9 @@
 @import '../global.scss';
 
+.mat-toolbar {
+  min-width: 800px;
+}
+
 .appName {
   margin-right: 20px;
   font-size: $font-boost-base;

@@ -8,6 +8,9 @@ import { GlobalService } from '../../service/global/global.service';
 import { GlobalConstant } from '../../const/global-constant';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ViewListComponent } from './view-list/view-list.component';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { AlertType } from 'src/app/const/alert-type';
+import { GlobalInfoService } from 'src/app/service/util/global-info.service';
 
 @Component({
   selector: 'app-board',
@@ -28,6 +31,7 @@ export class BoardComponent implements OnInit {
     private router: Router,
     private globalService: GlobalService,
     private postitService: PostitService,
+    private globalInfoService: GlobalInfoService,
     private matBottomSheet: MatBottomSheet
   ) {}
 
@@ -78,6 +82,44 @@ export class BoardComponent implements OnInit {
   }
 
   public openChangeView(): void {
-    this.matBottomSheet.open(ViewListComponent);
+    this.matBottomSheet.open(ViewListComponent, {
+      data: { currentView: this.view }
+    });
+  }
+
+  public dropNote(event: CdkDragDrop<Board>) {
+    const originBoard = event.previousContainer.data;
+    const destinationBoard = event.container.data;
+
+    const draggedNote = event.item.data as PostitNote;
+    const note = new PostitNote();
+    note.id = draggedNote.id;
+    note.boardId = destinationBoard.id;
+    note.orderNum = event.currentIndex + 1;
+
+    // Move the note before the update for avoid clipping with drag and drop
+    const noteArray = this.noteListMap.get(event.container.data.id);
+    if (event.previousContainer === event.container) {
+      if (noteArray) {
+        moveItemInArray(noteArray, event.previousIndex, event.currentIndex);
+      }
+    } else {
+      const previousNoteArray = this.noteListMap.get(event.previousContainer.data.id);
+      if (noteArray && previousNoteArray) {
+        transferArrayItem(previousNoteArray, noteArray, event.previousIndex, event.currentIndex);
+      }
+    }
+
+    this.postitService.updateNote(note).then(updatedNote => {
+      this.globalInfoService.showAlert(
+        AlertType.SUCCESS,
+        $localize`:@@board.noteMovedWithDragAndDrop:Note moved with drag-and-drop`
+      );
+
+      this.loadNoteList(destinationBoard.id);
+      if (originBoard.id !== destinationBoard.id) {
+        this.loadNoteList(originBoard.id);
+      }
+    });
   }
 }

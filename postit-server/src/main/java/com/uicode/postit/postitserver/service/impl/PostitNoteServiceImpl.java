@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nullable;
 import javax.transaction.Transactional;
 
 import org.apache.logging.log4j.LogManager;
@@ -117,6 +118,8 @@ public class PostitNoteServiceImpl implements PostitNoteService {
     public PostitNoteDto saveNote(Long noteId, PostitNoteDto noteDto)
             throws NotFoundException, InvalidDataException, FunctionnalException {
         PostitNote note = null;
+        boolean reorderBoard = false;
+        Board formerBoard = null;
 
         if (noteId == null) {
             // Creation
@@ -137,37 +140,46 @@ public class PostitNoteServiceImpl implements PostitNoteService {
             Optional<PostitNote> noteOpt = postitNoteDao.findById(noteId);
             note = noteOpt.orElseThrow(() -> new NotFoundException("PostitNote"));
             if (noteDto.getOrderNum() != null) {
-                reorderBoard(note, noteDto);
+                reorderBoard = true;
             }
             LOGGER.info("Update note with the id : {}", noteId);
         }
 
         if (noteDto.getBoardId() != null) {
+            formerBoard = note.getBoard();
             Optional<Board> boardOpt = boardDao.findById(noteDto.getBoardId());
             note.setBoard(boardOpt.orElseThrow(() -> new InvalidDataException("BoardId")));
         }
+        if (reorderBoard) {
+            reorderBoard(note.getBoard(), note, noteDto.getOrderNum());
+            if (formerBoard != null && !note.getBoard().equals(formerBoard)) {
+                reorderBoard(formerBoard, note, null);
+            }
+        }
+
         PostitNoteMapper.INSTANCE.updateEntity(noteDto, note);
 
         return PostitNoteMapper.INSTANCE.toDto(postitNoteDao.save(note));
     }
 
     @Override
-    public void reorderBoard(PostitNote noteToChange, PostitNoteDto noteChangeDto) {
-        if (noteChangeDto.getOrderNum() < 1) {
-            noteChangeDto.setOrderNum(1);
-        } else if (noteChangeDto.getOrderNum() > noteToChange.getBoard().getNoteList().size()) {
-            noteChangeDto.setOrderNum(noteToChange.getBoard().getNoteList().size());
+    public void reorderBoard(Board board, PostitNote noteToChange, @Nullable Integer newNoteOrderNum) {
+        if (newNoteOrderNum != null) {
+            if (newNoteOrderNum < 1) {
+                newNoteOrderNum = 1;
+            } else if (newNoteOrderNum > board.getNoteList().size()) {
+                newNoteOrderNum = board.getNoteList().size() + 1;
+            }
+            noteToChange.setOrderNum(newNoteOrderNum);
         }
 
-        Integer orderNum = 1;
-        for (PostitNote noteOfBoard : noteToChange.getBoard().getNoteList()) {
-            if (noteOfBoard.getId().equals(noteToChange.getId())) {
-                noteToChange.setOrderNum(noteChangeDto.getOrderNum());
-            } else {
-                if (noteChangeDto.getOrderNum().equals(orderNum)) {
-                    orderNum++;
+        Integer iterateOrderNum = 1;
+        for (PostitNote noteOfBoard : board.getNoteList()) {
+            if (!noteOfBoard.equals(noteToChange)) {
+                if (iterateOrderNum.equals(newNoteOrderNum)) {
+                    iterateOrderNum++;
                 }
-                noteOfBoard.setOrderNum(orderNum++);
+                noteOfBoard.setOrderNum(iterateOrderNum++);
             }
         }
     }
@@ -194,7 +206,7 @@ public class PostitNoteServiceImpl implements PostitNoteService {
                 contentLineList.add(note.getText());
                 contentLineList.add(note.getColor());
                 contentLineList.add(note.getOrderNum().toString());
-                
+
                 csvWriter.writeNext(contentLineList.toArray(new String[contentLineList.size()]));
             }
         }

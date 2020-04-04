@@ -47,7 +47,7 @@ export class LikeService {
             const countLikes = JSON.parse(countLikesMsg.body) as CountLikes;
             this.countLikeSubject.next(countLikes.count);
           } else {
-            console.warn('Wrong message from the websocket', countLikesMsg);
+            console.error('Wrong message from the websocket', countLikesMsg);
           }
         });
       };

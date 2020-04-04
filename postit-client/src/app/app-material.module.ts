@@ -19,6 +19,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   exports: [
@@ -40,7 +41,8 @@ import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
     MatProgressBarModule,
     MatMenuModule,
     MatListModule,
-    MatBottomSheetModule
+    MatBottomSheetModule,
+    DragDropModule
   ]
 })
 export class AppMaterialModule {}

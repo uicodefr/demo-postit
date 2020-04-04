@@ -113,7 +113,7 @@ public class PostitNote extends AbstractDatedEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(getId());
     }
 
     @Override
@@ -125,7 +125,7 @@ public class PostitNote extends AbstractDatedEntity {
         if (!(obj instanceof PostitNote))
             return false;
         PostitNote other = (PostitNote) obj;
-        return Objects.equals(id, other.id);
+        return Objects.equals(getId(), other.getId());
     }
 
 }

@@ -50,7 +50,7 @@ public class Parameter {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(getName());
     }
 
     @Override
@@ -62,7 +62,7 @@ public class Parameter {
         if (!(obj instanceof Parameter))
             return false;
         Parameter other = (Parameter) obj;
-        return Objects.equals(name, other.name);
+        return Objects.equals(getName(), other.getName());
     }
 
 }

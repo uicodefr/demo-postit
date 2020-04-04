@@ -26,8 +26,11 @@ jobs:
         version=$(sed "s/^\t<version>\(.*\)<\/version>$/\1/;t;d" pom.xml)
         echo "Version: "$version
         if [[ $version =~ "SNAPSHOT" ]]; then
-          echo ERROR: Wrong version 1>&2
-          exit 1
+          echo "INFO: Remove SNAPSHOT From version"
+          version=${version/-SNAPSHOT/}
+          cd ..
+          ./version.sh $version
+          cd postit-server
         fi
         echo $version > ../server-version.txt
         mkdir -p ~/.m2
@@ -72,8 +75,11 @@ jobs:
         version=$(sed "s/^  \"version\": \"\(.*\)\",$/\1/;t;d" package.json)
         echo "Version: "$version
         if [[ $version =~ "SNAPSHOT" ]]; then
-          echo ERROR: Wrong version 1>&2
-          exit 1
+          echo "INFO: Remove SNAPSHOT From version"
+          version=${version/-SNAPSHOT/}
+          cd ..
+          ./version.sh $version
+          cd postit-client
         fi
         echo $version > ../client-version.txt
       working-directory: ${{ env.working-directory }}

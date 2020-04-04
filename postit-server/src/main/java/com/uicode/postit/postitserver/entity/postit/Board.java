@@ -63,7 +63,7 @@ public class Board extends AbstractDatedEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(getId());
     }
 
     @Override
@@ -75,7 +75,7 @@ public class Board extends AbstractDatedEntity {
         if (!(obj instanceof Board))
             return false;
         Board other = (Board) obj;
-        return Objects.equals(id, other.id);
+        return Objects.equals(getId(), other.getId());
     }
 
 }
