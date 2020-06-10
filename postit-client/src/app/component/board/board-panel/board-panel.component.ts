@@ -3,13 +3,13 @@ import { GlobalInfoService } from 'src/app/service/util/global-info.service';
 import { PostitService } from 'src/app/service/postit/postit.service';
 import { AlertType } from 'src/app/const/alert-type';
 import { PostitNote } from 'src/app/model/postit/postit-note';
-import { ArrayUtils } from 'src/app/utils/array-utils';
+import { ArrayUtil } from 'src/app/util/array-util';
 import { Board } from 'src/app/model/postit/board';
 
 @Component({
   selector: 'app-board-panel',
   templateUrl: './board-panel.component.html',
-  styleUrls: ['./board-panel.component.scss']
+  styleUrls: ['./board-panel.component.scss'],
 })
 export class BoardPanelComponent implements OnInit {
   @Input()
@@ -43,7 +43,7 @@ export class BoardPanelComponent implements OnInit {
     newNote.boardId = this.board.id;
     newNote.name = $localize`:@@board.newNote:New note`;
 
-    this.postitService.createNote(newNote).then(noteCreated => {
+    this.postitService.createNote(newNote).then((noteCreated) => {
       this.noteList.push(noteCreated);
       this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@board.newNoteCreated:New note created`);
 
@@ -73,7 +73,7 @@ export class BoardPanelComponent implements OnInit {
 
   public takeOffNote(note: PostitNote): void {
     const noteList = this.noteList;
-    ArrayUtils.removeElement(noteList, value => {
+    ArrayUtil.removeElement(noteList, (value) => {
       return value.id === note.id;
     });
 

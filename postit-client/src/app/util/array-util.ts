@@ -1,4 +1,4 @@
-export class ArrayUtils {
+export class ArrayUtil {
   public static removeElement<T>(array: Array<T>, predicate: (value: T, index: number, obj: T[]) => boolean) {
     const indexFound = array.findIndex(predicate);
     if (indexFound > -1) {
@@ -6,5 +6,5 @@ export class ArrayUtils {
     }
   }
 
-  private ArrayUtils() {}
+  private constructor() {}
 }
