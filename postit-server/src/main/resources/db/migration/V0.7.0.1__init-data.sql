@@ -1,4 +1,3 @@
--- ##### 0.1.0 ##### --
 -- # GLOBAL # --
 
 INSERT INTO global_parameter (name, value, client_view) VALUES
@@ -28,7 +27,6 @@ INSERT INTO postit_note
     (NOW(), NOW(), 'Ganymede', 'Ganymede (Jupiter III) is the largest and most massive moon of Jupiter and in the Solar System.', 3, NOW(), 'orange', 1),
     (NOW(), NOW(), 'Callisto', 'Callisto (Jupiter IV) is the second-largest moon of Jupiter, after Ganymede.', 4, NOW(), 'pink', 1);
 
--- ##### 0.3.0 ##### --
 -- # GLOBAL # --
 
 INSERT INTO global_parameter (name, value, client_view) VALUES

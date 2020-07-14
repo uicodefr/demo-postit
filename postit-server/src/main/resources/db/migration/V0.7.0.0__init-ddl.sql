@@ -1,4 +1,3 @@
--- ##### 0.1.0 ##### --
 -- # GLOBAL # --
 
 CREATE TABLE global_parameter (
@@ -34,7 +33,6 @@ CREATE TABLE postit_note (
     order_num integer
 );
 
--- ##### 0.3.0 ##### --
 -- # GLOBAL # --
 
 CREATE TABLE global_user (

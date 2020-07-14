@@ -13,7 +13,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     private static final String WEBSOCKET_ENDPOINT = "/websocket";
     
-    @Value("${my.websocket.enable-cors:false}")
+    @Value("${myapp.websocket.enable-cors:false}")
     private Boolean enableCors;
     
     @Override

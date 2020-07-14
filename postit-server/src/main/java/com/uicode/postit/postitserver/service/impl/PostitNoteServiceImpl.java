@@ -72,7 +72,7 @@ public class PostitNoteServiceImpl implements PostitNoteService {
             }
 
             board = new Board();
-            LOGGER.info("Create board with the id : {}", boardId);
+            LOGGER.info("Create board");
 
         } else {
             // Update
@@ -133,7 +133,7 @@ public class PostitNoteServiceImpl implements PostitNoteService {
 
             note = new PostitNote();
             note.setOrderNum(postitNoteDao.getMaxOrderForByBoardId(noteDto.getBoardId()) + 1);
-            LOGGER.info("Create note with the id : {}", noteId);
+            LOGGER.info("Create note");
 
         } else {
             // Update
