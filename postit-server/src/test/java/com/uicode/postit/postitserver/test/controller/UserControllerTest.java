@@ -21,13 +21,13 @@ import com.uicode.postit.postitserver.util.AppTestRequestInterceptor;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
-public class UserControllerTest {
+class UserControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
 
     @Test
-    public void userCrud() {
+    void userCrud() {
         // Get List
         UserDto[] userList = restTemplate.getForObject("/users", UserDto[].class);
         Assertions.assertThat(userList).isNotNull();
@@ -77,7 +77,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void loginLogout() {
+    void loginLogout() {
         // Connect as superadmin
         AppTestRequestInterceptor appTestRequestInterceptor = AppTestRequestInterceptor.addInterceptor(restTemplate);
         appTestRequestInterceptor.simpleGetForCsrf();
@@ -131,6 +131,12 @@ public class UserControllerTest {
         Assertions.assertThat(connectedUser).isNull();
 
         appTestRequestInterceptor.clear();
+    }
+
+    @Test
+    void getRoles() {
+        String[] roles = restTemplate.getForObject("/users/roles", String[].class);
+        Assertions.assertThat(roles).isNotNull().containsExactly("ROLE_BOARD_WRITE", "ROLE_USER_WRITE");
     }
 
 }

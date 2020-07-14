@@ -1,4 +1,4 @@
-package com.uicode.postit.postitserver.test.service;
+package com.uicode.postit.postitserver.test.service.postit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,24 +17,35 @@ import com.uicode.postit.postitserver.exception.FunctionnalException;
 import com.uicode.postit.postitserver.exception.InvalidDataException;
 import com.uicode.postit.postitserver.exception.NotFoundException;
 import com.uicode.postit.postitserver.service.GlobalService;
-import com.uicode.postit.postitserver.service.PostitNoteService;
+import com.uicode.postit.postitserver.service.postit.BoardService;
+import com.uicode.postit.postitserver.service.postit.PostitNoteService;
 import com.uicode.postit.postitserver.util.parameter.ParameterConst;
 
 @SpringBootTest
 @AutoConfigureTestDatabase
-public class PostitServiceTest {
+class PostitNoteServiceTest {
 
     @Autowired
     private PostitNoteService postitNoteService;
 
     @Autowired
+    private BoardService boardService;
+
+    @Autowired
     private GlobalService globalService;
 
     @Test
-    public void fillOrderInCreation() throws NotFoundException, InvalidDataException, FunctionnalException {
+    void getNoteNotFound() {
+        Assertions.assertThatThrownBy(() -> postitNoteService.getNote(42l))
+            .isInstanceOf(NotFoundException.class)
+            .hasMessageContaining("Note");
+    }
+
+    @Test
+    void fillOrderInCreation() throws NotFoundException, InvalidDataException, FunctionnalException {
         BoardDto newBoardDto = new BoardDto();
         newBoardDto.setName("test fillOrderInCreation");
-        newBoardDto = postitNoteService.saveBoard(null, newBoardDto);
+        newBoardDto = boardService.saveBoard(null, newBoardDto);
         Assertions.assertThat(newBoardDto).isNotNull();
         Assertions.assertThat(newBoardDto.getId()).isNotNull();
 
@@ -53,10 +64,10 @@ public class PostitServiceTest {
     }
 
     @Test
-    public void reorderBoard() {
+    void reorderBoard() {
         Board board = buildBoard(6);
         PostitNote noteToChange = board.getNoteList().get(3);
-        postitNoteService.reorderBoard(board, noteToChange, 1);
+        postitNoteService.reorderBoard(board, noteToChange, -1);
         Assertions.assertThat(checkNoteList(board.getNoteList(), noteToChange, 1)).isTrue();
 
         board = buildBoard(6);
@@ -98,22 +109,30 @@ public class PostitServiceTest {
     }
 
     @Test
-    public void saveNoteError() throws NotFoundException, InvalidDataException, FunctionnalException {
+    void saveNoteError() throws NotFoundException, InvalidDataException, FunctionnalException {
         PostitNoteDto noteDto = new PostitNoteDto();
         Assertions.assertThatThrownBy(() -> postitNoteService.saveNote(noteDto.getId(), noteDto))
-                .isInstanceOf(InvalidDataException.class);
+            .isInstanceOf(InvalidDataException.class)
+            .hasMessageContaining("boardId");
 
         noteDto.setId(-1l);
         Assertions.assertThatThrownBy(() -> postitNoteService.saveNote(noteDto.getId(), noteDto))
-                .isInstanceOf(NotFoundException.class);
+            .isInstanceOf(NotFoundException.class);
 
         noteDto.setId(null);
-        noteDto.setBoardId(1l);
+        noteDto.setBoardId(15l);
         Assertions.assertThatThrownBy(() -> postitNoteService.saveNote(noteDto.getId(), noteDto))
-                .isInstanceOf(InvalidDataException.class);
+            .isInstanceOf(InvalidDataException.class)
+            .hasMessageContaining("name");
 
+        noteDto.setName("First note");
+        Assertions.assertThatThrownBy(() -> postitNoteService.saveNote(noteDto.getId(), noteDto))
+            .isInstanceOf(InvalidDataException.class)
+            .hasMessageContaining("BoardId");
+
+        noteDto.setBoardId(1l);
         Long noteMax = Long.valueOf(globalService.getParameterValue(ParameterConst.NOTE_MAX)
-                .orElseThrow(() -> new InvalidDataException("noteMax")));
+            .orElseThrow(() -> new InvalidDataException("noteMax")));
         for (int i = 0; i < noteMax; i++) {
             noteDto.setName("note " + i);
             Assertions.assertThat(postitNoteService.saveNote(noteDto.getId(), noteDto)).isNotNull();
@@ -121,15 +140,15 @@ public class PostitServiceTest {
 
         noteDto.setName("No more");
         Assertions.assertThatThrownBy(() -> postitNoteService.saveNote(noteDto.getId(), noteDto))
-                .isInstanceOf(FunctionnalException.class);
+            .isInstanceOf(FunctionnalException.class);
     }
 
     @Test
-    public void moveInTheSameBoard() throws NotFoundException, FunctionnalException, InvalidDataException {
+    void moveInTheSameBoard() throws NotFoundException, FunctionnalException, InvalidDataException {
         // Create 3 notes in one board
         BoardDto boardDto = new BoardDto();
         boardDto.setName("board moveInTheSameBoard");
-        boardDto = postitNoteService.saveBoard(null, boardDto);
+        boardDto = boardService.saveBoard(null, boardDto);
 
         PostitNoteDto noteDto = new PostitNoteDto();
         noteDto.setBoardId(boardDto.getId());
@@ -152,11 +171,11 @@ public class PostitServiceTest {
     }
 
     @Test
-    public void changeBoardWithOrder() throws NotFoundException, FunctionnalException, InvalidDataException {
+    void changeBoardWithOrder() throws NotFoundException, FunctionnalException, InvalidDataException {
         // Create 3 notes on boardOne
         BoardDto boardOneDto = new BoardDto();
         boardOneDto.setName("board1");
-        boardOneDto = postitNoteService.saveBoard(null, boardOneDto);
+        boardOneDto = boardService.saveBoard(null, boardOneDto);
 
         PostitNoteDto noteDto = new PostitNoteDto();
         noteDto.setBoardId(boardOneDto.getId());
@@ -171,7 +190,7 @@ public class PostitServiceTest {
         // Create 3 notes on boardTwo
         BoardDto boardTwoDto = new BoardDto();
         boardTwoDto.setName("board2");
-        boardTwoDto = postitNoteService.saveBoard(null, boardTwoDto);
+        boardTwoDto = boardService.saveBoard(null, boardTwoDto);
 
         noteDto.setBoardId(boardTwoDto.getId());
         noteDto.setName("Note board2");

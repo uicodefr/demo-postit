@@ -38,7 +38,7 @@ import com.uicode.postit.postitserver.util.AppTestRequestInterceptor;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
-public class GlobalControllerTest {
+class GlobalControllerTest {
 
     @Value("${local.server.port}")
     private int port;
@@ -50,7 +50,7 @@ public class GlobalControllerTest {
     private LikeDao likeDao;
 
     @Test
-    public void getStatus() {
+    void getStatus() {
         GlobalStatusDto statusDto = restTemplate.getForObject("/global/status", GlobalStatusDto.class);
         Assertions.assertThat(statusDto).isNotNull();
         Assertions.assertThat(statusDto.getStatus()).isEqualTo(Boolean.TRUE.toString());
@@ -60,7 +60,7 @@ public class GlobalControllerTest {
     }
 
     @Test
-    public void getParameterValue() {
+    void getParameterValue() {
         String noteMax = restTemplate.getForObject("/global/parameters/note.max", String.class);
         Assertions.assertThat(Ints.tryParse(noteMax)).isNotNull();
 
@@ -74,7 +74,7 @@ public class GlobalControllerTest {
     }
 
     @Test
-    public void clearCache() {
+    void clearCache() {
         AppTestRequestInterceptor appTestRequestInterceptor = AppTestRequestInterceptor.addInterceptor(restTemplate);
         appTestRequestInterceptor.simpleGetForCsrf();
         Assertions.assertThat(restTemplate.postForEntity("/global/:clearCache", null, String.class).getStatusCodeValue())
@@ -83,14 +83,14 @@ public class GlobalControllerTest {
     }
 
     @Test
-    public void countLikes() {
+    void countLikes() {
         CountLikesDto countLikesDto = restTemplate.getForObject("/global/likes:count", CountLikesDto.class);
         Assertions.assertThat(countLikesDto).isNotNull();
         Assertions.assertThat(countLikesDto.getCount()).isNotNull();
     }
 
     @Test
-    public void addLike() {
+    void addLike() {
         ResponseEntity<IdEntityDto> responseEntity = restTemplate.postForEntity("/global/likes", "", IdEntityDto.class);
         // 403 because we don't have a CSRF token => Unique test for csrf
         Assertions.assertThat(responseEntity.getStatusCodeValue()).isEqualTo(403);
@@ -109,7 +109,7 @@ public class GlobalControllerTest {
     }
 
     @Test
-    public void likeWebSocket() throws InterruptedException, ExecutionException, TimeoutException {
+    void likeWebSocket() throws InterruptedException, ExecutionException, TimeoutException {
         List<Transport> transports = new ArrayList<>();
         transports.add(new WebSocketTransport(new StandardWebSocketClient()));
         WebSocketStompClient stompClient = new WebSocketStompClient(new SockJsClient(transports));

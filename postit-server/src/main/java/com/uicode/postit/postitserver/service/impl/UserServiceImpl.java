@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
 
             user = new User();
             user.setEnabled(false);
-            LOGGER.info("Create user with the id : {}", userId);
+            LOGGER.info("Create user");
 
         } else {
             // Update
