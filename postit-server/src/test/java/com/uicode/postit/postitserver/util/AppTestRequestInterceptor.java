@@ -25,7 +25,7 @@ import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.util.LinkedMultiValueMap;
 
 import com.uicode.postit.postitserver.dto.global.GlobalStatusDto;
-import com.uicode.postit.postitserver.dto.user.UserDto;
+import com.uicode.postit.postitserver.dto.global.UserDto;
 
 public class AppTestRequestInterceptor implements ClientHttpRequestInterceptor {
 
@@ -68,14 +68,20 @@ public class AppTestRequestInterceptor implements ClientHttpRequestInterceptor {
         List<String> newCookies = response.getHeaders().get(HttpHeaders.SET_COOKIE);
         if (CollectionUtils.isNotEmpty(newCookies)) {
             // Add the new cookies to the list
-            newCookies.stream().map(HttpCookie::parse).flatMap(List::stream).filter(Objects::nonNull)
-                    .forEach(httpCookie -> {
-                        cookies.put(httpCookie.getName(), httpCookie);
-                    });
+            newCookies.stream()
+                .map(HttpCookie::parse)
+                .flatMap(List::stream)
+                .filter(Objects::nonNull)
+                .forEach(httpCookie -> {
+                    cookies.put(httpCookie.getName(), httpCookie);
+                });
 
             // Handle csrf Cookie
-            cookies.values().stream().filter(httpCookie -> XSRF_COOKIE_NAME.equals(httpCookie.getName())).findFirst()
-                    .ifPresent(csrfCookie -> csrfValue = csrfCookie.getValue());
+            cookies.values()
+                .stream()
+                .filter(httpCookie -> XSRF_COOKIE_NAME.equals(httpCookie.getName()))
+                .findFirst()
+                .ifPresent(csrfCookie -> csrfValue = csrfCookie.getValue());
         }
 
         return response;

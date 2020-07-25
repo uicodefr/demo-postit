@@ -1,5 +1,7 @@
 package com.uicode.postit.postitserver.controller;
 
+import java.util.Date;
+
 import javax.validation.ConstraintViolationException;
 
 import org.apache.logging.log4j.LogManager;
@@ -12,13 +14,13 @@ import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import com.uicode.postit.postitserver.dto.global.ErrorDto;
-import com.uicode.postit.postitserver.exception.ForbiddenException;
-import com.uicode.postit.postitserver.exception.FunctionnalException;
-import com.uicode.postit.postitserver.exception.InvalidDataException;
-import com.uicode.postit.postitserver.exception.NotFoundException;
-import com.uicode.postit.postitserver.service.UserService;
+import com.uicode.postit.postitserver.exception.AppAbstractException;
+import com.uicode.postit.postitserver.exception.functionnal.InvalidDataException;
+import com.uicode.postit.postitserver.service.global.UserService;
+import com.uicode.postit.postitserver.util.ExceptionUtil;
 
 @RestControllerAdvice
 public class ControllerAdvice {
@@ -28,55 +30,59 @@ public class ControllerAdvice {
     @Autowired
     private UserService userService;
 
-    @ExceptionHandler(ForbiddenException.class)
-    public ResponseEntity<ErrorDto> handleForbidden(final ForbiddenException exception) {
-        return getErrorResponse(HttpStatus.FORBIDDEN, HttpStatus.FORBIDDEN.getReasonPhrase());
+    @ExceptionHandler(AppAbstractException.class)
+    public ResponseEntity<ErrorDto> handleAppException(final AppAbstractException exception) {
+        return handleServerError(exception.getHttpStatus(), exception);
     }
 
-    @ExceptionHandler(FunctionnalException.class)
-    public ResponseEntity<ErrorDto> handleFunctionnalError(final FunctionnalException exception) {
-        return getErrorResponse(HttpStatus.I_AM_A_TEAPOT, exception.getMessage());
-    }
-
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ErrorDto> handleNotFound(final NotFoundException exception) {
-        return getErrorResponse(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND.getReasonPhrase());
-    }
-
-    @ExceptionHandler({ InvalidDataException.class, MissingServletRequestParameterException.class })
+    @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<ErrorDto> handleBadRequest(final Exception exception) {
-        return getErrorResponse(HttpStatus.BAD_REQUEST, exception.getMessage());
+        return handleServerError(HttpStatus.BAD_REQUEST, exception);
     }
 
     @ExceptionHandler(TransactionSystemException.class)
     public ResponseEntity<ErrorDto> handleConstraintViolation(TransactionSystemException exception) {
         Throwable cause = exception.getRootCause();
         if (cause instanceof ConstraintViolationException) {
-            return getErrorResponse(HttpStatus.BAD_REQUEST, cause.getMessage());
+            return handleServerError(HttpStatus.BAD_REQUEST,
+                    ExceptionUtil.convert((ConstraintViolationException) cause));
         } else {
-            return handleServerError(exception);
+            return handleServerError(HttpStatus.INTERNAL_SERVER_ERROR, exception);
         }
     }
 
-    @ExceptionHandler(Throwable.class)
-    public ResponseEntity<ErrorDto> handleServerError(final Exception exception) {
-        LOGGER.error(exception);
-        return getErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<ErrorDto> handleConstraintViolation(MaxUploadSizeExceededException exception) {
+        return handleServerError(HttpStatus.BAD_REQUEST,
+                new InvalidDataException("Maximum upload size exceeded", exception));
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorDto> handleAccessDenied(final AccessDeniedException exception) {
         if (userService.getCurrentUser() == null) {
-            return getErrorResponse(HttpStatus.UNAUTHORIZED, HttpStatus.UNAUTHORIZED.getReasonPhrase());
+            return handleServerError(HttpStatus.UNAUTHORIZED, exception);
         } else {
-            return getErrorResponse(HttpStatus.FORBIDDEN, HttpStatus.FORBIDDEN.getReasonPhrase());
+            return handleServerError(HttpStatus.FORBIDDEN, exception);
         }
     }
 
-    private ResponseEntity<ErrorDto> getErrorResponse(HttpStatus httpStatus, String message) {
+    @ExceptionHandler(Throwable.class)
+    public ResponseEntity<ErrorDto> handleServerError(final Exception exception) {
+        return handleServerError(HttpStatus.INTERNAL_SERVER_ERROR, exception);
+    }
+
+    private ResponseEntity<ErrorDto> handleServerError(HttpStatus httpStatus, Throwable throwable) {
+        if (httpStatus.is5xxServerError()) {
+            LOGGER.error("Server error occured", throwable);
+        } else {
+            LOGGER.warn("Error returned on client", throwable);
+        }
+
         ErrorDto errorDto = new ErrorDto();
-        errorDto.setStatus(String.valueOf(httpStatus.value()));
-        errorDto.setMessage(message);
+        errorDto.setTimestamp(new Date());
+        errorDto.setStatus(httpStatus.value());
+        errorDto.setError(throwable.getClass().getSimpleName());
+        errorDto.setMessage(throwable.getMessage());
         return new ResponseEntity<>(errorDto, httpStatus);
     }
 

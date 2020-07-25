@@ -22,12 +22,27 @@ INSERT INTO global_parameter (name, value, client_view) VALUES
 INSERT INTO postit_board (id, name, creation_date, update_date) VALUES
     (nextval('postit_board_id_seq'), 'Test Board', NOW(), NOW());
 
--- # ONE NOTE # --
+-- # TWO NOTE # --
 
 INSERT INTO postit_note
 (id, creation_date, update_date, name, text_value, postit_board_id, update_text_date, color, order_num) VALUES
-    (nextval('postit_note_id_seq'), NOW(), NOW(), 'Test Note', 'Test Content', 1, NOW(), 'yellow', 1);
+    (nextval('postit_note_id_seq'), NOW(), NOW(), 'Test Note 1', 'Test Content 1', 1, NOW(), 'yellow', 1);
 
+INSERT INTO postit_note
+(id, creation_date, update_date, name, text_value, postit_board_id, update_text_date, color, order_num) VALUES
+    (nextval('postit_note_id_seq'), NOW(), NOW(), 'Test Note 2', 'Test Content 2', 1, NOW(), 'blue', 2);
+
+-- # ONE ATTACHED FILE # --
+
+INSERT INTO postit_attached_file
+(id, creation_date, update_date, filename, size, mime_type) VALUES
+    (nextval('postit_attached_file_id_seq'), NOW(), NOW(), 'test.txt', 7, 'text/plain');
+
+INSERT INTO postit_attached_file_data
+(id, data) VALUES (currval('postit_attached_file_id_seq'), '436f6e74656e74');
+
+UPDATE postit_note SET attached_file_id = currval('postit_attached_file_id_seq') WHERE id = currval('postit_note_id_seq');
+    
 -- # USERS # --
 
 INSERT INTO global_user (id, username, password, enabled) VALUES

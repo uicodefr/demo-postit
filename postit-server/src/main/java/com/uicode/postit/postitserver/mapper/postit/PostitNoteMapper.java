@@ -9,7 +9,7 @@ import org.mapstruct.factory.Mappers;
 import com.uicode.postit.postitserver.dto.postit.PostitNoteDto;
 import com.uicode.postit.postitserver.entity.postit.PostitNote;
 
-@Mapper
+@Mapper(uses = { AttachedFileMapper.class })
 public abstract class PostitNoteMapper {
 
     public static final PostitNoteMapper INSTANCE = Mappers.getMapper(PostitNoteMapper.class);

@@ -21,6 +21,7 @@ export class UrlConstant {
     public static readonly BOARDS = Postit.PREFIX + '/boards';
     public static readonly NOTES = Postit.PREFIX + '/notes';
     public static readonly NOTES_EXPORT = Postit.NOTES + ':export';
+    public static readonly ATTACHED_FILES = Postit.PREFIX + '/attached-files';
   };
 
   public static readonly User = class User {

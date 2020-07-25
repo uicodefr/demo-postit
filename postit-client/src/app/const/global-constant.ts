@@ -2,6 +2,7 @@ export class GlobalConstant {
   public static readonly Parameter = class Parameter {
     public static readonly BOARD_MAX = 'board.max';
     public static readonly NOTE_MAX = 'note.max';
+    public static readonly UPLOAD_SIZE_MAX = 'upload.size.max';
   };
 
   public static readonly Display = class Display {

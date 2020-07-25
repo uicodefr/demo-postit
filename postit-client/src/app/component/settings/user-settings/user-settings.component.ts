@@ -2,21 +2,21 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 
-import { User } from 'src/app/model/user/user';
+import { User } from 'src/app/model/global/user';
 import { MatDialog } from '@angular/material/dialog';
 import {
   ConfirmDialogData,
-  ConfirmDialogComponent
+  ConfirmDialogComponent,
 } from 'src/app/component/shared/dialog/confirm-dialog/confirm-dialog.component';
 import { GlobalConstant } from 'src/app/const/global-constant';
-import { UserService } from 'src/app/service/user/user.service';
+import { UserService } from 'src/app/service/global/user.service';
 import { AlertType } from 'src/app/const/alert-type';
 import { GlobalInfoService } from 'src/app/service/util/global-info.service';
 
 @Component({
   selector: 'app-user-settings',
   templateUrl: './user-settings.component.html',
-  styleUrls: ['./user-settings.component.scss']
+  styleUrls: ['./user-settings.component.scss'],
 })
 export class UserSettingsComponent implements OnInit {
   public PASSWORD_PATTERN = '^\\w{5,}$';
@@ -45,13 +45,13 @@ export class UserSettingsComponent implements OnInit {
   }
 
   private getUserList() {
-    this.userService.getUserList().then(userList => {
+    this.userService.getUserList().then((userList) => {
       this.dataSource.data = userList;
     });
   }
 
   private getRoleList() {
-    this.userService.getRoleList().then(roleList => {
+    this.userService.getRoleList().then((roleList) => {
       this.roleList = roleList;
     });
   }
@@ -69,7 +69,7 @@ export class UserSettingsComponent implements OnInit {
     if (!this.isValidForSave(user)) {
       return;
     }
-    this.userService.updateUser(user).then(updatedUser => {
+    this.userService.updateUser(user).then((updatedUser) => {
       this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@userSettings.userUpdated:User updated`);
       this.getUserList();
     });
@@ -79,15 +79,15 @@ export class UserSettingsComponent implements OnInit {
     const confirmDialogData = {
       title: $localize`:@@userSettings.deleteUser:Delete user`,
       message: $localize`:@@userSettings.deleteUserConfirm:Are you sure to delete this user ?`,
-      confirm: $localize`:@@global.delete:Delete`
+      confirm: $localize`:@@global.delete:Delete`,
     } as ConfirmDialogData;
 
     const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
       width: GlobalConstant.Display.DIALOG_WIDTH,
-      data: confirmDialogData
+      data: confirmDialogData,
     });
 
-    confirmDialog.afterClosed().subscribe(confirmation => {
+    confirmDialog.afterClosed().subscribe((confirmation) => {
       if (confirmation === true) {
         this.userService.deleteUser(user.id).then(() => {
           this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@userSettings.userDeleted:User deleted`);
@@ -102,7 +102,7 @@ export class UserSettingsComponent implements OnInit {
     newUser.username = $localize`:@@userSettings.username:username`;
     newUser.enabled = false;
 
-    this.userService.createUser(newUser).then(createdUser => {
+    this.userService.createUser(newUser).then((createdUser) => {
       this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@userSettings.userCreated:User created`);
       this.getUserList();
     });

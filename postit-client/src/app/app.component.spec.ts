@@ -6,7 +6,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppMaterialModule } from './app-material.module';
 import { UrlConstant } from './const/url-constant';
-import { User } from './model/user/user';
+import { User } from './model/global/user';
 import { GlobalStatus } from './model/global/global-status';
 import { CountLikes } from './model/global/count-likes';
 import { Observable } from 'rxjs';
@@ -19,7 +19,7 @@ describe('AppComponent', () => {
       imports: [HttpClientTestingModule, RouterTestingModule, AppMaterialModule],
       declarations: [AppComponent, PageNotFoundComponent],
       providers: [],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
     httpMock = TestBed.inject(HttpTestingController);
@@ -49,7 +49,7 @@ describe('AppComponent', () => {
     fixture.autoDetectChanges(true);
 
     expect(app.initApp).toEqual(false);
-    (app.likes$ as Observable<number>).subscribe(countLikes => {
+    (app.likes$ as Observable<number>).subscribe((countLikes) => {
       expect(countLikes).toEqual(12);
     });
 

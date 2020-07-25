@@ -16,7 +16,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import com.uicode.postit.postitserver.config.security.RestAuthenticationEntryPoint;
 import com.uicode.postit.postitserver.config.security.RestAuthenticationFailureHandler;
 import com.uicode.postit.postitserver.config.security.RestAuthenticationSuccessHandler;
-import com.uicode.postit.postitserver.service.UserService;
+import com.uicode.postit.postitserver.service.global.UserService;
 
 @Configuration
 @EnableWebSecurity
@@ -55,10 +55,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 
         http.formLogin().loginPage(LOGIN_URL).successHandler(successHandler).failureHandler(failureHandler);
-        http.logout().logoutUrl(LOGOUT_URL)
-            .logoutSuccessHandler((httpServletRequest, httpServletResponse, authentication) ->
-                httpServletResponse.setStatus(HttpServletResponse.SC_OK)
-            );
+        http.logout()
+            .logoutUrl(LOGOUT_URL)
+            .logoutSuccessHandler((httpServletRequest, httpServletResponse, authentication) -> httpServletResponse
+                .setStatus(HttpServletResponse.SC_OK));
 
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
     }

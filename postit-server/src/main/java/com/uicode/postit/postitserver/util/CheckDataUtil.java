@@ -1,6 +1,6 @@
 package com.uicode.postit.postitserver.util;
 
-import com.uicode.postit.postitserver.exception.InvalidDataException;
+import com.uicode.postit.postitserver.exception.functionnal.InvalidDataException;
 
 public class CheckDataUtil {
 
@@ -10,8 +10,14 @@ public class CheckDataUtil {
     public static void checkNotNull(String message, Object... objectList) throws InvalidDataException {
         for (Object object : objectList) {
             if (object == null) {
-                throw new InvalidDataException("checkNotNull : " + message);
+                throw new InvalidDataException(message + " is null");
             }
+        }
+    }
+
+    public static void checkCondition(boolean condition, String message) throws InvalidDataException {
+        if (!condition) {
+            throw new InvalidDataException(message);
         }
     }
 

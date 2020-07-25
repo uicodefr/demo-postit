@@ -23,6 +23,7 @@ import { AppHttpInterceptor } from './service/util/app-http.interceptor';
 import { LocalizeDictionaryComponent } from './component/shared/localize-dictionary/localize-dictionary.component';
 import { ViewListComponent } from './component/board/view-list/view-list.component';
 import { BoardPanelComponent } from './component/board/board-panel/board-panel.component';
+import { AttachedFileDialogComponent } from './component/board/attached-file-dialog/attached-file-dialog.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { BoardPanelComponent } from './component/board/board-panel/board-panel.c
     HasRoleDirective,
     LocalizeDictionaryComponent,
     ViewListComponent,
-    BoardPanelComponent
+    BoardPanelComponent,
+    AttachedFileDialogComponent
   ],
   imports: [
     BrowserModule,

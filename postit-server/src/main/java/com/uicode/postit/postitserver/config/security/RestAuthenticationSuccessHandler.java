@@ -11,8 +11,8 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.uicode.postit.postitserver.entity.user.User;
-import com.uicode.postit.postitserver.mapper.user.UserMapper;
+import com.uicode.postit.postitserver.entity.global.User;
+import com.uicode.postit.postitserver.mapper.global.UserMapper;
 
 @Component
 public class RestAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {

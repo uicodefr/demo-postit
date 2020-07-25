@@ -17,10 +17,10 @@ import com.uicode.postit.postitserver.dao.postit.BoardDao;
 import com.uicode.postit.postitserver.dao.postit.PostitNoteDao;
 import com.uicode.postit.postitserver.dto.postit.BoardDto;
 import com.uicode.postit.postitserver.entity.postit.Board;
-import com.uicode.postit.postitserver.exception.FunctionnalException;
-import com.uicode.postit.postitserver.exception.NotFoundException;
+import com.uicode.postit.postitserver.exception.functionnal.FunctionnalException;
+import com.uicode.postit.postitserver.exception.functionnal.NotFoundException;
 import com.uicode.postit.postitserver.mapper.postit.BoardMapper;
-import com.uicode.postit.postitserver.service.GlobalService;
+import com.uicode.postit.postitserver.service.global.GlobalService;
 import com.uicode.postit.postitserver.service.postit.BoardService;
 import com.uicode.postit.postitserver.util.parameter.ParameterConst;
 import com.uicode.postit.postitserver.util.parameter.ParameterUtil;
@@ -55,7 +55,7 @@ public class BoardServiceImpl implements BoardService {
             Optional<String> maxBoardParameter = globalService.getParameterValue(ParameterConst.BOARD_MAX);
             Long maxBoard = ParameterUtil.getLong(maxBoardParameter, 0l);
             if (boardDao.count() > maxBoard) {
-                throw new FunctionnalException("Max Board achieved : creation is blocked");
+                throw new FunctionnalException("Max Board achieved, creation is blocked");
             }
 
             board = new Board();

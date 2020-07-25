@@ -13,10 +13,10 @@ import com.uicode.postit.postitserver.dto.postit.BoardDto;
 import com.uicode.postit.postitserver.dto.postit.PostitNoteDto;
 import com.uicode.postit.postitserver.entity.postit.Board;
 import com.uicode.postit.postitserver.entity.postit.PostitNote;
-import com.uicode.postit.postitserver.exception.FunctionnalException;
-import com.uicode.postit.postitserver.exception.InvalidDataException;
-import com.uicode.postit.postitserver.exception.NotFoundException;
-import com.uicode.postit.postitserver.service.GlobalService;
+import com.uicode.postit.postitserver.exception.functionnal.FunctionnalException;
+import com.uicode.postit.postitserver.exception.functionnal.InvalidDataException;
+import com.uicode.postit.postitserver.exception.functionnal.NotFoundException;
+import com.uicode.postit.postitserver.service.global.GlobalService;
 import com.uicode.postit.postitserver.service.postit.BoardService;
 import com.uicode.postit.postitserver.service.postit.PostitNoteService;
 import com.uicode.postit.postitserver.util.parameter.ParameterConst;
@@ -133,7 +133,7 @@ class PostitNoteServiceTest {
         noteDto.setBoardId(1l);
         Long noteMax = Long.valueOf(globalService.getParameterValue(ParameterConst.NOTE_MAX)
             .orElseThrow(() -> new InvalidDataException("noteMax")));
-        for (int i = 0; i < noteMax; i++) {
+        for (int i = 2; i <= noteMax; i++) {
             noteDto.setName("note " + i);
             Assertions.assertThat(postitNoteService.saveNote(noteDto.getId(), noteDto)).isNotNull();
         }

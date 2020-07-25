@@ -2,8 +2,11 @@ package com.uicode.postit.postitserver.service.postit.impl;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -23,11 +26,11 @@ import com.uicode.postit.postitserver.dao.postit.PostitNoteDao;
 import com.uicode.postit.postitserver.dto.postit.PostitNoteDto;
 import com.uicode.postit.postitserver.entity.postit.Board;
 import com.uicode.postit.postitserver.entity.postit.PostitNote;
-import com.uicode.postit.postitserver.exception.FunctionnalException;
-import com.uicode.postit.postitserver.exception.InvalidDataException;
-import com.uicode.postit.postitserver.exception.NotFoundException;
+import com.uicode.postit.postitserver.exception.functionnal.FunctionnalException;
+import com.uicode.postit.postitserver.exception.functionnal.InvalidDataException;
+import com.uicode.postit.postitserver.exception.functionnal.NotFoundException;
 import com.uicode.postit.postitserver.mapper.postit.PostitNoteMapper;
-import com.uicode.postit.postitserver.service.GlobalService;
+import com.uicode.postit.postitserver.service.global.GlobalService;
 import com.uicode.postit.postitserver.service.postit.PostitNoteService;
 import com.uicode.postit.postitserver.util.CheckDataUtil;
 import com.uicode.postit.postitserver.util.parameter.ParameterConst;
@@ -40,7 +43,7 @@ public class PostitNoteServiceImpl implements PostitNoteService {
     private static final Logger LOGGER = LogManager.getLogger(PostitNoteServiceImpl.class);
 
     private static final String[] EXPORT_HEADERS = { "board id", "board name", "note id", "note name", "note text",
-            "note color", "note order" };
+            "note color", "note order", "attached file" };
 
     @Autowired
     private BoardDao boardDao;
@@ -79,7 +82,7 @@ public class PostitNoteServiceImpl implements PostitNoteService {
             Optional<String> maxNoteParameter = globalService.getParameterValue(ParameterConst.NOTE_MAX);
             Long maxNote = ParameterUtil.getLong(maxNoteParameter, 0l);
             if (postitNoteDao.countByBoardId(noteDto.getBoardId()) > maxNote) {
-                throw new FunctionnalException("Max Postit Note achieved : creation is blocked");
+                throw new FunctionnalException("Max Postit Note achieved, creation is blocked");
             }
 
             note = new PostitNote();
@@ -137,7 +140,14 @@ public class PostitNoteServiceImpl implements PostitNoteService {
 
     @Override
     public void deleteNote(Long noteId) {
-        postitNoteDao.deleteById(noteId);
+        Optional<PostitNote> noteOpt = postitNoteDao.findById(noteId);
+        if (!noteOpt.isPresent()) {
+            LOGGER.warn("Note not found for deletion, id = %s", noteId);
+            return;
+        }
+
+        // Delete cascade delete also the attachedFile
+        postitNoteDao.delete(noteOpt.get());
         LOGGER.info("Delete note with the id : {}", noteId);
     }
 
@@ -157,6 +167,16 @@ public class PostitNoteServiceImpl implements PostitNoteService {
                 contentLineList.add(noteDto.getText());
                 contentLineList.add(noteDto.getColor());
                 contentLineList.add(noteDto.getOrderNum().toString());
+
+                if (noteDto.getAttachedFile() == null) {
+                    contentLineList.add(null);
+                } else {
+                    NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
+                    numberFormat.setRoundingMode(RoundingMode.UP);
+                    numberFormat.setMaximumFractionDigits(2);
+                    String sizeInKo = numberFormat.format(noteDto.getAttachedFile().getSize() / 1000.0);
+                    contentLineList.add(String.format("%s (%s ko)", noteDto.getAttachedFile().getFilename(), sizeInKo));
+                }
 
                 csvWriter.writeNext(contentLineList.toArray(new String[contentLineList.size()]));
             }

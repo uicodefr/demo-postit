@@ -13,9 +13,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import com.uicode.postit.postitserver.dao.global.ParameterDao;
 import com.uicode.postit.postitserver.dto.postit.BoardDto;
 import com.uicode.postit.postitserver.entity.global.Parameter;
-import com.uicode.postit.postitserver.exception.FunctionnalException;
-import com.uicode.postit.postitserver.exception.NotFoundException;
-import com.uicode.postit.postitserver.service.GlobalService;
+import com.uicode.postit.postitserver.exception.functionnal.FunctionnalException;
+import com.uicode.postit.postitserver.exception.functionnal.NotFoundException;
+import com.uicode.postit.postitserver.service.global.GlobalService;
 import com.uicode.postit.postitserver.service.postit.BoardService;
 import com.uicode.postit.postitserver.util.parameter.ParameterConst;
 
@@ -44,7 +44,7 @@ class BoardServiceTest {
         boardDto.setName("Board error");
         Assertions.assertThatThrownBy(() -> boardService.saveBoard(null, boardDto))
             .isInstanceOf(FunctionnalException.class)
-            .hasMessage("Max Board achieved : creation is blocked");
+            .hasMessageContaining("creation is blocked");
     }
 
     @Test

@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { AuthService } from '../../service/auth/auth.service';
-import { User } from '../../model/user/user';
+import { User } from '../../model/global/user';
 import { GlobalInfoService } from '../../service/util/global-info.service';
 import { AlertType } from '../../const/alert-type';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
   public userConnected: User | null;
@@ -24,14 +24,14 @@ export class LoginComponent implements OnInit {
   ) {}
 
   public ngOnInit() {
-    this.authService.getCurrentUser().subscribe(user => {
+    this.authService.getCurrentUser().subscribe((user) => {
       this.userConnected = user;
     });
     this.authService.getRefreshedCurrentUser();
 
     this.loginForm = this.formBuilder.group({
       username: ['', [Validators.required]],
-      password: ['', [Validators.required]]
+      password: ['', [Validators.required]],
     });
   }
 
@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
     this.loginInProgress = true;
     const valueForm = this.loginForm.value;
 
-    this.authService.login(valueForm.username, valueForm.password).then(isSignIn => {
+    this.authService.login(valueForm.username, valueForm.password).then((isSignIn) => {
       this.loginInProgress = false;
       if (!isSignIn) {
         this.globalInfoService.showAlert(

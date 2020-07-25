@@ -5,7 +5,7 @@
     </mat-card-title>
   </mat-card-header>
 
-  <mat-card-content>
+  <mat-card-content (dblclick)="edit()">
     <p class="text">{{ note.text }}</p>
   </mat-card-content>
 
@@ -17,12 +17,6 @@
       <mat-icon>arrow_downward</mat-icon>
     </button>
 
-    <button (click)="edit()" mat-button i18n title="Edit content" i18n-title>EDIT</button>
-
-    <button (click)="changeColor()" mat-icon-button title="Change color" i18n-title>
-      <mat-icon>colorize</mat-icon>
-    </button>
-
     <button mat-icon-button [matMenuTriggerFor]="boardMenu" title="Move to another board" i18n-title>
       <mat-icon>forward</mat-icon>
     </button>
@@ -31,6 +25,36 @@
         {{ board.name }}
       </button>
     </mat-menu>
+
+    <button (click)="edit()" mat-button i18n title="Edit content" i18n-title>EDIT</button>
+
+    <button (click)="changeColor()" mat-icon-button title="Change color" i18n-title>
+      <mat-icon>colorize</mat-icon>
+    </button>
+
+    <button
+      *ngIf="note.attachedFile"
+      (click)="viewAttachedFile()"
+      mat-icon-button
+      mat-raised-button
+      title="View the attachment"
+      i18n-title
+    >
+      <mat-icon>cloud_download</mat-icon>
+    </button>
+    <ng-container *ngIf="!note.attachedFile">
+      <input
+        #inputFile
+        hidden="true"
+        type="file"
+        onclick="this.value=null"
+        (change)="uploadFile($event?.target?.files)"
+        title="hidden upload"
+      />
+      <button (click)="inputFile.click()" mat-icon-button title="Upload an attachment" i18n-title>
+        <mat-icon>cloud_upload</mat-icon>
+      </button>
+    </ng-container>
 
     <div class="buttonRight">
       <button (click)="deleteNote()" mat-icon-button title="Delete" i18n-title>

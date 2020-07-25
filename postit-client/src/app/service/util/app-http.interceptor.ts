@@ -6,6 +6,7 @@ import { tap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { GlobalInfoService } from './global-info.service';
 import { AlertType } from 'src/app/const/alert-type';
+import { GlobalConstant } from 'src/app/const/global-constant';
 
 @Injectable()
 export class AppHttpInterceptor implements HttpInterceptor {
@@ -16,20 +17,19 @@ export class AppHttpInterceptor implements HttpInterceptor {
 
     return next.handle(request).pipe(
       tap(
-        event => {
+        (event) => {
           // do nothing when success
           this.globalInfoService.notifLoader(false);
         },
-        error => {
+        (error) => {
           this.globalInfoService.notifLoader(false);
-          let errMsg = request.url + ' - ';
+          let errMsg;
 
           if (error instanceof HttpErrorResponse) {
             if (error.status === 401) {
               if (!request.url.endsWith('/login')) {
                 this.authService.redirectToLogin(null);
               }
-
               this.globalInfoService.showAlert(
                 AlertType.WARNING,
                 $localize`:@@global.accessUnauthorized:Access Unauthorized. Please sign in.`
@@ -41,15 +41,31 @@ export class AppHttpInterceptor implements HttpInterceptor {
                 $localize`:@@global.accessForbidden:Access Forbidden !`
               );
               return;
+            } else if (error.status !== 500 && error.status) {
+              this.globalInfoService.showAlert(
+                AlertType.DANGER,
+                error.error.error + ' : ' + error.error.message,
+                GlobalConstant.Display.NOTIFICATION_DELAY * 3
+              );
+              return;
             }
-            errMsg = errMsg + error.status + ' ' + error.statusText;
+
+            if (error.error) {
+              // Message from json for server error
+              errMsg = error.message;
+            } else {
+              // Message from status
+              errMsg = error.status + ' ' + error.statusText;
+            }
           } else {
-            errMsg = errMsg + error;
+            // Network error ?
+            errMsg = request.url + ' - ' + error;
           }
 
           this.globalInfoService.showAlert(
             AlertType.DANGER,
-            $localize`:@@global.technicalError:Technical Error` + ' : ' + errMsg
+            $localize`:@@global.technicalError:Technical Error` + ' : ' + errMsg,
+            GlobalConstant.Display.NOTIFICATION_DELAY * 5
           );
         }
       )

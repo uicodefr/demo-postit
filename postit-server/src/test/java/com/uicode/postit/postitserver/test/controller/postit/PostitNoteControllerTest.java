@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 
-import com.uicode.postit.postitserver.dto.postit.BoardDto;
 import com.uicode.postit.postitserver.dto.postit.PostitNoteDto;
 import com.uicode.postit.postitserver.util.AppTestRequestInterceptor;
 
@@ -21,22 +20,14 @@ class PostitNoteControllerTest {
 
     @Test
     void noteCrud() {
-        // Connect as admin
+        // CSRF Interceptor
         AppTestRequestInterceptor appTestRequestInterceptor = AppTestRequestInterceptor.addInterceptor(restTemplate);
         appTestRequestInterceptor.simpleGetForCsrf();
-        appTestRequestInterceptor.login("admin", "admin");
-
-        // Insert
-        BoardDto boardDto = new BoardDto();
-        boardDto.setName("New Board");
-        BoardDto createdBoard = restTemplate.postForObject("/postit/boards", boardDto, BoardDto.class);
-        Assertions.assertThat(createdBoard).isNotNull();
-        Assertions.assertThat(createdBoard.getId()).isNotNull();
 
         PostitNoteDto noteDto = new PostitNoteDto();
         noteDto.setName("Name");
         noteDto.setText("Text");
-        noteDto.setBoardId(createdBoard.getId());
+        noteDto.setBoardId(1l);
         noteDto.setColor("white");
         noteDto.setOrderNum(1);
 
@@ -47,7 +38,6 @@ class PostitNoteControllerTest {
         Assertions.assertThat(createdNote.getText()).isEqualTo(noteDto.getText());
         Assertions.assertThat(createdNote.getBoardId()).isEqualTo(noteDto.getBoardId());
         Assertions.assertThat(createdNote.getColor()).isEqualTo(noteDto.getColor());
-        Assertions.assertThat(createdNote.getOrderNum()).isEqualTo(noteDto.getOrderNum());
 
         // Get
         PostitNoteDto getNote = restTemplate.getForObject("/postit/notes/{id}", PostitNoteDto.class,
@@ -81,7 +71,7 @@ class PostitNoteControllerTest {
         completeUpdate.setColor("orange");
         completeUpdate.setOrderNum(2);
         updatedNote = restTemplate.patchForObject("/postit/notes/{id}", completeUpdate, PostitNoteDto.class,
-                partialUpdate.getId());
+                completeUpdate.getId());
         Assertions.assertThat(updatedNote).isNotNull();
         Assertions.assertThat(updatedNote.getId()).isEqualTo(completeUpdate.getId());
         Assertions.assertThat(updatedNote.getName()).isEqualTo(completeUpdate.getName());
@@ -92,8 +82,8 @@ class PostitNoteControllerTest {
         // Get List
         PostitNoteDto[] noteList = restTemplate.getForObject("/postit/notes?boardId={boardId}", PostitNoteDto[].class,
                 updatedNote.getBoardId());
-        Assertions.assertThat(noteList).isNotNull().isNotEmpty();
-        Assertions.assertThat(noteList[0].getId()).isEqualTo(updatedNote.getId());
+        Assertions.assertThat(noteList).isNotNull().isNotEmpty().anyMatch(updatedNote::equals);
+        int noteListLength = noteList.length;
 
         // Delete
         restTemplate.delete("/postit/notes/" + updatedNote.getId());
@@ -101,15 +91,16 @@ class PostitNoteControllerTest {
         // Final Check
         noteList = restTemplate.getForObject("/postit/notes?boardId={boardId}", PostitNoteDto[].class,
                 updatedNote.getBoardId());
-        Assertions.assertThat(noteList).isNotNull().isEmpty();
+        Assertions.assertThat(noteList).isNotNull().isNotEmpty().hasSize(noteListLength - 1);
 
         appTestRequestInterceptor.clear();
     }
 
     @Test
     void exportNotes() {
-        String expectedCsv = "\"board id\",\"board name\",\"note id\",\"note name\",\"note text\",\"note color\",\"note order\"\n";
-        expectedCsv += "\"1\",\"Test Board\",\"1\",\"Test Note\",\"Test Content\",\"yellow\",\"1\"\n";
+        String expectedCsv = "\"board id\",\"board name\",\"note id\",\"note name\",\"note text\",\"note color\",\"note order\",\"attached file\"\n";
+        expectedCsv += "\"1\",\"Test Board\",\"1\",\"Test Note 1\",\"Test Content 1\",\"yellow\",\"1\",\n";
+        expectedCsv += "\"1\",\"Test Board\",\"2\",\"Test Note 2\",\"Test Content 2\",\"blue\",\"2\",\"test.txt (0.01 ko)\"\n";
 
         String testCsv = restTemplate.getForObject("/postit/notes:export", String.class);
         Assertions.assertThat(testCsv).isEqualTo(expectedCsv);

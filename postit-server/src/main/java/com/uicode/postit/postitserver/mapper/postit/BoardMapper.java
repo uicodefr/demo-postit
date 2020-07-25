@@ -9,7 +9,7 @@ import com.uicode.postit.postitserver.entity.postit.Board;
 @Mapper
 public interface BoardMapper {
 
-    BoardMapper INSTANCE = Mappers.getMapper(BoardMapper.class);
+    public static final BoardMapper INSTANCE = Mappers.getMapper(BoardMapper.class);
 
     BoardDto toDto(Board entity);
 

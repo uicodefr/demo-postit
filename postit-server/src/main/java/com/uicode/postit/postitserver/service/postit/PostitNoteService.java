@@ -9,9 +9,9 @@ import javax.annotation.Nullable;
 import com.uicode.postit.postitserver.dto.postit.PostitNoteDto;
 import com.uicode.postit.postitserver.entity.postit.Board;
 import com.uicode.postit.postitserver.entity.postit.PostitNote;
-import com.uicode.postit.postitserver.exception.FunctionnalException;
-import com.uicode.postit.postitserver.exception.InvalidDataException;
-import com.uicode.postit.postitserver.exception.NotFoundException;
+import com.uicode.postit.postitserver.exception.functionnal.FunctionnalException;
+import com.uicode.postit.postitserver.exception.functionnal.InvalidDataException;
+import com.uicode.postit.postitserver.exception.functionnal.NotFoundException;
 
 
 public interface PostitNoteService {

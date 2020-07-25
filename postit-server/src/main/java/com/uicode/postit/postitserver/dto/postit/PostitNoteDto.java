@@ -12,6 +12,8 @@ public class PostitNoteDto extends NamedEntityDto {
 
     private Integer orderNum;
 
+    private AttachedFileDto attachedFile;
+
     public String getText() {
         return text;
     }
@@ -42,6 +44,26 @@ public class PostitNoteDto extends NamedEntityDto {
 
     public void setOrderNum(Integer orderNum) {
         this.orderNum = orderNum;
+    }
+
+    public AttachedFileDto getAttachedFile() {
+        return attachedFile;
+    }
+
+    public void setAttachedFile(AttachedFileDto attachedFile) {
+        this.attachedFile = attachedFile;
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof PostitNoteDto))
+            return false;
+        return super.equals(other);
     }
 
 }

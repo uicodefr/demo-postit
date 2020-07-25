@@ -15,6 +15,10 @@
     float: right;
   }
 
+  .mat-raised-button.mat-icon-button {
+    background-color: #ffffff70;
+  }
+
   &.white {
     background-color: $color-white-postit;
   }

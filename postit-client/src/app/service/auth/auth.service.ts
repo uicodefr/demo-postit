@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ReplaySubject, Observable, Subscription } from 'rxjs';
-import { User } from '../../model/user/user';
-import { UserService } from '../user/user.service';
+import { User } from '../../model/global/user';
+import { UserService } from '../global/user.service';
 import { UrlConstant } from '../../const/url-constant';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private userSubject = new ReplaySubject<User | null>(1);
@@ -21,7 +21,7 @@ export class AuthService {
   }
 
   public getRefreshedCurrentUser(): Promise<User> {
-    return this.userService.getCurrentUser().then(user => {
+    return this.userService.getCurrentUser().then((user) => {
       this.userSubject.next(user);
       return user;
     });
@@ -30,8 +30,8 @@ export class AuthService {
   public userHasRoles(roleList: Array<string>): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.getCurrentUser().subscribe(
-        user => resolve(!!(user && (!roleList || roleList.every(role => user.roleList.includes(role))))),
-        error => reject(error)
+        (user) => resolve(!!(user && (!roleList || roleList.every((role) => user.roleList.includes(role))))),
+        (error) => reject(error)
       );
     });
   }
@@ -49,14 +49,14 @@ export class AuthService {
     return this.httpClient
       .post<User>(UrlConstant.LOGIN, loginFormData)
       .toPromise()
-      .then(user => {
+      .then((user) => {
         this.userSubject.next(user);
         if (user && this.routeBeforeLogin && this.routeBeforeLogin.routeConfig) {
           this.router.navigate([this.routeBeforeLogin.routeConfig.path]);
         }
         return !!user;
       })
-      .catch(error => {
+      .catch((error) => {
         return false;
       });
   }
@@ -65,7 +65,7 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       this.userSubject.next(null);
       return this.httpClient
-        .get<void>(UrlConstant.LOGOUT)
+        .post<void>(UrlConstant.LOGOUT, null)
         .toPromise()
         .finally(() => {
           resolve();
