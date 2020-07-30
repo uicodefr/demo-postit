@@ -25,18 +25,9 @@ export class AttachedFileDialogComponent implements OnInit {
       return;
     }
 
-    const newWindow = window.open();
-    if (newWindow) {
-      this.attachedFileService.downloadFile(this.attachedFile.id).then((blob) => {
-        const urlBlob = window.URL.createObjectURL(blob);
-        newWindow.location.href = urlBlob;
-        this.dialogRef.close(false);
-      });
-    } else {
-      // Backup solution
-      window.open(this.attachedFileService.getDownloadLink(this.attachedFile.id), '_blank');
-      this.dialogRef.close(false);
-    }
+    // Solution that always works even with add blocker
+    window.open(this.attachedFileService.getDownloadLink(this.attachedFile.id), '_blank');
+    this.dialogRef.close(false);
   }
 
   public deleteFile() {

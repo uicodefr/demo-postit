@@ -41,7 +41,7 @@ export class AppHttpInterceptor implements HttpInterceptor {
                 $localize`:@@global.accessForbidden:Access Forbidden !`
               );
               return;
-            } else if (error.status !== 500 && error.status) {
+            } else if (error.status !== 500 && error.status && error.error.error) {
               this.globalInfoService.showAlert(
                 AlertType.DANGER,
                 error.error.error + ' : ' + error.error.message,
@@ -50,9 +50,9 @@ export class AppHttpInterceptor implements HttpInterceptor {
               return;
             }
 
-            if (error.error) {
+            if (error.error.error) {
               // Message from json for server error
-              errMsg = error.message;
+              errMsg = error.error.message;
             } else {
               // Message from status
               errMsg = error.status + ' ' + error.statusText;
