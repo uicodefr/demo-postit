@@ -5,6 +5,7 @@ export class UrlConstant {
 
   public static readonly LOGIN = UrlConstant.BASE + '/login';
   public static readonly LOGOUT = UrlConstant.BASE + '/logout';
+  public static readonly ACTUATOR_INFO = UrlConstant.BASE + '/actuator/info';
 
   public static readonly Global = class Global {
     private static readonly PREFIX = UrlConstant.BASE + '/global';

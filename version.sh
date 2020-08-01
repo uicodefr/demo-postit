@@ -18,9 +18,8 @@ fi
 echo "# VERSION : Change version to $newVersion"
 
 sed -i -e "s/^\t<version>.*<\/version>$/\t<version>$newVersion<\/version>/g" ./postit-server/pom.xml
-sed -i -e "s/String VERSION = \".*\";$/String VERSION = \"$newVersion\";/g" ./postit-server/src/main/java/com/uicode/postit/postitserver/service/impl/GlobalServiceImpl.java
+sed -i -e "s/^info.app.version=.*$/info.app.version=$newVersion/g" ./postit-server/src/main/resources/application.properties
 
 sed -i -e "s/^  \"version\": \".*\",$/  \"version\": \"$newVersion\",/g" ./postit-client/package.json
-sed -i -e "s/version: '.*'<\/div>$/version: '$newVersion'<\/div>/g" ./postit-client/src/app/app.component.html
-
+sed -i -e "s/version:.*/version: '$newVersion',/g" ./postit-client/src/app/app.info.ts
 echo "# VERSION : End"

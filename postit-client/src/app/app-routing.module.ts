@@ -6,34 +6,39 @@ import { PageNotFoundComponent } from './component/page-not-found/page-not-found
 import { SettingsComponent } from './component/settings/settings.component';
 import { LoginComponent } from './component/login/login.component';
 import { AuthGuard } from './service/auth/auth.guard';
+import { InfoComponent } from './component/info/info.component';
 
 const routes: Routes = [
   {
     path: '',
     redirectTo: '/board',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
   },
   {
     path: 'board',
-    component: BoardComponent
+    component: BoardComponent,
   },
   {
     path: 'settings',
     component: SettingsComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'info',
+    component: InfoComponent,
   },
   {
     path: '**',
-    component: PageNotFoundComponent
-  }
+    component: PageNotFoundComponent,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

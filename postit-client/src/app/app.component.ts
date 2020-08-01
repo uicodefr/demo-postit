@@ -8,15 +8,17 @@ import { UrlConstant } from './const/url-constant';
 import { debounceTime } from 'rxjs/operators';
 import { AuthService } from './service/auth/auth.service';
 import { LikeService } from './service/global/like.service';
+import { appInfo } from './app.info';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy {
   private static readonly LOADING_DEBOUNCE_TIME_MS = 100;
   public exportNotesUrl = UrlConstant.Postit.NOTES_EXPORT;
+  public appVersion = appInfo.version;
 
   public initApp = false;
   public availableApp = true;
@@ -44,15 +46,15 @@ export class AppComponent implements OnInit, OnDestroy {
     // Check app status
     this.globalService
       .getStatus()
-      .then(status => {
+      .then((status) => {
         this.availableApp = status.status === 'true';
       })
-      .catch(error => {
+      .catch((error) => {
         this.availableApp = false;
       });
 
     // Get User and init app
-    this.userSubscription = this.authService.getCurrentUser().subscribe(user => {
+    this.userSubscription = this.authService.getCurrentUser().subscribe((user) => {
       this.isLoggedIn = !!user;
     });
     this.authService.getRefreshedCurrentUser().finally(() => {

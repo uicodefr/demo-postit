@@ -24,6 +24,7 @@ import { LocalizeDictionaryComponent } from './component/shared/localize-diction
 import { ViewListComponent } from './component/board/view-list/view-list.component';
 import { BoardPanelComponent } from './component/board/board-panel/board-panel.component';
 import { AttachedFileDialogComponent } from './component/board/attached-file-dialog/attached-file-dialog.component';
+import { InfoComponent } from './component/info/info.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { AttachedFileDialogComponent } from './component/board/attached-file-dia
     LocalizeDictionaryComponent,
     ViewListComponent,
     BoardPanelComponent,
-    AttachedFileDialogComponent
+    AttachedFileDialogComponent,
+    InfoComponent
   ],
   imports: [
     BrowserModule,

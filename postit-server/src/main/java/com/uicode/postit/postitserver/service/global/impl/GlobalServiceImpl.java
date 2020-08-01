@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -32,7 +33,6 @@ public class GlobalServiceImpl implements GlobalService {
 
     private static final Logger LOGGER = LogManager.getLogger(GlobalServiceImpl.class);
 
-    private static final String VERSION = "0.7.0-SNAPSHOT";
     private static final Date UPDATE = new Date();
     private static final String WS_LIKE_PATH = "/listen/likes:count";
 
@@ -48,12 +48,15 @@ public class GlobalServiceImpl implements GlobalService {
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
+    @Value("${info.app.version:}")
+    private String infoAppVersion;
+
     @Override
     public GlobalStatusDto getStatus() {
         GlobalStatusDto status = new GlobalStatusDto();
         status.setUpDate(UPDATE);
         status.setCurrentDate(new Date());
-        status.setVersion(VERSION);
+        status.setVersion(infoAppVersion);
 
         // We don't use the method getParameterValue to avoid using cache
         // (we test the database access)
