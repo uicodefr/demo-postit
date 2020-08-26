@@ -44,7 +44,7 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "baseHref": "/demo/postit/",
+              "baseHref": "/postit/",
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,

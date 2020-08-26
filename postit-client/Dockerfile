@@ -1,4 +1,4 @@
-FROM nginx:1.19-alpine
+FROM nginx:alpine
 
 LABEL maintainer="uicode.fr"
 

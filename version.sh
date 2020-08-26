@@ -22,4 +22,5 @@ sed -i -e "s/^info.app.version=.*$/info.app.version=$newVersion/g" ./postit-serv
 
 sed -i -e "s/^  \"version\": \".*\",$/  \"version\": \"$newVersion\",/g" ./postit-client/package.json
 sed -i -e "s/version:.*/version: '$newVersion',/g" ./postit-client/src/app/app.info.ts
+
 echo "# VERSION : End"
