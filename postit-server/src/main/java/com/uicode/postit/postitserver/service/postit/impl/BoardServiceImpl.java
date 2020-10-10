@@ -42,7 +42,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public List<BoardDto> getBoardList() {
-        Iterable<Board> boardIterable = boardDao.findAll(Sort.by("id").ascending());
+        Iterable<Board> boardIterable = boardDao.findAll(Sort.by("orderNum", "id").ascending());
         return Streams.stream(boardIterable).map(BoardMapper.INSTANCE::toDto).collect(Collectors.toList());
     }
 
@@ -69,6 +69,7 @@ public class BoardServiceImpl implements BoardService {
         }
 
         board.setName(boardDto.getName());
+        board.setOrderNum(boardDto.getOrderNum());
 
         return BoardMapper.INSTANCE.toDto(boardDao.save(board));
     }

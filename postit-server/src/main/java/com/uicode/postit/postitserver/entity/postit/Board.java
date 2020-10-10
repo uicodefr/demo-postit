@@ -13,6 +13,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -33,6 +35,11 @@ public class Board extends AbstractDatedEntity {
     @Size(min = 1, max = 128)
     private String name;
 
+    @Column(name = "order_num")
+    @Min(0)
+    @Max(1000)
+    private Integer orderNum;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "board")
     @OrderBy("orderNum ASC")
     private List<PostitNote> noteList;
@@ -51,6 +58,14 @@ public class Board extends AbstractDatedEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getOrderNum() {
+        return orderNum;
+    }
+
+    public void setOrderNum(Integer orderNum) {
+        this.orderNum = orderNum;
     }
 
     public List<PostitNote> getNoteList() {

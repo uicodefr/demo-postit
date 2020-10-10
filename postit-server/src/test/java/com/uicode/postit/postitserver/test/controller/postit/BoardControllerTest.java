@@ -33,19 +33,23 @@ class BoardControllerTest {
         // Insert
         BoardDto board = new BoardDto();
         board.setName("New Board");
+        board.setOrderNum(2);
 
         BoardDto createdBoard = restTemplate.postForObject("/postit/boards", board, BoardDto.class);
         Assertions.assertThat(createdBoard).isNotNull();
         Assertions.assertThat(createdBoard.getId()).isNotNull();
         Assertions.assertThat(createdBoard.getName()).isEqualTo(board.getName());
+        Assertions.assertThat(createdBoard.getOrderNum()).isEqualTo(board.getOrderNum());
 
         // Update
         createdBoard.setName("Update Board");
+        createdBoard.setOrderNum(3);
         BoardDto updatedBoard = restTemplate.patchForObject("/postit/boards/{id}", createdBoard, BoardDto.class,
                 createdBoard.getId());
         Assertions.assertThat(updatedBoard).isNotNull();
         Assertions.assertThat(updatedBoard.getId()).isEqualTo(createdBoard.getId());
         Assertions.assertThat(updatedBoard.getName()).isEqualTo(createdBoard.getName());
+        Assertions.assertThat(updatedBoard.getOrderNum()).isEqualTo(createdBoard.getOrderNum());
 
         // Delete
         restTemplate.delete("/postit/boards/{id}", createdBoard.getId());

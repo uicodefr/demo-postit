@@ -19,8 +19,8 @@ INSERT INTO global_parameter (name, value, client_view) VALUES
 
 -- # ONE BOARD # --
 
-INSERT INTO postit_board (id, name, creation_date, update_date) VALUES
-    (nextval('postit_board_id_seq'), 'Test Board', NOW(), NOW());
+INSERT INTO postit_board (id, name, order_num, creation_date, update_date) VALUES
+    (nextval('postit_board_id_seq'), 'Test Board', 1, NOW(), NOW());
 
 -- # TWO NOTE # --
 

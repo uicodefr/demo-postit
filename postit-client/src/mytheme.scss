@@ -5,7 +5,7 @@
 
 // Available color palettes: https://material.io/design/color/
 $candy-app-primary: mat-palette($mat-blue, 700, 600, 900);
-$candy-app-accent:  mat-palette($mat-blue-grey, 800, 600, 900);
+$candy-app-accent: mat-palette($mat-blue-grey, 800, 600, 900);
 
 // The warn palette is optional (defaults to red).
 $candy-app-warn: mat-palette($mat-red);
@@ -17,6 +17,6 @@ $candy-app-theme: mat-light-theme($candy-app-primary, $candy-app-accent, $candy-
 @include angular-material-theme($candy-app-theme);
 
 .mat-tab-labels {
-    background-color: white;
-    background-image: none;
+  background-color: white;
+  background-image: none;
 }

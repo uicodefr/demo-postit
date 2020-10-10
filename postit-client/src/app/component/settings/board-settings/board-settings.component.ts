@@ -5,7 +5,7 @@ import { Board } from 'src/app/model/postit/board';
 import { PostitService } from 'src/app/service/postit/postit.service';
 import {
   ConfirmDialogData,
-  ConfirmDialogComponent
+  ConfirmDialogComponent,
 } from 'src/app/component/shared/dialog/confirm-dialog/confirm-dialog.component';
 import { GlobalConstant } from 'src/app/const/global-constant';
 import { MatPaginator } from '@angular/material/paginator';
@@ -16,10 +16,10 @@ import { AlertType } from 'src/app/const/alert-type';
 @Component({
   selector: 'app-board-settings',
   templateUrl: './board-settings.component.html',
-  styleUrls: ['./board-settings.component.scss']
+  styleUrls: ['./board-settings.component.scss'],
 })
 export class BoardSettingsComponent implements OnInit {
-  public displayedColumns = ['id', 'name', 'actions'];
+  public displayedColumns = ['id', 'name', 'order', 'actions'];
   public dataSource = new MatTableDataSource<Board>();
   @ViewChild(MatPaginator, { static: true })
   public paginator: MatPaginator;
@@ -40,7 +40,7 @@ export class BoardSettingsComponent implements OnInit {
   }
 
   private getBoardList() {
-    this.postitService.getBoardList().then(boardList => {
+    this.postitService.getBoardList().then((boardList) => {
       this.dataSource.data = boardList;
     });
   }
@@ -53,7 +53,7 @@ export class BoardSettingsComponent implements OnInit {
     if (!this.isValidForSave(board)) {
       return;
     }
-    this.postitService.updateBoard(board).then(updatedBoard => {
+    this.postitService.updateBoard(board).then((updatedBoard) => {
       this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@boardSettings.boardUpdated:Board updated`);
       this.getBoardList();
     });
@@ -63,15 +63,15 @@ export class BoardSettingsComponent implements OnInit {
     const confirmDialogData = {
       title: $localize`:@@boardSettings.deleteBoard:Delete board`,
       message: $localize`:@@boardSettings.deleteBoardConfirm:Are you sure to delete this board ?`,
-      confirm: $localize`:@@global.delete:Delete`
+      confirm: $localize`:@@global.delete:Delete`,
     } as ConfirmDialogData;
 
     const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
       width: GlobalConstant.Display.DIALOG_WIDTH,
-      data: confirmDialogData
+      data: confirmDialogData,
     });
 
-    confirmDialog.afterClosed().subscribe(confirmation => {
+    confirmDialog.afterClosed().subscribe((confirmation) => {
       if (confirmation === true) {
         this.postitService.deleteBoard(board.id).then(() => {
           this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@boardSettings.boardDeleted:Board deleted`);
@@ -85,7 +85,7 @@ export class BoardSettingsComponent implements OnInit {
     const newBoard = new Board();
     newBoard.name = $localize`:@@boardSettings.newBoard:New board`;
 
-    this.postitService.createBoard(newBoard).then(createdBoard => {
+    this.postitService.createBoard(newBoard).then((createdBoard) => {
       this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@boardSettings.boardCreated:Board created`);
       this.getBoardList();
     });
