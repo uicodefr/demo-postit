@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EditNoteDialogComponent } from './edit-note-dialog.component';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -8,20 +8,20 @@ describe('EditNoteDialogComponent', () => {
   let component: EditNoteDialogComponent;
   let fixture: ComponentFixture<EditNoteDialogComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     const mockDialogRef = {
-      close: jasmine.createSpy('close')
+      close: jasmine.createSpy('close'),
     };
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, AppMaterialModule],
       declarations: [EditNoteDialogComponent],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: {} },
-        { provide: MatDialogRef, useValue: mockDialogRef }
-      ]
+        { provide: MatDialogRef, useValue: mockDialogRef },
+      ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(EditNoteDialogComponent);

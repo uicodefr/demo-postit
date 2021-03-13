@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { PostitNote } from '../../../model/postit/postit-note';
@@ -11,10 +11,9 @@ export interface EditNoteDialogData {
 @Component({
   selector: 'app-edit-note-dialog',
   templateUrl: './edit-note-dialog.component.html',
-  styleUrls: ['./edit-note-dialog.component.scss']
+  styleUrls: ['./edit-note-dialog.component.scss'],
 })
-export class EditNoteDialogComponent implements OnInit {
-
+export class EditNoteDialogComponent {
   public editedNote: PostitNote;
 
   public constructor(
@@ -25,18 +24,14 @@ export class EditNoteDialogComponent implements OnInit {
     this.editedNote = data.editedNote;
   }
 
-  public ngOnInit() {
-  }
-
-  public saveEdit() {
+  public saveEdit(): void {
     const saveNote = new PostitNote();
     saveNote.id = this.editedNote.id;
     saveNote.name = this.editedNote.name;
     saveNote.text = this.editedNote.text;
 
-    this.postitService.updateNote(saveNote).then(updatedNote => {
+    this.postitService.updateNote(saveNote).then((updatedNote) => {
       this.dialogRef.close(updatedNote);
     });
   }
-
 }

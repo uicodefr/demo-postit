@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { GlobalInfoService } from 'src/app/service/util/global-info.service';
 import { PostitService } from 'src/app/service/postit/postit.service';
 import { AlertType } from 'src/app/const/alert-type';
@@ -11,7 +11,7 @@ import { Board } from 'src/app/model/postit/board';
   templateUrl: './board-panel.component.html',
   styleUrls: ['./board-panel.component.scss'],
 })
-export class BoardPanelComponent implements OnInit {
+export class BoardPanelComponent {
   @Input()
   public board: Board;
 
@@ -22,7 +22,7 @@ export class BoardPanelComponent implements OnInit {
   public otherBoardList: Array<Board> = [];
 
   @Input()
-  public parameterNoteMax: number;
+  public parameterNoteMax = 0;
 
   @Input()
   public noteDraggable = false;
@@ -30,9 +30,9 @@ export class BoardPanelComponent implements OnInit {
   @Output()
   public askRefreshBoard = new EventEmitter<number>();
 
-  constructor(private globalInfoService: GlobalInfoService, private postitService: PostitService) {}
-
-  public ngOnInit(): void {}
+  constructor(private globalInfoService: GlobalInfoService, private postitService: PostitService) {
+    this.board = new Board();
+  }
 
   public refreshCurrentBoard(): void {
     this.askRefreshBoard.next(this.board.id);
@@ -64,18 +64,14 @@ export class BoardPanelComponent implements OnInit {
       }
     }
 
-    this.noteList.sort((note1, note2) => {
-      return note1.orderNum - note2.orderNum;
-    });
+    this.noteList.sort((note1, note2) => (note1.orderNum ? note1.orderNum : 0) - (note2.orderNum ? note2.orderNum : 0));
 
     this.refreshCurrentBoard();
   }
 
   public takeOffNote(note: PostitNote): void {
     const noteList = this.noteList;
-    ArrayUtil.removeElement(noteList, (value) => {
-      return value.id === note.id;
-    });
+    ArrayUtil.removeElement(noteList, (value) => value.id === note.id);
 
     this.refreshCurrentBoard();
   }

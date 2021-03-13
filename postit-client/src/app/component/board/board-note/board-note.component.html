@@ -48,7 +48,7 @@
         hidden="true"
         type="file"
         onclick="this.value=null"
-        (change)="uploadFile($event?.target?.files)"
+        (change)="uploadFile($event?.target)"
         title="hidden upload"
       />
       <button (click)="inputFile.click()" mat-icon-button title="Upload an attachment" i18n-title>

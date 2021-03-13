@@ -4,11 +4,11 @@ import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 
 describe('AuthGuard', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     const authSpy = jasmine.createSpyObj('AuthService', ['redirectToLogin']);
 
-    TestBed.configureTestingModule({
-      providers: [{ provide: AuthService, useValue: authSpy }]
+    await TestBed.configureTestingModule({
+      providers: [{ provide: AuthService, useValue: authSpy }],
     });
   });
 

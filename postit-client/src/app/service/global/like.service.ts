@@ -7,7 +7,7 @@ import { CountLikes } from '../../model/global/count-likes';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LikeService {
   private static readonly COUNT_LIKE_TIMER = environment.likeTimerSecond;
@@ -15,7 +15,7 @@ export class LikeService {
 
   private countLikeSubject = new Subject<number>();
 
-  private stompClient: Client;
+  private stompClient: Client | undefined;
 
   public constructor(private httpClient: HttpClient) {}
 
@@ -23,26 +23,21 @@ export class LikeService {
     return this.countLikeSubject.asObservable();
   }
 
-  private countLike() {
-    this.httpClient
-      .get<CountLikes>(UrlConstant.Global.LIKE_COUNT)
-      .toPromise()
-      .then(countLikes => {
-        this.countLikeSubject.next(countLikes.count);
-      });
-  }
-
-  public listenCountLikeTimer() {
+  public listenCountLikeTimer(): void {
     this.countLike();
 
     if (LikeService.LIKE_WEB_SOCKET) {
       // Use WebSocket (with Stomp)
       const config = new StompConfig();
       config.brokerURL = this.convertToWebSocketUrl(UrlConstant.WebSocket.CONNECTION);
-      config.onConnect = receipt => {
+      config.onConnect = (receipt) => {
         this.countLike();
 
-        this.stompClient.subscribe(UrlConstant.WebSocket.LISTEN_LIKE_COUNT, countLikesMsg => {
+        if (!this.stompClient) {
+          return;
+        }
+
+        this.stompClient.subscribe(UrlConstant.WebSocket.LISTEN_LIKE_COUNT, (countLikesMsg) => {
           if (countLikesMsg.command === 'MESSAGE') {
             const countLikes = JSON.parse(countLikesMsg.body) as CountLikes;
             this.countLikeSubject.next(countLikes.count);
@@ -63,17 +58,7 @@ export class LikeService {
     }
   }
 
-  private convertToWebSocketUrl(path: string): string {
-    let webSocketUrl = 'ws:';
-    if (window.location.protocol === 'https:') {
-      webSocketUrl = 'wss:';
-    }
-    webSocketUrl += '//' + window.location.host;
-    webSocketUrl += path;
-    return webSocketUrl;
-  }
-
-  public addLike() {
+  public addLike(): void {
     this.httpClient
       .post<void>(UrlConstant.Global.LIKE, null)
       .toPromise()
@@ -82,5 +67,24 @@ export class LikeService {
           this.countLike();
         }
       });
+  }
+
+  private countLike(): void {
+    this.httpClient
+      .get<CountLikes>(UrlConstant.Global.LIKE_COUNT)
+      .toPromise()
+      .then((countLikes) => {
+        this.countLikeSubject.next(countLikes.count);
+      });
+  }
+
+  private convertToWebSocketUrl(path: string): string {
+    let webSocketUrl = 'ws:';
+    if (window.location.protocol === 'https:') {
+      webSocketUrl = 'wss:';
+    }
+    webSocketUrl += '//' + window.location.host;
+    webSocketUrl += path;
+    return webSocketUrl;
   }
 }

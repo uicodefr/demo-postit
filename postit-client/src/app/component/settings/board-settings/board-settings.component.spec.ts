@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialog } from '@angular/material/dialog';
@@ -10,13 +10,13 @@ describe('BoardSettingsComponent', () => {
   let component: BoardSettingsComponent;
   let fixture: ComponentFixture<BoardSettingsComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [BoardSettingsComponent],
       providers: [MatDialog],
-      imports: [HttpClientTestingModule, AppMaterialModule, BrowserAnimationsModule, FormsModule]
+      imports: [HttpClientTestingModule, AppMaterialModule, BrowserAnimationsModule, FormsModule],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BoardSettingsComponent);

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { ReplaySubject, Observable, Subscription } from 'rxjs';
+import { ReplaySubject, Observable } from 'rxjs';
 import { User } from '../../model/global/user';
 import { UserService } from '../global/user.service';
 import { UrlConstant } from '../../const/url-constant';
@@ -12,7 +12,7 @@ import { UrlConstant } from '../../const/url-constant';
 export class AuthService {
   private userSubject = new ReplaySubject<User | null>(1);
 
-  private routeBeforeLogin: ActivatedRouteSnapshot | null;
+  private routeBeforeLogin: ActivatedRouteSnapshot | null = null;
 
   public constructor(private router: Router, private httpClient: HttpClient, private userService: UserService) {}
 
@@ -30,13 +30,19 @@ export class AuthService {
   public userHasRoles(roleList: Array<string>): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.getCurrentUser().subscribe(
-        (user) => resolve(!!(user && (!roleList || roleList.every((role) => user.roleList.includes(role))))),
+        (user) => {
+          if (!user?.roleList) {
+            resolve(false);
+          } else {
+            resolve(!roleList || roleList.every((role) => user.roleList && user.roleList.includes(role)));
+          }
+        },
         (error) => reject(error)
       );
     });
   }
 
-  public redirectToLogin(oldRoute: ActivatedRouteSnapshot | null) {
+  public redirectToLogin(oldRoute: ActivatedRouteSnapshot | null): void {
     this.routeBeforeLogin = oldRoute;
     this.router.navigate(['/login']);
   }
@@ -56,9 +62,7 @@ export class AuthService {
         }
         return !!user;
       })
-      .catch((error) => {
-        return false;
-      });
+      .catch((error) => false);
   }
 
   public logout(): Promise<void> {

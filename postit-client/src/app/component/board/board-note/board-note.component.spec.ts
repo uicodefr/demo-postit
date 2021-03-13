@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MatDialog } from '@angular/material/dialog';
 import { BoardNoteComponent } from './board-note.component';
@@ -9,13 +9,13 @@ describe('BoardNoteComponent', () => {
   let component: BoardNoteComponent;
   let fixture: ComponentFixture<BoardNoteComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, AppMaterialModule],
       declarations: [BoardNoteComponent],
-      providers: [MatDialog]
+      providers: [MatDialog],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BoardNoteComponent);

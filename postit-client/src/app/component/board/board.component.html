@@ -16,8 +16,9 @@
           </span>
         </mat-expansion-panel-header>
         <app-board-panel
+          *ngIf="board.id"
           [board]="board"
-          [noteList]="noteListMap.get(board.id)"
+          [noteList]="getNoteList(board.id)"
           [otherBoardList]="getOtherBoardList(board.id)"
           [parameterNoteMax]="parameterNoteMax"
           (askRefreshBoard)="loadNoteList($event)"
@@ -31,12 +32,13 @@
         <div cdkDropList [cdkDropListData]="board" (cdkDropListDropped)="dropNote($event)">
           <div class="boardTitle">{{ board.name }}</div>
           <app-board-panel
+            *ngIf="board.id"
             [board]="board"
-            [noteList]="noteListMap.get(board.id)"
+            [noteList]="getNoteList(board.id)"
             [otherBoardList]="getOtherBoardList(board.id)"
             [parameterNoteMax]="parameterNoteMax"
             (askRefreshBoard)="loadNoteList($event)"
-            noteDraggable="true"
+            [noteDraggable]="true"
           ></app-board-panel>
         </div>
       </div>
@@ -58,8 +60,9 @@
 
         <ng-template matTabContent>
           <app-board-panel
+            *ngIf="board.id"
             [board]="board"
-            [noteList]="noteListMap.get(board.id)"
+            [noteList]="getNoteList(board.id)"
             [otherBoardList]="getOtherBoardList(board.id)"
             [parameterNoteMax]="parameterNoteMax"
             (askRefreshBoard)="loadNoteList($event)"

@@ -7,7 +7,7 @@ let likeService: LikeService;
 describe('LikeService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule]
+      imports: [HttpClientTestingModule],
     });
 
     likeService = TestBed.inject(LikeService);

@@ -7,22 +7,22 @@ import { UserSettingsComponent } from './user-settings/user-settings.component';
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.scss']
+  styleUrls: ['./settings.component.scss'],
 })
 export class SettingsComponent implements OnInit {
   @ViewChild('boardSettings')
-  public boardSettings: BoardSettingsComponent;
+  public boardSettings: BoardSettingsComponent | undefined;
 
   @ViewChild('userSettings')
-  public userSettings: UserSettingsComponent;
+  public userSettings: UserSettingsComponent | undefined;
 
   public constructor(private authService: AuthService) {}
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.authService.getRefreshedCurrentUser();
   }
 
-  public refresh() {
+  public refresh(): void {
     if (this.boardSettings) {
       this.boardSettings.refresh();
     }

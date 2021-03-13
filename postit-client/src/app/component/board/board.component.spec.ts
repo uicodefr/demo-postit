@@ -29,36 +29,36 @@ describe('BoardComponent', () => {
     mockRequestBoards.flush([
       { id: 1, name: 'Board1' },
       { id: 2, name: 'Board2' },
-      { id: 3, name: 'Board3' }
+      { id: 3, name: 'Board3' },
     ] as Array<Board>);
   };
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
         RouterTestingModule.withRoutes([
           {
             path: 'board',
-            component: BoardComponent
-          }
+            component: BoardComponent,
+          },
         ]),
         AppMaterialModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
       ],
       declarations: [BoardComponent, BoardPanelComponent, BoardNoteComponent],
       providers: [
         {
           provide: ActivatedRoute,
           useValue: {
-            params: of({ view: 'panel' })
-          }
-        }
+            params: of({ view: 'panel' }),
+          },
+        },
       ],
-      schemas: []
+      schemas: [],
     }).compileComponents();
     httpMock = TestBed.inject(HttpTestingController);
-  }));
+  });
 
   beforeEach(() => {});
 
@@ -69,7 +69,7 @@ describe('BoardComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should init in tabs view', async(async () => {
+  it('should init in tabs view', async () => {
     const activatedRouteMock = TestBed.inject(ActivatedRoute);
     activatedRouteMock.params = of({ id: '2' });
     fixture = TestBed.createComponent(BoardComponent);
@@ -91,9 +91,9 @@ describe('BoardComponent', () => {
     expect(fixture.nativeElement.querySelector('.mat-tab-group')).toBeTruthy();
     expect(fixture.nativeElement.querySelector('.mat-accordion')).toBeFalsy();
     expect(fixture.nativeElement.querySelector('.flexTable')).toBeFalsy();
-  }));
+  });
 
-  it('should init in panel view', async(async () => {
+  it('should init in panel view', async () => {
     const activatedRouteMock = TestBed.inject(ActivatedRoute);
     activatedRouteMock.params = of({ view: 'panels' });
     fixture = TestBed.createComponent(BoardComponent);
@@ -109,9 +109,9 @@ describe('BoardComponent', () => {
     expect(fixture.nativeElement.querySelector('.mat-tab-group')).toBeFalsy();
     expect(fixture.nativeElement.querySelector('.mat-accordion')).toBeTruthy();
     expect(fixture.nativeElement.querySelector('.flexTable')).toBeFalsy();
-  }));
+  });
 
-  it('should init in table view', async(async () => {
+  it('should init in table view', async () => {
     const activatedRouteMock = TestBed.inject(ActivatedRoute);
     activatedRouteMock.params = of({ view: 'table' });
     fixture = TestBed.createComponent(BoardComponent);
@@ -135,5 +135,5 @@ describe('BoardComponent', () => {
     expect(fixture.nativeElement.querySelector('.mat-tab-group')).toBeFalsy();
     expect(fixture.nativeElement.querySelector('.mat-accordion')).toBeFalsy();
     expect(fixture.nativeElement.querySelector('.flexTable')).toBeTruthy();
-  }));
+  });
 });

@@ -1,4 +1,4 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { AppComponent } from './app.component';
 import { PageNotFoundComponent } from './component/page-not-found/page-not-found.component';
@@ -14,8 +14,8 @@ import { Observable } from 'rxjs';
 let httpMock: HttpTestingController;
 
 describe('AppComponent', () => {
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule, AppMaterialModule],
       declarations: [AppComponent, PageNotFoundComponent],
       providers: [],
@@ -23,26 +23,25 @@ describe('AppComponent', () => {
     }).compileComponents();
 
     httpMock = TestBed.inject(HttpTestingController);
-  }));
+  });
 
-  it('should create the app', async(() => {
+  it('should create the app', async () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
-  }));
+  });
 
-  it('should have availableApp = true', async(() => {
+  it('should have availableApp = true', async () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const app = fixture.debugElement.componentInstance;
     expect(app.availableApp).toEqual(true);
 
-    fixture.whenStable().then(() => {
-      expect(app.availableApp).toEqual(true);
-    });
-  }));
+    await fixture.whenStable();
+    expect(app.availableApp).toEqual(true);
+  });
 
-  it('should init properly', async(() => {
+  it('should init properly', async () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     const compiled = fixture.debugElement.nativeElement;
@@ -61,9 +60,9 @@ describe('AppComponent', () => {
     mockRequestLikeCount.flush({ count: 12 } as CountLikes);
     httpMock.verify();
 
-    fixture.whenStable().then(() => {
-      expect(app.initApp).toEqual(true);
-      expect(compiled.querySelector('h1').textContent).toContain('Post-It');
-    });
-  }));
+    await fixture.whenStable();
+    await fixture.whenStable();
+    expect(app.initApp).toEqual(true);
+    expect(compiled.querySelector('h1').textContent).toContain('Post-It');
+  });
 });

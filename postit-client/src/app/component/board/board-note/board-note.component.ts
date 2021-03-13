@@ -10,7 +10,6 @@ import { EditNoteDialogComponent } from '../edit-note-dialog/edit-note-dialog.co
 import { GlobalConstant } from '../../../const/global-constant';
 import { ColorizeNoteDialogComponent } from '../colorize-note-dialog/colorize-note-dialog.component';
 import { Board } from 'src/app/model/postit/board';
-import { AttachedFile } from 'src/app/model/postit/attached-file';
 import { AttachedFileService } from 'src/app/service/postit/attached-file.service';
 import { AttachedFileDialogComponent } from '../attached-file-dialog/attached-file-dialog.component';
 import { GlobalService } from 'src/app/service/global/global.service';
@@ -35,7 +34,7 @@ export class BoardNoteComponent implements OnInit {
   @Output()
   public moveNote = new EventEmitter<PostitNote>();
 
-  private parameterUploadSizeMax: number;
+  private parameterUploadSizeMax = 0;
 
   public constructor(
     private dialog: MatDialog,
@@ -47,24 +46,24 @@ export class BoardNoteComponent implements OnInit {
     this.note = new PostitNote();
   }
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.globalService.getParameterValue(GlobalConstant.Parameter.UPLOAD_SIZE_MAX).then((parameterValue) => {
       this.parameterUploadSizeMax = Number(parameterValue);
     });
   }
 
   public getColorClass(): string {
-    if (GlobalConstant.Functional.VALID_COLOR_LIST.includes(this.note.color)) {
+    if (this.note.color && GlobalConstant.Functional.VALID_COLOR_LIST.includes(this.note.color)) {
       return this.note.color;
     } else {
       return GlobalConstant.Functional.DEFAULT_COLOR;
     }
   }
 
-  public changeOrder(orderIncrement: number) {
+  public changeOrder(orderIncrement: number): void {
     const saveNote = new PostitNote();
     saveNote.id = this.note.id;
-    saveNote.orderNum = this.note.orderNum + orderIncrement;
+    saveNote.orderNum = (this.note.orderNum ? this.note.orderNum : 0) + orderIncrement;
 
     this.postitService.updateNote(saveNote).then((updatedNote) => {
       this.note = updatedNote;
@@ -72,7 +71,7 @@ export class BoardNoteComponent implements OnInit {
     });
   }
 
-  public changeToBoard(board: Board) {
+  public changeToBoard(board: Board): void {
     const moveNote = new PostitNote();
     moveNote.id = this.note.id;
     moveNote.boardId = board.id;
@@ -83,12 +82,16 @@ export class BoardNoteComponent implements OnInit {
     });
   }
 
-  public edit() {
+  public edit(): void {
+    if (!this.note.id) {
+      return;
+    }
+
     this.postitService.getNote(this.note.id).then((editedNote) => {
       const editDialog = this.dialog.open(EditNoteDialogComponent, {
         width: GlobalConstant.Display.DIALOG_WIDTH,
         data: {
-          editedNote: editedNote,
+          editedNote,
         },
       });
 
@@ -98,7 +101,7 @@ export class BoardNoteComponent implements OnInit {
     });
   }
 
-  public changeColor() {
+  public changeColor(): void {
     const colorDialog = this.dialog.open(ColorizeNoteDialogComponent, {
       width: GlobalConstant.Display.DIALOG_WIDTH,
       data: {
@@ -111,7 +114,7 @@ export class BoardNoteComponent implements OnInit {
     });
   }
 
-  public viewAttachedFile() {
+  public viewAttachedFile(): void {
     const attachedFileDialog = this.dialog.open(AttachedFileDialogComponent, {
       width: GlobalConstant.Display.DIALOG_WIDTH,
       data: this.note.attachedFile,
@@ -125,8 +128,9 @@ export class BoardNoteComponent implements OnInit {
     });
   }
 
-  public uploadFile(uploadFile: FileList) {
-    if (uploadFile.length !== 1) {
+  public uploadFile(eventUpload: EventTarget | undefined | null): void {
+    const uploadFile = (eventUpload as any)?.files as FileList | null;
+    if (!uploadFile || uploadFile.length !== 1) {
       this.globalInfoService.showAlert(
         AlertType.WARNING,
         $localize`:@@boardNote.fileNotSelected:Please select one file`
@@ -138,7 +142,7 @@ export class BoardNoteComponent implements OnInit {
       return;
     }
 
-    if (uploadFile && uploadFile.length > 0) {
+    if (uploadFile && uploadFile.length > 0 && this.note.id) {
       this.attachedFileService.uploadFile(uploadFile[0], this.note.id).then((attachedFile) => {
         this.note.attachedFile = attachedFile;
         this.changeNoteAfterUpdate(this.note, $localize`:@@boardNote.fileUploaded:File uploaded`);
@@ -146,7 +150,7 @@ export class BoardNoteComponent implements OnInit {
     }
   }
 
-  public deleteNote() {
+  public deleteNote(): void {
     const confirmDialogData = {
       title: $localize`:@@boardNote.deleteNote:Delete note`,
       message: $localize`:@@boardNote.deleteNoteConfirm:Are you sure to delete this note ?`,
@@ -159,7 +163,7 @@ export class BoardNoteComponent implements OnInit {
     });
 
     confirmDialog.afterClosed().subscribe((confirmation) => {
-      if (confirmation === true) {
+      if (confirmation === true && this.note.id) {
         this.postitService.deleteNote(this.note.id).then(() => {
           this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@boardNote.noteDeleted:Note deleted`);
           this.takeOffNote.emit(this.note);
@@ -168,7 +172,7 @@ export class BoardNoteComponent implements OnInit {
     });
   }
 
-  private changeNoteAfterUpdate(updatedNote: PostitNote, message?: string) {
+  private changeNoteAfterUpdate(updatedNote: PostitNote, message?: string): void {
     if (updatedNote) {
       Object.assign(this.note, updatedNote);
       this.changeNote.emit(this.note);

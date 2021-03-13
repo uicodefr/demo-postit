@@ -17,7 +17,7 @@ export class AttachedFileService {
       .toPromise();
   }
 
-  public getDownloadLink(attachedFileId: number) {
+  public getDownloadLink(attachedFileId: number): string {
     return `${UrlConstant.Postit.ATTACHED_FILES}/${attachedFileId}/content`;
   }
 

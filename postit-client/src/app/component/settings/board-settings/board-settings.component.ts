@@ -19,10 +19,10 @@ import { AlertType } from 'src/app/const/alert-type';
   styleUrls: ['./board-settings.component.scss'],
 })
 export class BoardSettingsComponent implements OnInit {
+  @ViewChild(MatPaginator, { static: true })
+  public paginator: MatPaginator | undefined;
   public displayedColumns = ['id', 'name', 'order', 'actions'];
   public dataSource = new MatTableDataSource<Board>();
-  @ViewChild(MatPaginator, { static: true })
-  public paginator: MatPaginator;
 
   public constructor(
     private dialog: MatDialog,
@@ -30,26 +30,22 @@ export class BoardSettingsComponent implements OnInit {
     private globalInfoService: GlobalInfoService
   ) {}
 
-  public ngOnInit() {
-    this.dataSource.paginator = this.paginator;
+  public ngOnInit(): void {
+    if (this.paginator) {
+      this.dataSource.paginator = this.paginator;
+    }
     this.getBoardList();
   }
 
-  public refresh() {
+  public refresh(): void {
     this.getBoardList();
-  }
-
-  private getBoardList() {
-    this.postitService.getBoardList().then((boardList) => {
-      this.dataSource.data = boardList;
-    });
   }
 
   public isValidForSave(board: Board): boolean {
     return !!(board && board.name && board.name.length > 1);
   }
 
-  public saveBoard(board: Board) {
+  public saveBoard(board: Board): void {
     if (!this.isValidForSave(board)) {
       return;
     }
@@ -59,7 +55,7 @@ export class BoardSettingsComponent implements OnInit {
     });
   }
 
-  public deleteBoard(board: Board) {
+  public deleteBoard(board: Board): void {
     const confirmDialogData = {
       title: $localize`:@@boardSettings.deleteBoard:Delete board`,
       message: $localize`:@@boardSettings.deleteBoardConfirm:Are you sure to delete this board ?`,
@@ -72,7 +68,7 @@ export class BoardSettingsComponent implements OnInit {
     });
 
     confirmDialog.afterClosed().subscribe((confirmation) => {
-      if (confirmation === true) {
+      if (confirmation === true && board.id) {
         this.postitService.deleteBoard(board.id).then(() => {
           this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@boardSettings.boardDeleted:Board deleted`);
           this.getBoardList();
@@ -81,13 +77,19 @@ export class BoardSettingsComponent implements OnInit {
     });
   }
 
-  public createBoard() {
+  public createBoard(): void {
     const newBoard = new Board();
     newBoard.name = $localize`:@@boardSettings.newBoard:New board`;
 
     this.postitService.createBoard(newBoard).then((createdBoard) => {
       this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@boardSettings.boardCreated:Board created`);
       this.getBoardList();
+    });
+  }
+
+  private getBoardList(): void {
+    this.postitService.getBoardList().then((boardList) => {
+      this.dataSource.data = boardList;
     });
   }
 }

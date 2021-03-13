@@ -8,7 +8,7 @@ export class UrlConstant {
   public static readonly ACTUATOR_INFO = UrlConstant.BASE + '/actuator/info';
 
   public static readonly Global = class Global {
-    private static readonly PREFIX = UrlConstant.BASE + '/global';
+    public static readonly PREFIX = UrlConstant.BASE + '/global';
 
     public static readonly STATUS = Global.PREFIX + '/status';
     public static readonly PARAMETERS = Global.PREFIX + '/parameters';
@@ -17,7 +17,7 @@ export class UrlConstant {
   };
 
   public static readonly Postit = class Postit {
-    private static readonly PREFIX = UrlConstant.BASE + '/postit';
+    public static readonly PREFIX = UrlConstant.BASE + '/postit';
 
     public static readonly BOARDS = Postit.PREFIX + '/boards';
     public static readonly NOTES = Postit.PREFIX + '/notes';
@@ -26,7 +26,7 @@ export class UrlConstant {
   };
 
   public static readonly User = class User {
-    private static readonly PREFIX = UrlConstant.BASE + '/users';
+    public static readonly PREFIX = UrlConstant.BASE + '/users';
 
     public static readonly USERS = User.PREFIX;
     public static readonly CURRENT_USER = User.PREFIX + '/me';

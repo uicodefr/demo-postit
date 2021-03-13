@@ -14,6 +14,7 @@ all:
 test:
 	@echo "test (version: $(VERSION))"
 	npm ci
+	npm run ng -- lint
 	npm run ng -- test --watch=false
 
 buildOnly:

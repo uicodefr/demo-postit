@@ -12,7 +12,7 @@ import { AlertType } from '../../const/alert-type';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  public userConnected: User | null;
+  public userConnected: User | null = null;
 
   public loginForm: FormGroup;
   public loginInProgress = false;
@@ -21,22 +21,22 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private globalInfoService: GlobalInfoService
-  ) {}
-
-  public ngOnInit() {
-    this.authService.getCurrentUser().subscribe((user) => {
-      this.userConnected = user;
-    });
-    this.authService.getRefreshedCurrentUser();
-
+  ) {
     this.loginForm = this.formBuilder.group({
       username: ['', [Validators.required]],
       password: ['', [Validators.required]],
     });
   }
 
-  public onSubmit() {
-    if (this.loginForm.invalid) {
+  public ngOnInit(): void {
+    this.authService.getCurrentUser().subscribe((user) => {
+      this.userConnected = user;
+    });
+    this.authService.getRefreshedCurrentUser();
+  }
+
+  public onSubmit(): void {
+    if (!this.loginForm || this.loginForm.invalid) {
       return;
     }
 
@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  public logout() {
+  public logout(): void {
     this.authService.logout();
   }
 }

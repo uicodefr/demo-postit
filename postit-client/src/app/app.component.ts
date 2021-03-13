@@ -27,7 +27,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public loading$: Observable<boolean>;
   public likes$: Observable<number>;
 
-  private userSubscription: Subscription;
+  private userSubscription: Subscription | undefined;
 
   public constructor(
     private router: Router,
@@ -35,14 +35,18 @@ export class AppComponent implements OnInit, OnDestroy {
     private globalService: GlobalService,
     private likeService: LikeService,
     private authService: AuthService
-  ) {}
-
-  public ngOnInit() {
+  ) {
     // Loading information
     this.loading$ = this.globalInfoService
       .getLoaderObservable()
       .pipe(debounceTime(AppComponent.LOADING_DEBOUNCE_TIME_MS));
 
+    // Like subscription
+    this.likes$ = this.likeService.getCountLikeObservable();
+    this.likeService.listenCountLikeTimer();
+  }
+
+  public ngOnInit(): void {
     // Check app status
     this.globalService
       .getStatus()
@@ -60,29 +64,25 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authService.getRefreshedCurrentUser().finally(() => {
       this.initApp = true;
     });
-
-    // Like subscription
-    this.likes$ = this.likeService.getCountLikeObservable();
-    this.likeService.listenCountLikeTimer();
   }
 
-  public ngOnDestroy() {
+  public ngOnDestroy(): void {
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
     }
   }
 
-  public like() {
+  public like(): void {
     this.likeService.addLike();
   }
 
-  public changeLang(lang: string) {
+  public changeLang(lang: string): void {
     const currentLocationUrl = window.location.toString();
     const regexLangInUrl = /\/(en|fr)\//g;
     window.location.assign(currentLocationUrl.replace(regexLangInUrl, '/' + lang + '/'));
   }
 
-  public logout() {
+  public logout(): void {
     this.authService.logout().then(() => {
       this.router.navigate(['']);
     });

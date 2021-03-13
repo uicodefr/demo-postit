@@ -5,7 +5,7 @@ import { GlobalService } from './global.service';
 describe('GlobalService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule]
+      imports: [HttpClientTestingModule],
     });
   });
 

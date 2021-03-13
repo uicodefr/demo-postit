@@ -10,13 +10,13 @@ describe('UserSettingsComponent', () => {
   let component: UserSettingsComponent;
   let fixture: ComponentFixture<UserSettingsComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [UserSettingsComponent],
       providers: [MatDialog],
-      imports: [HttpClientTestingModule, AppMaterialModule, BrowserAnimationsModule, FormsModule]
+      imports: [HttpClientTestingModule, AppMaterialModule, BrowserAnimationsModule, FormsModule],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UserSettingsComponent);

@@ -7,7 +7,7 @@ describe('GlobalInfoService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [GlobalInfoService, MatSnackBar],
-      imports: [MatSnackBarModule]
+      imports: [MatSnackBarModule],
     });
   });
 

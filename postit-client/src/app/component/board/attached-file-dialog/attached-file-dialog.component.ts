@@ -20,8 +20,8 @@ export class AttachedFileDialogComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  public download() {
-    if (!this.attachedFile) {
+  public download(): void {
+    if (!this.attachedFile.id) {
       return;
     }
 
@@ -30,8 +30,8 @@ export class AttachedFileDialogComponent implements OnInit {
     this.dialogRef.close(false);
   }
 
-  public deleteFile() {
-    if (!this.attachedFile) {
+  public deleteFile(): void {
+    if (!this.attachedFile?.id) {
       return;
     }
 

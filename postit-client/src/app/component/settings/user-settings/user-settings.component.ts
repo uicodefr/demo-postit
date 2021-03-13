@@ -19,14 +19,14 @@ import { GlobalInfoService } from 'src/app/service/util/global-info.service';
   styleUrls: ['./user-settings.component.scss'],
 })
 export class UserSettingsComponent implements OnInit {
-  public PASSWORD_PATTERN = '^\\w{5,}$';
+  @ViewChild(MatPaginator, { static: true })
+  public paginator: MatPaginator | undefined;
 
+  public readonly passwordPattern = '^\\w{5,}$';
   public displayedColumns = ['id', 'username', 'password', 'roleList', 'enabled', 'actions'];
   public dataSource = new MatTableDataSource<User>();
-  @ViewChild(MatPaginator, { static: true })
-  public paginator: MatPaginator;
 
-  public roleList: Array<string>;
+  public roleList: Array<string> = [];
 
   public constructor(
     private dialog: MatDialog,
@@ -34,26 +34,16 @@ export class UserSettingsComponent implements OnInit {
     private globalInfoService: GlobalInfoService
   ) {}
 
-  public ngOnInit() {
-    this.dataSource.paginator = this.paginator;
+  public ngOnInit(): void {
+    if (this.paginator) {
+      this.dataSource.paginator = this.paginator;
+    }
     this.getUserList();
     this.getRoleList();
   }
 
-  public refresh() {
+  public refresh(): void {
     this.getUserList();
-  }
-
-  private getUserList() {
-    this.userService.getUserList().then((userList) => {
-      this.dataSource.data = userList;
-    });
-  }
-
-  private getRoleList() {
-    this.userService.getRoleList().then((roleList) => {
-      this.roleList = roleList;
-    });
   }
 
   public isValidForSave(user: User): boolean {
@@ -61,11 +51,11 @@ export class UserSettingsComponent implements OnInit {
       user &&
       user.username &&
       user.username.length > 1 &&
-      (!user.password || new RegExp(this.PASSWORD_PATTERN).test(user.password))
+      (!user.password || new RegExp(this.passwordPattern).test(user.password))
     );
   }
 
-  public saveUser(user: User) {
+  public saveUser(user: User): void {
     if (!this.isValidForSave(user)) {
       return;
     }
@@ -75,7 +65,7 @@ export class UserSettingsComponent implements OnInit {
     });
   }
 
-  public deleteUser(user: User) {
+  public deleteUser(user: User): void {
     const confirmDialogData = {
       title: $localize`:@@userSettings.deleteUser:Delete user`,
       message: $localize`:@@userSettings.deleteUserConfirm:Are you sure to delete this user ?`,
@@ -88,7 +78,7 @@ export class UserSettingsComponent implements OnInit {
     });
 
     confirmDialog.afterClosed().subscribe((confirmation) => {
-      if (confirmation === true) {
+      if (confirmation === true && user.id) {
         this.userService.deleteUser(user.id).then(() => {
           this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@userSettings.userDeleted:User deleted`);
           this.getUserList();
@@ -97,7 +87,7 @@ export class UserSettingsComponent implements OnInit {
     });
   }
 
-  public createUser() {
+  public createUser(): void {
     const newUser = new User();
     newUser.username = $localize`:@@userSettings.username:username`;
     newUser.enabled = false;
@@ -105,6 +95,18 @@ export class UserSettingsComponent implements OnInit {
     this.userService.createUser(newUser).then((createdUser) => {
       this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@userSettings.userCreated:User created`);
       this.getUserList();
+    });
+  }
+
+  private getUserList(): void {
+    this.userService.getUserList().then((userList) => {
+      this.dataSource.data = userList;
+    });
+  }
+
+  private getRoleList(): void {
+    this.userService.getRoleList().then((roleList) => {
+      this.roleList = roleList;
     });
   }
 }

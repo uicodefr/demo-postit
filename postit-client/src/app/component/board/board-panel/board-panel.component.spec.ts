@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BoardPanelComponent } from './board-panel.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AppMaterialModule } from 'src/app/app-material.module';
@@ -7,12 +7,12 @@ describe('BoardPanelComponent', () => {
   let component: BoardPanelComponent;
   let fixture: ComponentFixture<BoardPanelComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, AppMaterialModule],
-      declarations: [BoardPanelComponent]
+      declarations: [BoardPanelComponent],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BoardPanelComponent);

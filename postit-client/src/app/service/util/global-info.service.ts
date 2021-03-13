@@ -6,7 +6,7 @@ import { AlertType } from '../../const/alert-type';
 import { GlobalConstant } from '../../const/global-constant';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GlobalInfoService {
   private loaderSubject = new BehaviorSubject<boolean>(false);
@@ -17,14 +17,14 @@ export class GlobalInfoService {
     return this.loaderSubject.asObservable();
   }
 
-  public notifLoader(displayLoader: boolean) {
+  public notifLoader(displayLoader: boolean): void {
     this.loaderSubject.next(displayLoader);
   }
 
-  public showAlert(alertType: AlertType, message: string, duration?: number) {
+  public showAlert(alertType: AlertType, message: string, duration?: number): void {
     this.snackBar.open(message, $localize`:@@global.close:Close`, {
       duration: duration ? duration : GlobalConstant.Display.NOTIFICATION_DELAY,
-      panelClass: [this.getAlertClass(alertType)]
+      panelClass: [this.getAlertClass(alertType)],
     } as MatSnackBarConfig);
   }
 

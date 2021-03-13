@@ -3,7 +3,7 @@
 <mat-dialog-content class="content">
   <strong>{{ attachedFile.filename }}</strong>
   <div class="descriptionFile">
-    {{ attachedFile.size / 1000 }} ko
+    <ng-container *ngIf="attachedFile.size"> {{ attachedFile.size / 1000 }} ko </ng-container>
     <small>({{ attachedFile.type }})</small>
   </div>
 </mat-dialog-content>

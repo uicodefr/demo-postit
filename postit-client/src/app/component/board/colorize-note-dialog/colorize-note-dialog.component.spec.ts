@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ColorizeNoteDialogComponent } from './colorize-note-dialog.component';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppMaterialModule } from 'src/app/app-material.module';
@@ -8,20 +8,20 @@ describe('ColorizeNoteDialogComponent', () => {
   let component: ColorizeNoteDialogComponent;
   let fixture: ComponentFixture<ColorizeNoteDialogComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     const mockDialogRef = {
-      close: jasmine.createSpy('close')
+      close: jasmine.createSpy('close'),
     };
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, AppMaterialModule],
       declarations: [ColorizeNoteDialogComponent],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: {} },
-        { provide: MatDialogRef, useValue: mockDialogRef }
-      ]
+        { provide: MatDialogRef, useValue: mockDialogRef },
+      ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ColorizeNoteDialogComponent);
