@@ -41,7 +41,7 @@ class AttachedFileServiceTest {
 
         Assertions.assertThatCode(() -> attachedFileService.uploadAttachedFile(2l, null))
             .isInstanceOf(FunctionnalException.class)
-            .hasMessageContaining("delete it");
+            .hasMessageContaining("The note have already a file, delete it first");
     }
 
     @Test
