@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>com.uicode.demo.postit</groupId>
 	<artifactId>postit-server</artifactId>
-	<version>0.9.0-SNAPSHOT</version>
+	<version>0.9.1-SNAPSHOT</version>
 	<name>postit-server</name>
 	<description>PostIt Server</description>
 
