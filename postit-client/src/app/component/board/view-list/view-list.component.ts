@@ -1,12 +1,12 @@
-import { Component, OnInit, Input, Inject } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 
 @Component({
   selector: 'app-view-list',
   templateUrl: './view-list.component.html',
-  styleUrls: ['./view-list.component.scss']
+  styleUrls: ['./view-list.component.scss'],
 })
-export class ViewListComponent implements OnInit {
+export class ViewListComponent {
   public currentView = 'tabs';
 
   constructor(
@@ -15,8 +15,6 @@ export class ViewListComponent implements OnInit {
   ) {
     this.currentView = data.currentView;
   }
-
-  public ngOnInit(): void {}
 
   public openLink(event: MouseEvent): void {
     this.matbottomSheetRef.dismiss();

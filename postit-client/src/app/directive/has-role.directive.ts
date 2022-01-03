@@ -23,7 +23,7 @@ export class HasRoleDirective implements OnInit {
       roleList.push(this.appHasRole);
     }
 
-    this.authService.userHasRoles(roleList).then((hasRoles) => {
+    this.authService.userHasRoles(roleList).subscribe((hasRoles) => {
       if (hasRoles) {
         this.viewContainerRef.createEmbeddedView(this.templateRef);
       } else {

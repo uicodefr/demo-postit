@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
     this.loginInProgress = true;
     const valueForm = this.loginForm.value;
 
-    this.authService.login(valueForm.username, valueForm.password).then((isSignIn) => {
+    this.authService.login(valueForm.username, valueForm.password).subscribe((isSignIn) => {
       this.loginInProgress = false;
       if (!isSignIn) {
         this.globalInfoService.showAlert(

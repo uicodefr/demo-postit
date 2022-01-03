@@ -22,7 +22,7 @@ describe('PostitService', () => {
     boardList.push({ id: 1, name: 'Test 1' });
     boardList.push({ id: 2, name: 'Test 2' });
 
-    postitService.getBoardList().then((result) => {
+    postitService.getBoardList().subscribe((result) => {
       expect(result).toBe(boardList);
     });
 

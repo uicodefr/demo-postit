@@ -5,14 +5,10 @@
     {
       "files": ["*.ts"],
       "parserOptions": {
-        "project": ["tsconfig.json", "e2e/tsconfig.json"],
+        "project": ["tsconfig.json"],
         "createDefaultProgram": true
       },
-      "extends": [
-        "plugin:@angular-eslint/ng-cli-compat",
-        "plugin:@angular-eslint/ng-cli-compat--formatting-add-on",
-        "plugin:@angular-eslint/template/process-inline-templates"
-      ],
+      "extends": ["plugin:@angular-eslint/recommended", "plugin:@angular-eslint/template/process-inline-templates"],
       "rules": {
         "no-unused-expressions": ["error"],
         "prefer-const": ["error"],
@@ -25,15 +21,6 @@
             "allowTemplateLiterals": true
           }
         ],
-        "@typescript-eslint/no-shadow": ["error"],
-        "@angular-eslint/component-selector": [
-          "error",
-          {
-            "type": "element",
-            "prefix": "app",
-            "style": "kebab-case"
-          }
-        ],
         "@angular-eslint/directive-selector": [
           "error",
           {
@@ -42,32 +29,12 @@
             "style": "camelCase"
           }
         ],
-        "@typescript-eslint/naming-convention": [
+        "@angular-eslint/component-selector": [
           "error",
           {
-            "selector": "default",
-            "format": ["camelCase"],
-            "leadingUnderscore": "allow",
-            "trailingUnderscore": "forbid"
-          },
-          {
-            "selector": "variable",
-            "format": ["camelCase", "UPPER_CASE"],
-            "leadingUnderscore": "allow",
-            "trailingUnderscore": "forbid"
-          },
-          {
-            "selector": "typeLike",
-            "format": ["PascalCase"]
-          },
-          {
-            "selector": "enumMember",
-            "format": ["UPPER_CASE"]
-          },
-          {
-            "selector": ["classProperty"],
-            "modifiers": ["static", "readonly"],
-            "format": ["UPPER_CASE", "PascalCase"]
+            "type": "element",
+            "prefix": "app",
+            "style": "kebab-case"
           }
         ]
       }

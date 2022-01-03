@@ -49,7 +49,7 @@ export class BoardSettingsComponent implements OnInit {
     if (!this.isValidForSave(board)) {
       return;
     }
-    this.postitService.updateBoard(board).then((updatedBoard) => {
+    this.postitService.updateBoard(board).subscribe((updatedBoard) => {
       this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@boardSettings.boardUpdated:Board updated`);
       this.getBoardList();
     });
@@ -69,7 +69,7 @@ export class BoardSettingsComponent implements OnInit {
 
     confirmDialog.afterClosed().subscribe((confirmation) => {
       if (confirmation === true && board.id) {
-        this.postitService.deleteBoard(board.id).then(() => {
+        this.postitService.deleteBoard(board.id).subscribe(() => {
           this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@boardSettings.boardDeleted:Board deleted`);
           this.getBoardList();
         });
@@ -81,14 +81,14 @@ export class BoardSettingsComponent implements OnInit {
     const newBoard = new Board();
     newBoard.name = $localize`:@@boardSettings.newBoard:New board`;
 
-    this.postitService.createBoard(newBoard).then((createdBoard) => {
+    this.postitService.createBoard(newBoard).subscribe((createdBoard) => {
       this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@boardSettings.boardCreated:Board created`);
       this.getBoardList();
     });
   }
 
   private getBoardList(): void {
-    this.postitService.getBoardList().then((boardList) => {
+    this.postitService.getBoardList().subscribe((boardList) => {
       this.dataSource.data = boardList;
     });
   }

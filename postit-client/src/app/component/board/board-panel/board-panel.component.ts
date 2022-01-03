@@ -43,7 +43,7 @@ export class BoardPanelComponent {
     newNote.boardId = this.board.id;
     newNote.name = $localize`:@@board.newNote:New note`;
 
-    this.postitService.createNote(newNote).then((noteCreated) => {
+    this.postitService.createNote(newNote).subscribe((noteCreated) => {
       this.noteList.push(noteCreated);
       this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@board.newNoteCreated:New note created`);
 

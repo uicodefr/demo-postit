@@ -59,7 +59,7 @@ export class UserSettingsComponent implements OnInit {
     if (!this.isValidForSave(user)) {
       return;
     }
-    this.userService.updateUser(user).then((updatedUser) => {
+    this.userService.updateUser(user).subscribe((updatedUser) => {
       this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@userSettings.userUpdated:User updated`);
       this.getUserList();
     });
@@ -79,7 +79,7 @@ export class UserSettingsComponent implements OnInit {
 
     confirmDialog.afterClosed().subscribe((confirmation) => {
       if (confirmation === true && user.id) {
-        this.userService.deleteUser(user.id).then(() => {
+        this.userService.deleteUser(user.id).subscribe(() => {
           this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@userSettings.userDeleted:User deleted`);
           this.getUserList();
         });
@@ -92,20 +92,20 @@ export class UserSettingsComponent implements OnInit {
     newUser.username = $localize`:@@userSettings.username:username`;
     newUser.enabled = false;
 
-    this.userService.createUser(newUser).then((createdUser) => {
+    this.userService.createUser(newUser).subscribe((createdUser) => {
       this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@userSettings.userCreated:User created`);
       this.getUserList();
     });
   }
 
   private getUserList(): void {
-    this.userService.getUserList().then((userList) => {
+    this.userService.getUserList().subscribe((userList) => {
       this.dataSource.data = userList;
     });
   }
 
   private getRoleList(): void {
-    this.userService.getRoleList().then((roleList) => {
+    this.userService.getRoleList().subscribe((roleList) => {
       this.roleList = roleList;
     });
   }

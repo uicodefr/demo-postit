@@ -1,12 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-localize-dictionary',
   templateUrl: './localize-dictionary.component.html',
-  styleUrls: ['./localize-dictionary.component.scss']
+  styleUrls: ['./localize-dictionary.component.scss'],
 })
-export class LocalizeDictionaryComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit(): void {}
-}
+export class LocalizeDictionaryComponent {}

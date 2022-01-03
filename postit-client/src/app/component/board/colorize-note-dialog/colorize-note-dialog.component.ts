@@ -25,7 +25,7 @@ export class ColorizeNoteDialogComponent {
     saveNote.id = this.data.noteId;
     saveNote.color = color;
 
-    this.postitService.updateNote(saveNote).then((updatedNote) => {
+    this.postitService.updateNote(saveNote).subscribe((updatedNote) => {
       this.dialogRef.close(updatedNote);
     });
   }

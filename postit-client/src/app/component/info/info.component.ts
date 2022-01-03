@@ -15,9 +15,6 @@ export class InfoComponent implements OnInit {
   public constructor(private httpClient: HttpClient) {}
 
   public ngOnInit(): void {
-    this.httpClient
-      .get(UrlConstant.ACTUATOR_INFO)
-      .toPromise()
-      .then((info) => (this.serverInfo = info));
+    this.httpClient.get(UrlConstant.ACTUATOR_INFO).subscribe((info) => (this.serverInfo = info));
   }
 }

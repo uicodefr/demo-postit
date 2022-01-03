@@ -59,23 +59,17 @@ export class LikeService {
   }
 
   public addLike(): void {
-    this.httpClient
-      .post<void>(UrlConstant.Global.LIKE, null)
-      .toPromise()
-      .then(() => {
-        if (!LikeService.LIKE_WEB_SOCKET) {
-          this.countLike();
-        }
-      });
+    this.httpClient.post<void>(UrlConstant.Global.LIKE, null).subscribe(() => {
+      if (!LikeService.LIKE_WEB_SOCKET) {
+        this.countLike();
+      }
+    });
   }
 
   private countLike(): void {
-    this.httpClient
-      .get<CountLikes>(UrlConstant.Global.LIKE_COUNT)
-      .toPromise()
-      .then((countLikes) => {
-        this.countLikeSubject.next(countLikes.count);
-      });
+    this.httpClient.get<CountLikes>(UrlConstant.Global.LIKE_COUNT).subscribe((countLikes) => {
+      this.countLikeSubject.next(countLikes.count);
+    });
   }
 
   private convertToWebSocketUrl(path: string): string {

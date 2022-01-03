@@ -1,3 +1,3 @@
 export class CountLikes {
-  public count: number | undefined;
+  public count!: number;
 }

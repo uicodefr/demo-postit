@@ -30,7 +30,7 @@ export class EditNoteDialogComponent {
     saveNote.name = this.editedNote.name;
     saveNote.text = this.editedNote.text;
 
-    this.postitService.updateNote(saveNote).then((updatedNote) => {
+    this.postitService.updateNote(saveNote).subscribe((updatedNote) => {
       this.dialogRef.close(updatedNote);
     });
   }

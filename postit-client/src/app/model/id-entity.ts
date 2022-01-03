@@ -1,3 +1,3 @@
 export class IdEntity {
-  public id: number | undefined;
+  public id!: number;
 }

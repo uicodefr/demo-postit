@@ -48,21 +48,23 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     // Check app status
-    this.globalService
-      .getStatus()
-      .then((status) => {
+    this.globalService.getStatus().subscribe({
+      next: (status) => {
         this.availableApp = status.status === 'true';
-      })
-      .catch((error) => {
+      },
+      error: () => {
         this.availableApp = false;
-      });
+      },
+    });
 
     // Get User and init app
     this.userSubscription = this.authService.getCurrentUser().subscribe((user) => {
       this.isLoggedIn = !!user;
     });
-    this.authService.getRefreshedCurrentUser().finally(() => {
-      this.initApp = true;
+    this.authService.getRefreshedCurrentUser().subscribe({
+      complete: () => {
+        this.initApp = true;
+      },
     });
   }
 
@@ -83,7 +85,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public logout(): void {
-    this.authService.logout().then(() => {
+    this.authService.logout().subscribe(() => {
       this.router.navigate(['']);
     });
   }

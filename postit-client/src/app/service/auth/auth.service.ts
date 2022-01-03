@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { ReplaySubject, Observable } from 'rxjs';
+import { ReplaySubject, Observable, map, catchError, of, first } from 'rxjs';
 import { User } from '../../model/global/user';
 import { UserService } from '../global/user.service';
 import { UrlConstant } from '../../const/url-constant';
@@ -20,26 +20,26 @@ export class AuthService {
     return this.userSubject.asObservable();
   }
 
-  public getRefreshedCurrentUser(): Promise<User> {
-    return this.userService.getCurrentUser().then((user) => {
-      this.userSubject.next(user);
-      return user;
-    });
+  public getRefreshedCurrentUser(): Observable<User> {
+    return this.userService.getCurrentUser().pipe(
+      map((user) => {
+        this.userSubject.next(user);
+        return user;
+      })
+    );
   }
 
-  public userHasRoles(roleList: Array<string>): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      this.getCurrentUser().subscribe(
-        (user) => {
-          if (!user?.roleList) {
-            resolve(false);
-          } else {
-            resolve(!roleList || roleList.every((role) => user.roleList && user.roleList.includes(role)));
-          }
-        },
-        (error) => reject(error)
-      );
-    });
+  public userHasRoles(roleList: Array<string>): Observable<boolean> {
+    return this.getCurrentUser().pipe(
+      first(),
+      map((user) => {
+        if (!user?.roleList) {
+          return false;
+        } else {
+          return !roleList || roleList.every((role) => user.roleList && user.roleList.includes(role));
+        }
+      })
+    );
   }
 
   public redirectToLogin(oldRoute: ActivatedRouteSnapshot | null): void {
@@ -47,33 +47,25 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  public login(username: string, password: string): Promise<boolean> {
+  public login(username: string, password: string): Observable<boolean> {
     const loginFormData = new FormData();
     loginFormData.append('username', username);
     loginFormData.append('password', password);
 
-    return this.httpClient
-      .post<User>(UrlConstant.LOGIN, loginFormData)
-      .toPromise()
-      .then((user) => {
+    return this.httpClient.post<User>(UrlConstant.LOGIN, loginFormData).pipe(
+      map((user) => {
         this.userSubject.next(user);
         if (user && this.routeBeforeLogin && this.routeBeforeLogin.routeConfig) {
           this.router.navigate([this.routeBeforeLogin.routeConfig.path]);
         }
         return !!user;
-      })
-      .catch((error) => false);
+      }),
+      catchError(() => of(false))
+    );
   }
 
-  public logout(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      this.userSubject.next(null);
-      return this.httpClient
-        .post<void>(UrlConstant.LOGOUT, null)
-        .toPromise()
-        .finally(() => {
-          resolve();
-        });
-    });
+  public logout(): Observable<void> {
+    this.userSubject.next(null);
+    return this.httpClient.post<void>(UrlConstant.LOGOUT, null).pipe(catchError(() => of()));
   }
 }

@@ -47,7 +47,7 @@ export class BoardNoteComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.globalService.getParameterValue(GlobalConstant.Parameter.UPLOAD_SIZE_MAX).then((parameterValue) => {
+    this.globalService.getParameterValue(GlobalConstant.Parameter.UPLOAD_SIZE_MAX).subscribe((parameterValue) => {
       this.parameterUploadSizeMax = Number(parameterValue);
     });
   }
@@ -65,7 +65,7 @@ export class BoardNoteComponent implements OnInit {
     saveNote.id = this.note.id;
     saveNote.orderNum = (this.note.orderNum ? this.note.orderNum : 0) + orderIncrement;
 
-    this.postitService.updateNote(saveNote).then((updatedNote) => {
+    this.postitService.updateNote(saveNote).subscribe((updatedNote) => {
       this.note = updatedNote;
       this.orderNote.emit(this.note);
     });
@@ -76,7 +76,7 @@ export class BoardNoteComponent implements OnInit {
     moveNote.id = this.note.id;
     moveNote.boardId = board.id;
 
-    this.postitService.updateNote(moveNote).then((updatedNote) => {
+    this.postitService.updateNote(moveNote).subscribe((updatedNote) => {
       this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@boardNote.noteMoved:Note moved`);
       this.moveNote.emit(updatedNote);
     });
@@ -87,7 +87,7 @@ export class BoardNoteComponent implements OnInit {
       return;
     }
 
-    this.postitService.getNote(this.note.id).then((editedNote) => {
+    this.postitService.getNote(this.note.id).subscribe((editedNote) => {
       const editDialog = this.dialog.open(EditNoteDialogComponent, {
         width: GlobalConstant.Display.DIALOG_WIDTH,
         data: {
@@ -143,7 +143,7 @@ export class BoardNoteComponent implements OnInit {
     }
 
     if (uploadFile && uploadFile.length > 0 && this.note.id) {
-      this.attachedFileService.uploadFile(uploadFile[0], this.note.id).then((attachedFile) => {
+      this.attachedFileService.uploadFile(uploadFile[0], this.note.id).subscribe((attachedFile) => {
         this.note.attachedFile = attachedFile;
         this.changeNoteAfterUpdate(this.note, $localize`:@@boardNote.fileUploaded:File uploaded`);
       });
@@ -164,7 +164,7 @@ export class BoardNoteComponent implements OnInit {
 
     confirmDialog.afterClosed().subscribe((confirmation) => {
       if (confirmation === true && this.note.id) {
-        this.postitService.deleteNote(this.note.id).then(() => {
+        this.postitService.deleteNote(this.note.id).subscribe(() => {
           this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@boardNote.noteDeleted:Note deleted`);
           this.takeOffNote.emit(this.note);
         });

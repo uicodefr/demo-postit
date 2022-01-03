@@ -12,10 +12,10 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     private static final String WEBSOCKET_ENDPOINT = "/websocket";
-    
+
     @Value("${myapp.websocket.enable-cors:false}")
     private Boolean enableCors;
-    
+
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.enableSimpleBroker("/listen");
@@ -25,8 +25,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         if (Boolean.TRUE.equals(enableCors)) {
-            registry.addEndpoint(WEBSOCKET_ENDPOINT).setAllowedOrigins("*");
-            registry.addEndpoint(WEBSOCKET_ENDPOINT).setAllowedOrigins("*").withSockJS();
+            registry.addEndpoint(WEBSOCKET_ENDPOINT).setAllowedOriginPatterns("*");
+            registry.addEndpoint(WEBSOCKET_ENDPOINT).setAllowedOriginPatterns("*").withSockJS();
         } else {
             registry.addEndpoint(WEBSOCKET_ENDPOINT);
             registry.addEndpoint(WEBSOCKET_ENDPOINT).withSockJS();

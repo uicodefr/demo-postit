@@ -36,14 +36,14 @@ export class BoardComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
-    this.globalService.getParameterValue(GlobalConstant.Parameter.NOTE_MAX).then((paramValue) => {
+    this.globalService.getParameterValue(GlobalConstant.Parameter.NOTE_MAX).subscribe((paramValue) => {
       this.parameterNoteMax = Number(paramValue);
     });
 
-    this.postitService.getBoardList().then((boardList) => {
+    this.postitService.getBoardList().subscribe((boardList) => {
       this.boardList = boardList;
       this.route.params.subscribe((params) => {
-        this.view = params.view;
+        this.view = params['view'];
         if (!this.boardList || this.boardList.length === 0) {
           return;
         }
@@ -56,8 +56,8 @@ export class BoardComponent implements OnInit {
           });
         } else if (this.view !== 'panels') {
           // In view "tabs" (default view), we load the selected tab
-          if (params.id) {
-            const selectedBoardId = parseInt(params.id, 10);
+          if (params['id']) {
+            const selectedBoardId = parseInt(params['id'], 10);
             this.loadNoteList(selectedBoardId);
             this.selectedIndex = this.boardList.findIndex((board) => board.id === selectedBoardId);
           } else {
@@ -79,7 +79,7 @@ export class BoardComponent implements OnInit {
     if (!boardId) {
       return;
     }
-    this.postitService.getNoteList(boardId).then((noteList) => {
+    this.postitService.getNoteList(boardId).subscribe((noteList) => {
       this.noteListMap.set(boardId, noteList);
     });
   }
@@ -128,7 +128,7 @@ export class BoardComponent implements OnInit {
       }
     }
 
-    this.postitService.updateNote(note).then((updatedNote) => {
+    this.postitService.updateNote(note).subscribe((updatedNote) => {
       this.globalInfoService.showAlert(
         AlertType.SUCCESS,
         $localize`:@@board.noteMovedWithDragAndDrop:Note moved with drag-and-drop`

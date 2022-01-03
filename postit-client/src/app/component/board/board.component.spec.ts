@@ -1,5 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { BoardComponent } from './board.component';
 import { of } from 'rxjs';
@@ -59,8 +58,6 @@ describe('BoardComponent', () => {
     }).compileComponents();
     httpMock = TestBed.inject(HttpTestingController);
   });
-
-  beforeEach(() => {});
 
   it('should create', () => {
     fixture = TestBed.createComponent(BoardComponent);

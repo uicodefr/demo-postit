@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { AttachedFile } from 'src/app/model/postit/attached-file';
 import { AttachedFileService } from 'src/app/service/postit/attached-file.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -10,15 +10,13 @@ import { GlobalInfoService } from 'src/app/service/util/global-info.service';
   templateUrl: './attached-file-dialog.component.html',
   styleUrls: ['./attached-file-dialog.component.scss'],
 })
-export class AttachedFileDialogComponent implements OnInit {
+export class AttachedFileDialogComponent {
   public constructor(
     private dialogRef: MatDialogRef<AttachedFileDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public attachedFile: AttachedFile,
     private attachedFileService: AttachedFileService,
     private globalInfoService: GlobalInfoService
   ) {}
-
-  ngOnInit(): void {}
 
   public download(): void {
     if (!this.attachedFile.id) {
@@ -35,7 +33,7 @@ export class AttachedFileDialogComponent implements OnInit {
       return;
     }
 
-    this.attachedFileService.deleteFile(this.attachedFile.id).then(() => {
+    this.attachedFileService.deleteFile(this.attachedFile.id).subscribe(() => {
       this.globalInfoService.showAlert(
         AlertType.SUCCESS,
         $localize`:@@attachedFile.attachmentDeleted:Attachment deleted`
