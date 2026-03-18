@@ -3,9 +3,7 @@ package com.uicode.postit.postitserver.controller.postit;
 import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -14,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.uicode.postit.postitserver.dto.postit.PostitNoteDto;
@@ -22,15 +21,18 @@ import com.uicode.postit.postitserver.exception.functionnal.InvalidDataException
 import com.uicode.postit.postitserver.exception.functionnal.NotFoundException;
 import com.uicode.postit.postitserver.service.postit.PostitNoteService;
 
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping("/postit")
+@RequiredArgsConstructor
 public class PostitNoteController {
 
-    @Autowired
-    private PostitNoteService postitNoteService;
+    private final PostitNoteService postitNoteService;
 
     @GetMapping("/notes")
-    public List<PostitNoteDto> getNoteList(@RequestParam("boardId") Long boardId) {
+    public List<PostitNoteDto> getNoteList(@RequestParam Long boardId) {
         return postitNoteService.getNoteList(boardId);
     }
 
@@ -52,6 +54,7 @@ public class PostitNoteController {
     }
 
     @DeleteMapping("/notes/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteNote(@PathVariable("id") Long noteId) {
         postitNoteService.deleteNote(noteId);
     }

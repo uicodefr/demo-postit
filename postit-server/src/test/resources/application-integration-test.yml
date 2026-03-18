@@ -1,0 +1,18 @@
+# DATASOURCE
+spring:
+  datasource:
+    url: jdbc:postgresql://127.0.0.1/postit_db
+    username: postittest
+    password: postittest
+  
+  jpa:
+    properties:
+      hibernate:
+        show-sql: true
+
+# INFO (Actuator)
+info:
+  app:
+    name: Postit Server Test
+    description: Unit Test
+    version: 0.7.1

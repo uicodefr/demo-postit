@@ -2,7 +2,7 @@ package com.uicode.postit.postitserver.util;
 
 import java.util.stream.Collectors;
 
-import javax.validation.ConstraintViolationException;
+import jakarta.validation.ConstraintViolationException;
 
 import com.uicode.postit.postitserver.exception.functionnal.InvalidDataException;
 

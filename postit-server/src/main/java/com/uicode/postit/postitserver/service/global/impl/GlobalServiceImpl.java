@@ -3,50 +3,34 @@ package com.uicode.postit.postitserver.service.global.impl;
 import java.util.Date;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import com.uicode.postit.postitserver.dao.global.LikeDao;
 import com.uicode.postit.postitserver.dao.global.ParameterDao;
-import com.uicode.postit.postitserver.dto.IdEntityDto;
-import com.uicode.postit.postitserver.dto.global.CountLikesDto;
 import com.uicode.postit.postitserver.dto.global.GlobalStatusDto;
-import com.uicode.postit.postitserver.entity.global.Like;
 import com.uicode.postit.postitserver.entity.global.Parameter;
 import com.uicode.postit.postitserver.exception.functionnal.ForbiddenException;
 import com.uicode.postit.postitserver.exception.functionnal.NotFoundException;
 import com.uicode.postit.postitserver.service.global.GlobalService;
 import com.uicode.postit.postitserver.util.parameter.ParameterConst;
-import com.uicode.postit.postitserver.util.parameter.ParameterUtil;
+
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
+@Slf4j
 public class GlobalServiceImpl implements GlobalService {
 
-    private static final Logger LOGGER = LogManager.getLogger(GlobalServiceImpl.class);
-
     private static final Date UPDATE = new Date();
-    private static final String WS_LIKE_PATH = "/listen/likes:count";
 
-    @Autowired
-    private CacheManager cacheManager;
+    private final CacheManager cacheManager;
+    private final ParameterDao parameterDao;
 
-    @Autowired
-    private ParameterDao parameterDao;
-
-    @Autowired
-    private LikeDao likeDao;
-
-    @Autowired
-    private SimpMessagingTemplate simpMessagingTemplate;
 
     @Value("${info.app.version:}")
     private String infoAppVersion;
@@ -63,7 +47,7 @@ public class GlobalServiceImpl implements GlobalService {
         Optional<Parameter> parameterStatusOpt = parameterDao.findById(ParameterConst.GENERAL_STATUS);
         parameterStatusOpt.map(Parameter::getValue).ifPresent(status::setStatus);
 
-        LOGGER.info("Global Status asked");
+        log.info("Global Status asked");
         return status;
     }
 
@@ -72,14 +56,14 @@ public class GlobalServiceImpl implements GlobalService {
         for (String name : cacheManager.getCacheNames()) {
             cacheManager.getCache(name).clear();
         }
-        LOGGER.warn("Cache cleared");
+        log.warn("Cache cleared");
     }
 
     @Override
     @Cacheable("parameter")
     public Optional<String> getParameterValue(String parameterName) {
         Optional<Parameter> parameter = parameterDao.findById(parameterName);
-        LOGGER.info("Get ParameterValue for : {}", parameterName);
+        log.info("Get ParameterValue for : {}", parameterName);
         return parameter.map(Parameter::getValue);
     }
 
@@ -92,39 +76,6 @@ public class GlobalServiceImpl implements GlobalService {
             throw new ForbiddenException("parameter.getClientView == false");
         }
         return parameter.getValue();
-    }
-
-    @Override
-    public CountLikesDto countLikes() {
-        CountLikesDto countLikesDto = new CountLikesDto();
-        countLikesDto.setCount(likeDao.count());
-        LOGGER.info("CountLikes return the value : {}", countLikesDto.getCount());
-        return countLikesDto;
-    }
-
-    @Override
-    public IdEntityDto addLike(String clientIp) {
-        IdEntityDto result = new IdEntityDto();
-
-        Optional<String> maxLikeParameter = getParameterValue(ParameterConst.LIKE_MAX);
-        Long maxLike = ParameterUtil.getLong(maxLikeParameter, 0l);
-
-        if (countLikes().getCount() > maxLike) {
-            LOGGER.warn("AddLike : the maximum of likes is reached");
-            return result;
-        }
-
-        Like like = new Like();
-        like.setClientIp(clientIp);
-        like.setInsertDate(new Date());
-        like = likeDao.save(like);
-
-        result.setId(like.getId());
-
-        // Send Result to WebSocket
-        simpMessagingTemplate.convertAndSend(WS_LIKE_PATH, countLikes());
-        LOGGER.info("AddLike successful");
-        return result;
     }
 
 }

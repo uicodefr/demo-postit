@@ -1,8 +1,5 @@
 package com.uicode.postit.postitserver.controller.global;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,13 +14,18 @@ import com.uicode.postit.postitserver.dto.global.GlobalStatusDto;
 import com.uicode.postit.postitserver.exception.functionnal.ForbiddenException;
 import com.uicode.postit.postitserver.exception.functionnal.NotFoundException;
 import com.uicode.postit.postitserver.service.global.GlobalService;
+import com.uicode.postit.postitserver.service.global.LikeService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/global")
+@RequiredArgsConstructor
 public class GlobalController {
 
-    @Autowired
-    private GlobalService globalService;
+    private final GlobalService globalService;
+    private final LikeService likeService;
 
     @GetMapping("/status")
     public GlobalStatusDto getStatus() {
@@ -43,7 +45,7 @@ public class GlobalController {
 
     @GetMapping("/likes:count")
     public CountLikesDto countLikes() {
-        return globalService.countLikes();
+        return likeService.countLikes();
     }
 
     @PostMapping("/likes")
@@ -52,13 +54,13 @@ public class GlobalController {
         if (request != null) {
             clientIp = request.getRemoteAddr();
         }
-        return globalService.addLike(clientIp);
+        return likeService.addLike(clientIp);
     }
 
     @MessageMapping("/likes")
     @SendTo("/listen/likes")
     public IdEntityDto wsAddLike() {
-        return globalService.addLike("websocket");
+        return likeService.addLike("websocket");
     }
 
 }

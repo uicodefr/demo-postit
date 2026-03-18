@@ -1,0 +1,21 @@
+info:
+  name: Create Board
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: http://localhost:8080/postit/boards
+  body:
+    type: json
+    data: |-
+      {
+        "name": "new board test"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

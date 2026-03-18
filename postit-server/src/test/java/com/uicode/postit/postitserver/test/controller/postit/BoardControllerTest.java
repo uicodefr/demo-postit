@@ -1,64 +1,144 @@
 package com.uicode.postit.postitserver.test.controller.postit;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.context.annotation.Import;
+import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.test.web.servlet.client.MockMvcWebTestClient;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.uicode.postit.postitserver.dto.postit.BoardDto;
-import com.uicode.postit.postitserver.util.AppTestRequestInterceptor;
+import com.uicode.postit.postitserver.test.config.TestContainersConfig;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@AutoConfigureTestDatabase
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Import(TestContainersConfig.class)
+@ActiveProfiles("integration-test")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class BoardControllerTest {
 
     @Autowired
-    private TestRestTemplate restTemplate;
+    private WebApplicationContext wac;
+
+    private WebTestClient webTestClient;
+
+    private static Long createdBoardId;
+    private static int initialBoardCount;
+
+
+    @BeforeEach
+    void setUp() {
+        webTestClient = MockMvcWebTestClient.bindToApplicationContext(this.wac)
+            .apply(springSecurity())
+            .defaultRequest(post("/").with(csrf()))
+            .configureClient()
+            .build();
+    }
 
     @Test
-    void boardCrud() {
-        // Get List
-        BoardDto[] boardList = restTemplate.getForObject("/postit/boards", BoardDto[].class);
-        Assertions.assertThat(boardList).isNotNull();
-        int boardCount = boardList.length;
-
-        // Connect as admin
-        AppTestRequestInterceptor appTestRequestInterceptor = AppTestRequestInterceptor.addInterceptor(restTemplate);
-        appTestRequestInterceptor.simpleGetForCsrf();
-        appTestRequestInterceptor.login("admin", "admin");
-
-        // Insert
+    @WithAnonymousUser
+    void createBoard_noUser_shouldBeForbidden() {
         BoardDto board = new BoardDto();
         board.setName("New Board");
         board.setOrderNum(2);
 
-        BoardDto createdBoard = restTemplate.postForObject("/postit/boards", board, BoardDto.class);
-        Assertions.assertThat(createdBoard).isNotNull();
-        Assertions.assertThat(createdBoard.getId()).isNotNull();
-        Assertions.assertThat(createdBoard.getName()).isEqualTo(board.getName());
-        Assertions.assertThat(createdBoard.getOrderNum()).isEqualTo(board.getOrderNum());
+        webTestClient.post()
+            .uri("/postit/boards")
+            .bodyValue(board)
+            .exchange()
+            .expectStatus().isUnauthorized();
+    }
 
-        // Update
-        createdBoard.setName("Update Board");
-        createdBoard.setOrderNum(3);
-        BoardDto updatedBoard = restTemplate.patchForObject("/postit/boards/{id}", createdBoard, BoardDto.class,
-                createdBoard.getId());
-        Assertions.assertThat(updatedBoard).isNotNull();
-        Assertions.assertThat(updatedBoard.getId()).isEqualTo(createdBoard.getId());
-        Assertions.assertThat(updatedBoard.getName()).isEqualTo(createdBoard.getName());
-        Assertions.assertThat(updatedBoard.getOrderNum()).isEqualTo(createdBoard.getOrderNum());
+    @Test
+    @Order(1)
+    void listBoardsInitial() {
+        webTestClient.get()
+            .uri("/postit/boards")
+            .exchange()
+            .expectStatus().isOk()
+            .expectBody(BoardDto[].class)
+            .value(list -> {
+                Assertions.assertThat(list).isNotNull();
+                initialBoardCount = list.length;
+            });
+    }
 
-        // Delete
-        restTemplate.delete("/postit/boards/{id}", createdBoard.getId());
 
-        // Final Check
-        boardList = restTemplate.getForObject("/postit/boards", BoardDto[].class);
-        Assertions.assertThat(boardList).isNotNull().hasSize(boardCount);
+    @Test
+    @Order(2)
+    @WithMockUser(roles = "BOARD_WRITE")
+    void createBoard() {
+        BoardDto board = new BoardDto();
+        board.setName("New Board");
+        board.setOrderNum(2);
 
-        appTestRequestInterceptor.clear();
+        createdBoardId = webTestClient.post()
+            .uri("/postit/boards")
+            .bodyValue(board)
+            .exchange()
+            .expectStatus().isOk()
+            .expectBody(BoardDto.class)
+            .value(dto -> {
+                Assertions.assertThat(dto.getId()).isNotNull();
+                Assertions.assertThat(dto.getName()).isEqualTo("New Board");
+                Assertions.assertThat(dto.getOrderNum()).isEqualTo(2);
+            })
+            .returnResult()
+            .getResponseBody()
+            .getId();
+    }
+
+    @Test
+    @Order(3)
+    @WithMockUser(roles = "BOARD_WRITE")
+    void updateBoard() {
+        BoardDto update = new BoardDto();
+        update.setId(createdBoardId);
+        update.setName("Update Board");
+        update.setOrderNum(3);
+
+        webTestClient.patch()
+            .uri("/postit/boards/{id}", createdBoardId)
+            .bodyValue(update)
+            .exchange()
+            .expectStatus().isOk()
+            .expectBody(BoardDto.class)
+            .value(dto -> {
+                Assertions.assertThat(dto.getId()).isEqualTo(createdBoardId);
+                Assertions.assertThat(dto.getName()).isEqualTo("Update Board");
+                Assertions.assertThat(dto.getOrderNum()).isEqualTo(3);
+            });
+    }
+
+    @Test
+    @Order(4)
+    @WithMockUser(roles = "BOARD_WRITE")
+    void deleteBoard() {
+        webTestClient.delete()
+            .uri("/postit/boards/{id}", createdBoardId)
+            .exchange()
+            .expectStatus().isNoContent();
+
+        webTestClient.get()
+            .uri("/postit/boards")
+            .exchange()
+            .expectStatus().isOk()
+            .expectBody(BoardDto[].class)
+            .value(list -> {
+                Assertions.assertThat(list).hasSize(initialBoardCount);
+            });
     }
 
 }

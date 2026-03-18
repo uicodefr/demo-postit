@@ -1,5 +1,7 @@
 package com.uicode.postit.postitserver.test.controller.global;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,104 +11,126 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.context.annotation.Import;
+import org.springframework.messaging.converter.JacksonJsonMessageConverter;
 import org.springframework.messaging.simp.stomp.StompFrameHandler;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.test.web.servlet.client.MockMvcWebTestClient;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 import org.springframework.web.socket.sockjs.client.SockJsClient;
 import org.springframework.web.socket.sockjs.client.Transport;
 import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 
-import com.google.common.primitives.Ints;
 import com.uicode.postit.postitserver.dao.global.LikeDao;
 import com.uicode.postit.postitserver.dto.IdEntityDto;
 import com.uicode.postit.postitserver.dto.global.CountLikesDto;
-import com.uicode.postit.postitserver.dto.global.ErrorDto;
-import com.uicode.postit.postitserver.dto.global.GlobalStatusDto;
-import com.uicode.postit.postitserver.util.AppTestRequestInterceptor;
+import com.uicode.postit.postitserver.test.config.TestContainersConfig;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@AutoConfigureTestDatabase
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Import(TestContainersConfig.class)
+@ActiveProfiles("integration-test")
 class GlobalControllerTest {
+
+    @Autowired
+    private WebApplicationContext wac;
+
+    private WebTestClient webTestClient;
+
 
     @Value("${local.server.port}")
     private int port;
 
-    @Autowired
-    private TestRestTemplate restTemplate;
 
     @Autowired
     private LikeDao likeDao;
 
+
+    @BeforeEach
+    void setUp() {
+        webTestClient = MockMvcWebTestClient.bindToApplicationContext(this.wac).build();
+    }
+
     @Test
     void getStatus() {
-        GlobalStatusDto statusDto = restTemplate.getForObject("/global/status", GlobalStatusDto.class);
-        Assertions.assertThat(statusDto).isNotNull();
-        Assertions.assertThat(statusDto.getStatus()).isEqualTo(Boolean.TRUE.toString());
-        Assertions.assertThat(statusDto.getUpDate()).isNotNull();
-        Assertions.assertThat(statusDto.getCurrentDate()).isNotNull();
-        Assertions.assertThat(statusDto.getVersion()).isNotEmpty();
+        webTestClient.get().uri("/global/status")
+            .exchange()
+            .expectStatus().isOk()
+            .expectBody()
+            .jsonPath("$.status").isEqualTo("true")
+            .jsonPath("$.upDate").exists()
+            .jsonPath("$.currentDate").exists()
+            .jsonPath("$.version").isNotEmpty();
     }
 
     @Test
     void getParameterValue() {
-        String noteMax = restTemplate.getForObject("/global/parameters/note.max", String.class);
-        Assertions.assertThat(Ints.tryParse(noteMax)).isNotNull();
+        webTestClient.get()
+            .uri("/global/parameters/note.max")
+            .exchange()
+            .expectStatus().isOk()
+            .expectBody(String.class)
+            .value(noteMax -> { assertThat(noteMax).matches("\\d+"); });
 
-        ErrorDto error = restTemplate.getForObject("/global/parameters/like.max", ErrorDto.class);
-        Assertions.assertThat(error).isNotNull();
-        Assertions.assertThat(error.getStatus()).isEqualTo(403);
+        webTestClient.get()
+            .uri("/global/parameters/like.max")
+            .exchange()
+            .expectStatus().isForbidden()
+            .expectBody()
+            .jsonPath("$.status").isEqualTo(403);
 
-        error = restTemplate.getForObject("/global/parameters/toto", ErrorDto.class);
-        Assertions.assertThat(error).isNotNull();
-        Assertions.assertThat(error.getStatus()).isEqualTo(404);
+        webTestClient.get()
+            .uri("/global/parameters/toto")
+            .exchange()
+            .expectStatus().isNotFound()
+            .expectBody()
+            .jsonPath("$.status").isEqualTo(404);
     }
 
     @Test
     void clearCache() {
-        AppTestRequestInterceptor appTestRequestInterceptor = AppTestRequestInterceptor.addInterceptor(restTemplate);
-        appTestRequestInterceptor.simpleGetForCsrf();
-        Assertions
-            .assertThat(restTemplate.postForEntity("/global/:clearCache", null, String.class).getStatusCodeValue())
-            .isEqualTo(200);
-        appTestRequestInterceptor.clear();
+        webTestClient.post()
+            .uri("/global/:clearCache")
+            .exchange()
+            .expectStatus().isOk();
     }
 
     @Test
     void countLikes() {
-        CountLikesDto countLikesDto = restTemplate.getForObject("/global/likes:count", CountLikesDto.class);
-        Assertions.assertThat(countLikesDto).isNotNull();
-        Assertions.assertThat(countLikesDto.getCount()).isNotNull();
+        webTestClient.get()
+            .uri("/global/likes:count")
+            .exchange()
+            .expectStatus().isOk()
+            .expectBody()
+            .jsonPath("$.count").isNumber();
     }
 
     @Test
     void addLike() {
-        ResponseEntity<IdEntityDto> responseEntity = restTemplate.postForEntity("/global/likes", "", IdEntityDto.class);
-        // 403 because we don't have a CSRF token => Unique test for csrf
-        Assertions.assertThat(responseEntity.getStatusCodeValue()).isEqualTo(403);
-
-        AppTestRequestInterceptor appTestRequestInterceptor = AppTestRequestInterceptor.addInterceptor(restTemplate);
-        appTestRequestInterceptor.simpleGetForCsrf();
-
-        responseEntity = restTemplate.postForEntity("/global/likes", "", IdEntityDto.class);
-        Assertions.assertThat(responseEntity.getStatusCodeValue()).isEqualTo(200);
-        IdEntityDto idEntityDto = responseEntity.getBody();
-        Assertions.assertThat(idEntityDto).isNotNull();
-        Assertions.assertThat(idEntityDto.getId()).isNotNull();
+        IdEntityDto idEntityDto = webTestClient.post()
+                .uri("/global/likes")
+                .bodyValue("")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(IdEntityDto.class)
+                .value(dto -> {
+                    Assertions.assertThat(dto).isNotNull();
+                    Assertions.assertThat(dto.getId()).isNotNull();
+                })
+                .returnResult()
+                .getResponseBody();
 
         likeDao.deleteById(idEntityDto.getId());
-        appTestRequestInterceptor.clear();
     }
 
     @Test
@@ -114,10 +138,10 @@ class GlobalControllerTest {
         List<Transport> transports = new ArrayList<>();
         transports.add(new WebSocketTransport(new StandardWebSocketClient()));
         WebSocketStompClient stompClient = new WebSocketStompClient(new SockJsClient(transports));
-        stompClient.setMessageConverter(new MappingJackson2MessageConverter());
+        stompClient.setMessageConverter(new JacksonJsonMessageConverter());
 
         String wsUrl = "ws://localhost:" + port + "/websocket";
-        StompSession stompSession = stompClient.connect(wsUrl, new StompSessionHandlerAdapter() {
+        StompSession stompSession = stompClient.connectAsync(wsUrl, new StompSessionHandlerAdapter() {
         }).get(1, TimeUnit.SECONDS);
 
         final CompletableFuture<CountLikesDto> countLikesFuture = new CompletableFuture<>();

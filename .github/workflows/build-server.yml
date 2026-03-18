@@ -13,18 +13,21 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CI: true
+      SKIP_PUBLISH: true
       NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
       NEXUS_SETTINGS: ${{ secrets.NEXUS_SETTINGS }}
       working-directory: postit-server
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
 
       - name: Set up JDK
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v5
         with:
-          java-version: 11
+          java-version: 21
+          distribution: "temurin"
+          cache: "maven"
 
       - name: Init script
         run: |
@@ -33,7 +36,7 @@ jobs:
             ./version.sh remove-snapshot
           fi
           if [[ "$branch" = "master" || "$branch" = "develop" ]]; then
-            echo "DEPLOY=OK" >> $GITHUB_ENV
+            echo "PUBLISH=OK" >> $GITHUB_ENV
           fi
           mkdir -p ~/.m2
           echo $NEXUS_SETTINGS > ~/.m2/settings.xml
@@ -42,17 +45,17 @@ jobs:
         run: make test
         working-directory: ${{ env.working-directory }}
 
-      - name : Build Only
-        if: ${{ ! env.DEPLOY }}
+      - name: Build Only
+        if: ${{ ! env.PUBLISH || env.SKIP_PUBLISH == 'true' }}
+        run: make buildOnly
+        working-directory: ${{ env.working-directory }}
+
+      - name: Build and Archiving
+        if: ${{ env.PUBLISH && env.SKIP_PUBLISH != 'true' }}
         run: make build
         working-directory: ${{ env.working-directory }}
 
-      - name : Build and Archiving
-        if: ${{ env.DEPLOY }}
-        run: make build
-        working-directory: ${{ env.working-directory }}
-
-      - name : Containerize
-        if: ${{ env.DEPLOY }}
+      - name: Containerize and Publish image
+        if: ${{ env.PUBLISH && env.SKIP_PUBLISH != 'true' }}
         run: make containerize
         working-directory: ${{ env.working-directory }}

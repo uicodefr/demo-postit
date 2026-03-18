@@ -4,11 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,35 +27,37 @@ import com.uicode.postit.postitserver.mapper.postit.AttachedFileMapper;
 import com.uicode.postit.postitserver.service.postit.AttachedFileService;
 import com.uicode.postit.postitserver.util.CheckDataUtil;
 
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 @Service
 @Transactional
+@RequiredArgsConstructor
+@Slf4j
 public class AttachedFileServiceImpl implements AttachedFileService {
 
-    private static final Logger LOGGER = LogManager.getLogger(AttachedFileServiceImpl.class);
-
-    @Autowired
-    private AttachedFileDao attachedFileDao;
-
-    @Autowired
-    private PostitNoteDao postitNoteDao;
+    private final AttachedFileDao attachedFileDao;
+    private final PostitNoteDao postitNoteDao;
+    private final AttachedFileMapper attachedFileMapper;
 
     @Override
     public PageDto<AttachedFileDto> getAttachedFileList(Integer page, Integer size) throws InvalidDataException {
         CheckDataUtil.checkCondition(page >= 0, "page should be equal or greater than 0");
         CheckDataUtil.checkCondition(size >= 1 && size <= 100, "size should be between than 1 and 100");
-        LOGGER.info("Get getAttachedFileList for the page {} and the size {}", page, size);
+        log.info("Get getAttachedFileList for the page {} and the size {}", page, size);
 
         Pageable pageById = PageRequest.of(page, size, Sort.by("id"));
         Page<AttachedFile> attachedFilesPage = attachedFileDao.findAll(pageById);
 
-        return PageDto.of(attachedFilesPage, AttachedFileMapper.INSTANCE::toDto);
+        return PageDto.of(attachedFilesPage, attachedFileMapper::toDto);
     }
 
     @Override
     public AttachedFileDto getAttachedFile(Long attachedFileId) throws NotFoundException {
-        LOGGER.info("Get AttachedFile with the id : {}", attachedFileId);
+        log.info("Get AttachedFile with the id : {}", attachedFileId);
         Optional<AttachedFile> attachedFileOpt = attachedFileDao.findById(attachedFileId);
-        return AttachedFileMapper.INSTANCE
+        return attachedFileMapper
             .toDto(attachedFileOpt.orElseThrow(() -> new NotFoundException("AttachedFile")));
     }
 
@@ -93,7 +90,7 @@ public class AttachedFileServiceImpl implements AttachedFileService {
             throw new TechnicalException("Error getting bytes from file", exception);
         }
 
-        LOGGER.info("Upload AttachedFile {} on the note : {}", file.getOriginalFilename(), noteId);
+        log.info("Upload AttachedFile {} on the note : {}", file.getOriginalFilename(), noteId);
         AttachedFile attachedFile = new AttachedFile();
         attachedFile.setFilename(file.getOriginalFilename());
         attachedFile.setFiledata(new AttachedFileData(filedata, attachedFile));
@@ -103,14 +100,14 @@ public class AttachedFileServiceImpl implements AttachedFileService {
 
         postitNote.setAttachedFile(attachedFile);
 
-        return AttachedFileMapper.INSTANCE.toDto(attachedFile);
+        return attachedFileMapper.toDto(attachedFile);
     }
 
     @Override
     public void deleteAttachedFile(Long attachedFileId) {
         Optional<AttachedFile> attachedFileOpt = attachedFileDao.findById(attachedFileId);
         if (!attachedFileOpt.isPresent()) {
-            LOGGER.warn("AttachedFile not found for deletion, id = %s", attachedFileId);
+            log.warn("AttachedFile not found for deletion, id = %s", attachedFileId);
             return;
         }
 
@@ -118,7 +115,7 @@ public class AttachedFileServiceImpl implements AttachedFileService {
         attachedFileOpt.get().getPostitNote().setAttachedFile(null);
         attachedFileDao.delete(attachedFileOpt.get());
 
-        LOGGER.info("Delete attachedFile with the id : {}", attachedFileId);
+        log.info("Delete attachedFile with the id : {}", attachedFileId);
     }
 
 }

@@ -1,8 +1,8 @@
 package com.uicode.postit.postitserver.controller.postit;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,17 +24,20 @@ import com.uicode.postit.postitserver.exception.functionnal.InvalidDataException
 import com.uicode.postit.postitserver.exception.functionnal.NotFoundException;
 import com.uicode.postit.postitserver.service.postit.AttachedFileService;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping("/postit")
+@RequiredArgsConstructor
 public class AttachedFileController {
 
-    @Autowired
-    private AttachedFileService attachedFileService;
+    private final AttachedFileService attachedFileService;
 
     @GetMapping("/attached-files")
     public PageDto<AttachedFileDto> getAttachedFileList(
-            @RequestParam(required = false, defaultValue = "0") Integer page,
-            @RequestParam(required = false, defaultValue = "20") Integer size) throws InvalidDataException {
+        @RequestParam(required = false, defaultValue = "0") Integer page,
+        @RequestParam(required = false, defaultValue = "20") Integer size
+    ) throws InvalidDataException {
         return attachedFileService.getAttachedFileList(page, size);
     }
 
@@ -63,13 +67,16 @@ public class AttachedFileController {
     }
 
     @PutMapping("/notes/{noteId}/attached-file")
-    public AttachedFileDto uploadAttachedFile(@PathVariable("noteId") Long noteId,
-            @RequestParam("file") MultipartFile file)
+    public AttachedFileDto uploadAttachedFile(
+        @PathVariable Long noteId,
+        @RequestParam MultipartFile file
+    )
             throws NotFoundException, FunctionnalException, TechnicalException, InvalidDataException {
         return attachedFileService.uploadAttachedFile(noteId, file);
     }
 
     @DeleteMapping("/attached-files/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAttachedFile(@PathVariable("id") Long attachedFileId) {
         attachedFileService.deleteAttachedFile(attachedFileId);
     }

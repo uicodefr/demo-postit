@@ -11,15 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CI: true
+      SKIP_PUBLISH: true
       NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
       working-directory: postit-client
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
 
       - name: Use Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v6
         with:
           node-version: 16.x
 
@@ -30,24 +31,24 @@ jobs:
             ./version.sh remove-snapshot
           fi
           if [[ "$branch" = "master" || "$branch" = "develop" ]]; then
-            echo "DEPLOY=OK" >> $GITHUB_ENV
+            echo "PUBLISH=OK" >> $GITHUB_ENV
           fi
 
       - name: Test
         run: make test
         working-directory: ${{ env.working-directory }}
 
-      - name : Build Only
-        if: ${{ ! env.DEPLOY }}
+      - name: Build Only
+        if: ${{ ! env.PUBLISH || env.SKIP_PUBLISH == 'true' }}
+        run: make buildOnly
+        working-directory: ${{ env.working-directory }}
+
+      - name: Build and Archiving
+        if: ${{ env.PUBLISH && env.SKIP_PUBLISH != 'true' }}
         run: make build
         working-directory: ${{ env.working-directory }}
 
-      - name : Build and Archiving
-        if: ${{ env.DEPLOY }}
-        run: make build
-        working-directory: ${{ env.working-directory }}
-
-      - name : Containerize
-        if: ${{ env.DEPLOY }}
+      - name: Containerize and Publish image
+        if: ${{ env.PUBLISH && env.SKIP_PUBLISH != 'true' }}
         run: make containerize
         working-directory: ${{ env.working-directory }}

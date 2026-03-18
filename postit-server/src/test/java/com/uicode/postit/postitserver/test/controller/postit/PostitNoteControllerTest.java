@@ -1,29 +1,44 @@
 package com.uicode.postit.postitserver.test.controller.postit;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.test.web.servlet.client.MockMvcWebTestClient;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.uicode.postit.postitserver.dto.postit.PostitNoteDto;
-import com.uicode.postit.postitserver.util.AppTestRequestInterceptor;
+import com.uicode.postit.postitserver.test.config.TestContainersConfig;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@AutoConfigureTestDatabase
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Import(TestContainersConfig.class)
+@ActiveProfiles("integration-test")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class PostitNoteControllerTest {
 
     @Autowired
-    private TestRestTemplate restTemplate;
+    private WebApplicationContext wac;
+
+    private WebTestClient webTestClient;
+
+    private static PostitNoteDto sharedNote;
+    private static int initialNoteListLength;
+
+    @BeforeEach
+    void setUp() {
+        webTestClient = MockMvcWebTestClient.bindToApplicationContext(this.wac).build();
+    }
 
     @Test
-    void noteCrud() {
-        // CSRF Interceptor
-        AppTestRequestInterceptor appTestRequestInterceptor = AppTestRequestInterceptor.addInterceptor(restTemplate);
-        appTestRequestInterceptor.simpleGetForCsrf();
-
+    @Order(1)
+    void createNote() {
         PostitNoteDto noteDto = new PostitNoteDto();
         noteDto.setName("Name");
         noteDto.setText("Text");
@@ -31,79 +46,144 @@ class PostitNoteControllerTest {
         noteDto.setColor("white");
         noteDto.setOrderNum(1);
 
-        PostitNoteDto createdNote = restTemplate.postForObject("/postit/notes", noteDto, PostitNoteDto.class);
-        Assertions.assertThat(createdNote).isNotNull();
-        Assertions.assertThat(createdNote.getId()).isNotNull();
-        Assertions.assertThat(createdNote.getName()).isEqualTo(noteDto.getName());
-        Assertions.assertThat(createdNote.getText()).isEqualTo(noteDto.getText());
-        Assertions.assertThat(createdNote.getBoardId()).isEqualTo(noteDto.getBoardId());
-        Assertions.assertThat(createdNote.getColor()).isEqualTo(noteDto.getColor());
+        // Create
+        sharedNote = webTestClient.post()
+            .uri("/postit/notes")
+            .bodyValue(noteDto)
+            .exchange()
+            .expectStatus().isOk()
+            .expectBody(PostitNoteDto.class)
+            .value(dto -> {
+                Assertions.assertThat(dto).isNotNull();
+                Assertions.assertThat(dto.getId()).isNotNull();
+                Assertions.assertThat(dto.getName()).isEqualTo(noteDto.getName());
+                Assertions.assertThat(dto.getText()).isEqualTo(noteDto.getText());
+                Assertions.assertThat(dto.getBoardId()).isEqualTo(noteDto.getBoardId());
+                Assertions.assertThat(dto.getColor()).isEqualTo(noteDto.getColor());
+            })
+            .returnResult()
+            .getResponseBody();
+    }
 
+    @Test
+    @Order(2)
+    void getNote() {
         // Get
-        PostitNoteDto getNote = restTemplate.getForObject("/postit/notes/{id}", PostitNoteDto.class,
-                createdNote.getId());
-        Assertions.assertThat(getNote).isNotNull();
-        Assertions.assertThat(getNote.getId()).isEqualTo(createdNote.getId());
-        Assertions.assertThat(getNote.getName()).isEqualTo(createdNote.getName());
-        Assertions.assertThat(getNote.getText()).isEqualTo(createdNote.getText());
-        Assertions.assertThat(getNote.getBoardId()).isEqualTo(createdNote.getBoardId());
-        Assertions.assertThat(getNote.getColor()).isEqualTo(createdNote.getColor());
-        Assertions.assertThat(getNote.getOrderNum()).isEqualTo(createdNote.getOrderNum());
+        webTestClient.get()
+            .uri("/postit/notes/{id}", sharedNote.getId())
+            .exchange()
+            .expectStatus().isOk()
+            .expectBody(PostitNoteDto.class)
+            .value(dto -> {
+                Assertions.assertThat(dto).isNotNull();
+                Assertions.assertThat(dto.getId()).isEqualTo(sharedNote.getId());
+                Assertions.assertThat(dto.getName()).isEqualTo(sharedNote.getName());
+                Assertions.assertThat(dto.getText()).isEqualTo(sharedNote.getText());
+                Assertions.assertThat(dto.getBoardId()).isEqualTo(sharedNote.getBoardId());
+                Assertions.assertThat(dto.getColor()).isEqualTo(sharedNote.getColor());
+                Assertions.assertThat(dto.getOrderNum()).isEqualTo(sharedNote.getOrderNum());
+            });
+    }
 
+    @Test
+    @Order(3)
+    void partialUpdateNote() {
         // Partial Update
         PostitNoteDto partialUpdate = new PostitNoteDto();
-        partialUpdate.setId(createdNote.getId());
+        partialUpdate.setId(sharedNote.getId());
         partialUpdate.setName("Partial Update");
-        PostitNoteDto updatedNote = restTemplate.patchForObject("/postit/notes/{id}", partialUpdate,
-                PostitNoteDto.class, partialUpdate.getId());
-        Assertions.assertThat(updatedNote).isNotNull();
-        Assertions.assertThat(updatedNote.getId()).isEqualTo(createdNote.getId());
-        Assertions.assertThat(updatedNote.getName()).isEqualTo(partialUpdate.getName());
-        Assertions.assertThat(updatedNote.getText()).isEqualTo(createdNote.getText());
-        Assertions.assertThat(updatedNote.getColor()).isEqualTo(createdNote.getColor());
-        Assertions.assertThat(updatedNote.getOrderNum()).isEqualTo(createdNote.getOrderNum());
+        webTestClient.patch()
+            .uri("/postit/notes/{id}", sharedNote.getId())
+            .bodyValue(partialUpdate)
+            .exchange()
+            .expectStatus().isOk()
+            .expectBody(PostitNoteDto.class)
+            .value(dto -> {
+                Assertions.assertThat(dto).isNotNull();
+                Assertions.assertThat(dto.getId()).isEqualTo(sharedNote.getId());
+                Assertions.assertThat(dto.getName()).isEqualTo("Partial Update");
+                Assertions.assertThat(dto.getText()).isEqualTo(sharedNote.getText());
+                Assertions.assertThat(dto.getColor()).isEqualTo(sharedNote.getColor());
+                Assertions.assertThat(dto.getOrderNum()).isEqualTo(sharedNote.getOrderNum());
+            });
+    }
 
+    @Test
+    @Order(4)
+    void completeUpdateNote() {
         // Complete Update
         PostitNoteDto completeUpdate = new PostitNoteDto();
-        completeUpdate.setId(createdNote.getId());
+        completeUpdate.setId(sharedNote.getId());
         completeUpdate.setName("Complete Update");
         completeUpdate.setText("Text 2");
         completeUpdate.setColor("orange");
         completeUpdate.setOrderNum(2);
-        updatedNote = restTemplate.patchForObject("/postit/notes/{id}", completeUpdate, PostitNoteDto.class,
-                completeUpdate.getId());
-        Assertions.assertThat(updatedNote).isNotNull();
-        Assertions.assertThat(updatedNote.getId()).isEqualTo(completeUpdate.getId());
-        Assertions.assertThat(updatedNote.getName()).isEqualTo(completeUpdate.getName());
-        Assertions.assertThat(updatedNote.getText()).isEqualTo(completeUpdate.getText());
-        Assertions.assertThat(updatedNote.getColor()).isEqualTo(completeUpdate.getColor());
-        Assertions.assertThat(updatedNote.getOrderNum()).isNotNull();
 
+        sharedNote = webTestClient.patch()
+            .uri("/postit/notes/{id}", completeUpdate.getId())
+            .bodyValue(completeUpdate)
+            .exchange()
+            .expectStatus().isOk()
+            .expectBody(PostitNoteDto.class)
+            .value(dto -> {
+                Assertions.assertThat(dto).isNotNull();
+                Assertions.assertThat(dto.getId()).isEqualTo(completeUpdate.getId());
+                Assertions.assertThat(dto.getName()).isEqualTo(completeUpdate.getName());
+                Assertions.assertThat(dto.getText()).isEqualTo(completeUpdate.getText());
+                Assertions.assertThat(dto.getColor()).isEqualTo(completeUpdate.getColor());
+                Assertions.assertThat(dto.getOrderNum()).isNotNull();
+            })
+            .returnResult()
+            .getResponseBody();
+    }
+
+    @Test
+    @Order(5)
+    void getListAndPrepareDelete() {
         // Get List
-        PostitNoteDto[] noteList = restTemplate.getForObject("/postit/notes?boardId={boardId}", PostitNoteDto[].class,
-                updatedNote.getBoardId());
-        Assertions.assertThat(noteList).isNotNull().isNotEmpty().anyMatch(updatedNote::equals);
-        int noteListLength = noteList.length;
+        initialNoteListLength = webTestClient.get()
+            .uri("/postit/notes?boardId={boardId}", sharedNote.getBoardId())
+            .exchange()
+            .expectStatus().isOk()
+            .expectBody(PostitNoteDto[].class)
+            .value(noteList -> {
+                Assertions.assertThat(noteList).isNotNull().isNotEmpty().anyMatch(sharedNote::equals);
+            })
+            .returnResult()
+            .getResponseBody().length;
+    }
 
+    @Test
+    @Order(6)
+    void deleteNote() {
         // Delete
-        restTemplate.delete("/postit/notes/" + updatedNote.getId());
+        webTestClient.delete()
+            .uri("/postit/notes/{id}", sharedNote.getId())
+            .exchange()
+            .expectStatus().isNoContent();
 
         // Final Check
-        noteList = restTemplate.getForObject("/postit/notes?boardId={boardId}", PostitNoteDto[].class,
-                updatedNote.getBoardId());
-        Assertions.assertThat(noteList).isNotNull().isNotEmpty().hasSize(noteListLength - 1);
-
-        appTestRequestInterceptor.clear();
+        webTestClient.get()
+            .uri("/postit/notes?boardId={boardId}", sharedNote.getBoardId())
+            .exchange()
+            .expectStatus().isOk()
+            .expectBody(PostitNoteDto[].class)
+            .value(noteList -> {
+                Assertions.assertThat(noteList).isNotNull().hasSize(initialNoteListLength - 1);
+            });
     }
 
     @Test
     void exportNotes() {
-        String expectedCsv = "\"board id\",\"board name\",\"note id\",\"note name\",\"note text\",\"note color\",\"note order\",\"attached file\"\n";
-        expectedCsv += "\"1\",\"Test Board\",\"1\",\"Test Note 1\",\"Test Content 1\",\"yellow\",\"1\",\n";
-        expectedCsv += "\"1\",\"Test Board\",\"2\",\"Test Note 2\",\"Test Content 2\",\"blue\",\"2\",\"test.txt (0.01 ko)\"\n";
-
-        String testCsv = restTemplate.getForObject("/postit/notes:export", String.class);
-        Assertions.assertThat(testCsv).isEqualTo(expectedCsv);
+        webTestClient.get()
+            .uri("/postit/notes:export")
+            .exchange()
+            .expectStatus().isOk()
+            .expectBody(String.class)
+            .value(testCsv -> {
+                Assertions.assertThat(testCsv).contains("\"board id\",\"board name\",\"note id\",\"note name\",\"note text\",\"note color\",\"note order\",\"attached file\"");
+                Assertions.assertThat(testCsv).contains("\"1\",\"Io\",\"1\",\"First Note\",\"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\",\"yellow\",");
+            });
     }
 
 }

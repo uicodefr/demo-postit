@@ -8,14 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import javax.annotation.Nullable;
-import javax.transaction.Transactional;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -36,36 +29,38 @@ import com.uicode.postit.postitserver.util.CheckDataUtil;
 import com.uicode.postit.postitserver.util.parameter.ParameterConst;
 import com.uicode.postit.postitserver.util.parameter.ParameterUtil;
 
+import jakarta.annotation.Nullable;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 @Service
 @Transactional
+@RequiredArgsConstructor
+@Slf4j
 public class PostitNoteServiceImpl implements PostitNoteService {
-
-    private static final Logger LOGGER = LogManager.getLogger(PostitNoteServiceImpl.class);
 
     private static final String[] EXPORT_HEADERS = { "board id", "board name", "note id", "note name", "note text",
             "note color", "note order", "attached file" };
 
-    @Autowired
-    private BoardDao boardDao;
+    private final BoardDao boardDao;
+    private final PostitNoteDao postitNoteDao;
+    private final GlobalService globalService;
+    private final PostitNoteMapper postitNoteMapper;
 
-    @Autowired
-    private PostitNoteDao postitNoteDao;
-
-    @Autowired
-    private GlobalService globalService;
 
     @Override
     public List<PostitNoteDto> getNoteList(Long boardId) {
-        LOGGER.info("Get NoteList for the board : {}", boardId);
+        log.info("Get NoteList for the board : {}", boardId);
         Iterable<PostitNote> noteIterable = postitNoteDao.findByBoardIdOrderByOrderNum(boardId);
-        return Streams.stream(noteIterable).map(PostitNoteMapper.INSTANCE::toDto).collect(Collectors.toList());
+        return Streams.stream(noteIterable).map(postitNoteMapper::toDto).toList();
     }
 
     @Override
     public PostitNoteDto getNote(Long noteId) throws NotFoundException {
-        LOGGER.info("Get Note with the id : {}", noteId);
+        log.info("Get Note with the id : {}", noteId);
         Optional<PostitNote> noteOpt = postitNoteDao.findById(noteId);
-        return PostitNoteMapper.INSTANCE.toDto(noteOpt.orElseThrow(() -> new NotFoundException("Note")));
+        return postitNoteMapper.toDto(noteOpt.orElseThrow(() -> new NotFoundException("Note")));
     }
 
     @Override
@@ -87,7 +82,7 @@ public class PostitNoteServiceImpl implements PostitNoteService {
 
             note = new PostitNote();
             note.setOrderNum(postitNoteDao.getMaxOrderForByBoardId(noteDto.getBoardId()) + 1);
-            LOGGER.info("Create note");
+            log.info("Create note");
 
         } else {
             // Update
@@ -96,7 +91,7 @@ public class PostitNoteServiceImpl implements PostitNoteService {
             if (noteDto.getOrderNum() != null) {
                 reorderBoard = true;
             }
-            LOGGER.info("Update note with the id : {}", noteId);
+            log.info("Update note with the id : {}", noteId);
         }
 
         if (noteDto.getBoardId() != null) {
@@ -111,9 +106,9 @@ public class PostitNoteServiceImpl implements PostitNoteService {
             }
         }
 
-        PostitNoteMapper.INSTANCE.updateEntity(noteDto, note);
+        postitNoteMapper.updateEntity(noteDto, note);
 
-        return PostitNoteMapper.INSTANCE.toDto(postitNoteDao.save(note));
+        return postitNoteMapper.toDto(postitNoteDao.save(note));
     }
 
     @Override
@@ -142,13 +137,13 @@ public class PostitNoteServiceImpl implements PostitNoteService {
     public void deleteNote(Long noteId) {
         Optional<PostitNote> noteOpt = postitNoteDao.findById(noteId);
         if (!noteOpt.isPresent()) {
-            LOGGER.warn("Note not found for deletion, id = %s", noteId);
+            log.warn("Note not found for deletion, id = %s", noteId);
             return;
         }
 
         // Delete cascade delete also the attachedFile
         postitNoteDao.delete(noteOpt.get());
-        LOGGER.info("Delete note with the id : {}", noteId);
+        log.info("Delete note with the id : {}", noteId);
     }
 
     @Override
@@ -183,7 +178,7 @@ public class PostitNoteServiceImpl implements PostitNoteService {
         }
 
         csvWriter.close();
-        LOGGER.info("Export notes to csv");
+        log.info("Export notes to csv");
     }
 
 }

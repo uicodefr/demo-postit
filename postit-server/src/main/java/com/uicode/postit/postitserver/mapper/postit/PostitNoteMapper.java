@@ -4,15 +4,12 @@ import java.util.Date;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
 import com.uicode.postit.postitserver.dto.postit.PostitNoteDto;
 import com.uicode.postit.postitserver.entity.postit.PostitNote;
 
-@Mapper(uses = { AttachedFileMapper.class })
+@Mapper(componentModel = "spring", uses = { AttachedFileMapper.class })
 public abstract class PostitNoteMapper {
-
-    public static final PostitNoteMapper INSTANCE = Mappers.getMapper(PostitNoteMapper.class);
 
     @Mapping(target = "boardId", source = "board.id")
     @Mapping(target = "text", source = "textValue")

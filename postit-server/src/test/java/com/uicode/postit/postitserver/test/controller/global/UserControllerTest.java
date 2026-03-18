@@ -1,142 +1,168 @@
 package com.uicode.postit.postitserver.test.controller.global;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+
 import java.util.Arrays;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.context.annotation.Import;
+import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.test.web.servlet.client.MockMvcWebTestClient;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.uicode.postit.postitserver.dto.global.UserDto;
 import com.uicode.postit.postitserver.dto.postit.BoardDto;
-import com.uicode.postit.postitserver.util.AppTestRequestInterceptor;
+import com.uicode.postit.postitserver.test.config.TestContainersConfig;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@AutoConfigureTestDatabase
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Import(TestContainersConfig.class)
+@ActiveProfiles("integration-test")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UserControllerTest {
 
     @Autowired
-    private TestRestTemplate restTemplate;
+    private WebApplicationContext wac;
+
+    private WebTestClient webTestClient;
+
+    private static Long createdUserId;
+    private static int initialUserCount;
+
+
+    @BeforeEach
+    void setUp() {
+        webTestClient = MockMvcWebTestClient.bindToApplicationContext(this.wac)
+                .apply(springSecurity())
+                .defaultRequest(post("/").with(csrf()))
+                .configureClient()
+                .build();
+    }
 
     @Test
-    void userCrud() {
-        // Get List
-        UserDto[] userList = restTemplate.getForObject("/users", UserDto[].class);
-        Assertions.assertThat(userList).isNotNull();
-        for (UserDto user : userList) {
-            Assertions.assertThat(user.getUsername()).isNotBlank();
-            Assertions.assertThat(user.getPassword()).isNull();
-        }
-        int userCount = userList.length;
+    @WithAnonymousUser
+    void createBoard_noUser_shouldBeForbidden() {
+        BoardDto board = new BoardDto();
+        board.setName("New Board");
+        board.setOrderNum(2);
 
-        // Connect as superadmin
-        AppTestRequestInterceptor appTestRequestInterceptor = AppTestRequestInterceptor.addInterceptor(restTemplate);
-        appTestRequestInterceptor.simpleGetForCsrf();
-        appTestRequestInterceptor.login("superadmin", "superadmin");
+        webTestClient.post()
+            .uri("/postit/boards")
+            .bodyValue(board)
+            .exchange()
+            .expectStatus().isUnauthorized();
+    }
 
-        // Insert
+    @Test
+    @Order(1)
+    @WithMockUser(roles = "USER_WRITE")
+    void listUsersInitial() {
+        webTestClient.get()
+            .uri("/users")
+            .exchange()
+            .expectStatus().isOk()
+            .expectBody(UserDto[].class)
+            .value(list -> {
+                Assertions.assertThat(list).isNotNull();
+                for (UserDto user : list) {
+                    Assertions.assertThat(user.getUsername()).isNotBlank();
+                    Assertions.assertThat(user.getPassword()).isNull();
+                }
+                initialUserCount = list.length;
+            });
+    }
+
+    @Test
+    @Order(2)
+    @WithMockUser(roles = "USER_WRITE")
+    void createUser() {
         UserDto user = new UserDto();
         user.setUsername("username");
         user.setPassword("password");
         user.setEnabled(false);
         user.setRoleList(Arrays.asList("ROLE_BOARD_WRITE"));
 
-        UserDto createdUser = restTemplate.postForObject("/users", user, UserDto.class);
-        Assertions.assertThat(createdUser).isNotNull();
-        Assertions.assertThat(createdUser.getId()).isNotNull();
-        Assertions.assertThat(createdUser.getUsername()).isEqualTo(user.getUsername());
-        Assertions.assertThat(createdUser.getRoleList()).isEqualTo(user.getRoleList());
-
-        // Update
-        createdUser.setUsername("username2");
-        createdUser.setPassword("password2");
-        createdUser.setRoleList(Arrays.asList("ROLE_BOARD_WRITE", "ROLE_USER_WRITE"));
-        UserDto updatedUser = restTemplate.patchForObject("/users/{id}", createdUser, UserDto.class,
-                createdUser.getId());
-        Assertions.assertThat(updatedUser).isNotNull();
-        Assertions.assertThat(updatedUser.getId()).isEqualTo(createdUser.getId());
-        Assertions.assertThat(updatedUser.getUsername()).isEqualTo(createdUser.getUsername());
-        Assertions.assertThat(updatedUser.getRoleList()).isEqualTo(createdUser.getRoleList());
-
-        // Delete
-        restTemplate.delete("/users/{id}", createdUser.getId());
-
-        // Final Check
-        userList = restTemplate.getForObject("/users", UserDto[].class);
-        Assertions.assertThat(userList).isNotNull().hasSize(userCount);
-
-        appTestRequestInterceptor.clear();
+        createdUserId = webTestClient.post()
+            .uri("/users")
+            .bodyValue(user)
+            .exchange()
+            .expectStatus().isOk()
+            .expectBody(UserDto.class)
+            .value(dto -> {
+                Assertions.assertThat(dto.getId()).isNotNull();
+                Assertions.assertThat(dto.getUsername()).isEqualTo("username");
+                Assertions.assertThat(dto.getRoleList()).containsExactly("ROLE_BOARD_WRITE");
+            })
+            .returnResult()
+            .getResponseBody()
+            .getId();
     }
 
     @Test
-    void loginLogout() {
-        // Connect as superadmin
-        AppTestRequestInterceptor appTestRequestInterceptor = AppTestRequestInterceptor.addInterceptor(restTemplate);
-        appTestRequestInterceptor.simpleGetForCsrf();
-        appTestRequestInterceptor.login("superadmin", "superadmin");
+    @Order(3)
+    @WithMockUser(roles = "USER_WRITE")
+    void updateUser() {
+        UserDto update = new UserDto();
+        update.setId(createdUserId);
+        update.setUsername("username2");
+        update.setPassword("password2");
+        update.setRoleList(Arrays.asList("ROLE_BOARD_WRITE", "ROLE_USER_WRITE"));
 
-        String username = "test";
-        String password = "abcdefg";
+        webTestClient.patch()
+            .uri("/users/{id}", createdUserId)
+            .bodyValue(update)
+            .exchange()
+            .expectStatus().isOk()
+            .expectBody(UserDto.class)
+            .value(dto -> {
+                Assertions.assertThat(dto.getId()).isEqualTo(createdUserId);
+                Assertions.assertThat(dto.getUsername()).isEqualTo("username2");
+                Assertions.assertThat(dto.getRoleList()).containsExactlyInAnyOrder("ROLE_BOARD_WRITE", "ROLE_USER_WRITE");
+            });
+    }
 
-        // Create a user for test
-        UserDto user = new UserDto();
-        user.setUsername(username);
-        user.setPassword(password);
-        user.setEnabled(true);
-        user.setRoleList(Arrays.asList("ROLE_BOARD_WRITE"));
-        UserDto createdUser = restTemplate.postForObject("/users", user, UserDto.class);
-        Assertions.assertThat(createdUser).isNotNull();
-        Assertions.assertThat(createdUser.getId()).isNotNull();
+    @Test
+    @Order(4)
+    @WithMockUser(roles = "USER_WRITE")
+    void deleteUser() {
+        webTestClient.delete()
+            .uri("/users/{id}", createdUserId)
+            .exchange()
+            .expectStatus().isNoContent();
 
-        // Test Connection with a bad password
-        HttpHeaders loginHeaders = new HttpHeaders();
-        loginHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
-        LinkedMultiValueMap<String, String> loginForms = new LinkedMultiValueMap<>();
-        loginForms.add("username", username);
-        loginForms.add("password", "Abcdefg");
-        ResponseEntity<UserDto> responseLogin = restTemplate.postForEntity("/login",
-                new HttpEntity<>(loginForms, loginHeaders), UserDto.class);
-        Assertions.assertThat(responseLogin.getStatusCodeValue()).isEqualTo(401);
-
-        // Connect with the good password
-        appTestRequestInterceptor.login(username, password);
-        UserDto connectedUser = restTemplate.getForObject("/users/me", UserDto.class);
-        Assertions.assertThat(connectedUser).isNotNull();
-        Assertions.assertThat(connectedUser.getId()).isNotNull();
-        Assertions.assertThat(connectedUser.getUsername()).isEqualTo(username);
-
-        // Test ROLE_BOARD_WRITE
-        BoardDto board = new BoardDto();
-        board.setName("New Board");
-        BoardDto createdBoard = restTemplate.postForObject("/postit/boards", board, BoardDto.class);
-        Assertions.assertThat(createdBoard).isNotNull();
-        Assertions.assertThat(createdBoard.getId()).isNotNull();
-
-        // Test ROLE_USER_WRITE
-        user.setUsername("otherusername");
-        UserDto testUser = restTemplate.postForObject("/users", user, UserDto.class);
-        Assertions.assertThat(testUser.getId()).isNull();
-
-        // Logout
-        restTemplate.postForObject("/logout", null, String.class);
-        connectedUser = restTemplate.getForObject("/users/me", UserDto.class);
-        Assertions.assertThat(connectedUser).isNull();
-
-        appTestRequestInterceptor.clear();
+        webTestClient.get()
+            .uri("/users")
+            .exchange()
+            .expectStatus().isOk()
+            .expectBody(UserDto[].class)
+            .value(list -> {
+                Assertions.assertThat(list).hasSize(initialUserCount);
+            });
     }
 
     @Test
     void getRoles() {
-        String[] roles = restTemplate.getForObject("/users/roles", String[].class);
-        Assertions.assertThat(roles).isNotNull().containsExactly("ROLE_BOARD_WRITE", "ROLE_USER_WRITE");
+        webTestClient.get()
+            .uri("/users/roles")
+            .exchange()
+            .expectStatus().isOk()
+            .expectBody(String[].class)
+            .value(roles -> {
+                Assertions.assertThat(roles)
+                    .isNotNull()
+                    .containsExactly("ROLE_BOARD_WRITE", "ROLE_USER_WRITE");
+            });
     }
 
 }

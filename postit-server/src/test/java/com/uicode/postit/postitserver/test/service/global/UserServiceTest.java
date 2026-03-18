@@ -7,10 +7,10 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import com.uicode.postit.postitserver.dao.global.ParameterDao;
 import com.uicode.postit.postitserver.dto.global.UserDto;
@@ -22,18 +22,18 @@ import com.uicode.postit.postitserver.service.global.GlobalService;
 import com.uicode.postit.postitserver.service.global.UserService;
 import com.uicode.postit.postitserver.util.parameter.ParameterConst;
 
-@SpringBootTest
-@AutoConfigureTestDatabase
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@ActiveProfiles("service-test")
 class UserServiceTest {
+
+    @MockitoBean
+    private ParameterDao parameterDaoMock;
 
     @Autowired
     private GlobalService globalService;
 
     @Autowired
     private UserService userService;
-
-    @MockBean
-    private ParameterDao parameterDaoMock;
 
     private void mockUserMaxParameter(Integer maxUserValue) {
         Parameter maxUserParameter = new Parameter();
@@ -57,8 +57,8 @@ class UserServiceTest {
     }
 
     @Test
-    void maxUserError() throws NotFoundException, FunctionnalException {
-        mockUserMaxParameter(1);
+    void maxUserError() {
+        mockUserMaxParameter(0);
         UserDto userDto = new UserDto();
         userDto.setUsername("maxUserError");
         Assertions.assertThatThrownBy(() -> userService.saveUser(null, userDto))
@@ -98,7 +98,8 @@ class UserServiceTest {
 
     @Test
     void deleteUserNotFound() {
-        Assertions.assertThatCode(() -> userService.deleteUser(1234l)).doesNotThrowAnyException();
+        Assertions.assertThatCode(() -> userService.deleteUser(1234l))
+            .doesNotThrowAnyException();
     }
 
 }

@@ -1,0 +1,11 @@
+# DATASOURCE
+spring:
+  datasource:
+    url: jdbc:postgresql://127.0.0.1/postit_db
+    username: postit_admin
+    password: postitpass
+
+  jpa:
+    properties:
+      hibernate:
+        show-sql: true

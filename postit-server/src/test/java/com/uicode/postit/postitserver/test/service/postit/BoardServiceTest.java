@@ -6,9 +6,9 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import com.uicode.postit.postitserver.dao.global.ParameterDao;
 import com.uicode.postit.postitserver.dto.postit.BoardDto;
@@ -19,11 +19,11 @@ import com.uicode.postit.postitserver.service.global.GlobalService;
 import com.uicode.postit.postitserver.service.postit.BoardService;
 import com.uicode.postit.postitserver.util.parameter.ParameterConst;
 
-@SpringBootTest
-@AutoConfigureTestDatabase
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@ActiveProfiles("service-test")
 class BoardServiceTest {
 
-    @MockBean
+    @MockitoBean
     private ParameterDao parameterDaoMock;
 
     @Autowired
@@ -33,7 +33,7 @@ class BoardServiceTest {
     private BoardService boardService;
 
     @Test
-    void maxBoardError() throws NotFoundException, FunctionnalException {
+    void maxBoardError() {
         Parameter maxBoardParameter = new Parameter();
         maxBoardParameter.setName(ParameterConst.BOARD_MAX);
         maxBoardParameter.setValue("0");

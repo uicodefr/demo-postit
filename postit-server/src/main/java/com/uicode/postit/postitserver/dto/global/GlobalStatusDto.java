@@ -2,6 +2,11 @@ package com.uicode.postit.postitserver.dto.global;
 
 import java.util.Date;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class GlobalStatusDto {
 
     private String status;
@@ -11,37 +16,5 @@ public class GlobalStatusDto {
     private Date currentDate;
 
     private String version;
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Date getUpDate() {
-        return upDate;
-    }
-
-    public void setUpDate(Date upDate) {
-        this.upDate = upDate;
-    }
-
-    public Date getCurrentDate() {
-        return currentDate;
-    }
-
-    public void setCurrentDate(Date currentDate) {
-        this.currentDate = currentDate;
-    }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
 
 }

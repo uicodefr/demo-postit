@@ -1,8 +1,8 @@
 -- # GLOBAL # --
 
 CREATE TABLE global_parameter (
-    name varchar(256) PRIMARY KEY,
-    value varchar(1024) NOT NULL,
+    param_name varchar(256) PRIMARY KEY,
+    param_value varchar(1024) NOT NULL,
     client_view boolean DEFAULT false
 );
 

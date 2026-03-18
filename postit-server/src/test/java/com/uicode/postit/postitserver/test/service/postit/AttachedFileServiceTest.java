@@ -3,16 +3,16 @@ package com.uicode.postit.postitserver.test.service.postit;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.uicode.postit.postitserver.exception.functionnal.FunctionnalException;
 import com.uicode.postit.postitserver.exception.functionnal.InvalidDataException;
 import com.uicode.postit.postitserver.exception.functionnal.NotFoundException;
 import com.uicode.postit.postitserver.service.postit.AttachedFileService;
 
-@SpringBootTest
-@AutoConfigureTestDatabase
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@ActiveProfiles("service-test")
 class AttachedFileServiceTest {
 
     @Autowired

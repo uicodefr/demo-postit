@@ -2,7 +2,7 @@ package com.uicode.postit.postitserver.controller.global;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.uicode.postit.postitserver.dto.global.UserDto;
@@ -19,12 +20,14 @@ import com.uicode.postit.postitserver.exception.functionnal.InvalidDataException
 import com.uicode.postit.postitserver.exception.functionnal.NotFoundException;
 import com.uicode.postit.postitserver.service.global.UserService;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @GetMapping("/me")
     public UserDto getCurrentUser() {
@@ -32,6 +35,7 @@ public class UserController {
     }
 
     @GetMapping()
+    @Secured("ROLE_USER_WRITE")
     public List<UserDto> getUserList() {
         return userService.getUserList();
     }
@@ -52,6 +56,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     @Secured("ROLE_USER_WRITE")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable("id") Long userId) {
         userService.deleteUser(userId);
     }

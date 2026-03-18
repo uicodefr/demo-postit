@@ -2,6 +2,11 @@ package com.uicode.postit.postitserver.dto.postit;
 
 import com.uicode.postit.postitserver.dto.IdEntityDto;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class AttachedFileDto extends IdEntityDto {
 
     private Long postitNoteId;
@@ -12,37 +17,6 @@ public class AttachedFileDto extends IdEntityDto {
 
     private String type;
 
-    public Long getPostitNoteId() {
-        return postitNoteId;
-    }
-
-    public void setPostitNoteId(Long postitNoteId) {
-        this.postitNoteId = postitNoteId;
-    }
-
-    public String getFilename() {
-        return filename;
-    }
-
-    public void setFilename(String filename) {
-        this.filename = filename;
-    }
-
-    public Long getSize() {
-        return size;
-    }
-
-    public void setSize(Long size) {
-        this.size = size;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 
     @Override
     public int hashCode() {

@@ -1,14 +1,14 @@
--- # Cleans boards an notes # --
-ALTER TABLE global_link_user_authority
-    DROP CONSTRAINT CONSTRAINT_5B;
-ALTER TABLE global_link_user_authority
-    DROP CONSTRAINT CONSTRAINT_5BF;
+-- # Parameters # --
 
-DELETE FROM postit_note;
-DELETE FROM postit_board;
+INSERT INTO global_parameter(param_name, param_value, client_view) VALUES ('general.status', 'true', false);
+INSERT INTO global_parameter(param_name, param_value, client_view) VALUES ('like.max', '1000', false);
+INSERT INTO global_parameter(param_name, param_value, client_view) VALUES ('board.max', '5', true);
+INSERT INTO global_parameter(param_name, param_value, client_view) VALUES ('note.max', '40', true);
+INSERT INTO global_parameter(param_name, param_value, client_view) VALUES ('user.max', '10', true);
+INSERT INTO global_parameter(param_name, param_value, client_view) VALUES ('upload.size.max', '10485700', true);
 
-ALTER SEQUENCE postit_note_id_seq RESTART WITH 1;
-ALTER SEQUENCE postit_board_id_seq RESTART WITH 1;
+
+----------------------------------------------------------------------------------------------------------------
 
 -- # Add One Board # --
 

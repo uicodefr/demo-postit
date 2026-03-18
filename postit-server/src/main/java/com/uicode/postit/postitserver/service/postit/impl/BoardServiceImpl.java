@@ -2,13 +2,7 @@ package com.uicode.postit.postitserver.service.postit.impl;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -25,25 +19,25 @@ import com.uicode.postit.postitserver.service.postit.BoardService;
 import com.uicode.postit.postitserver.util.parameter.ParameterConst;
 import com.uicode.postit.postitserver.util.parameter.ParameterUtil;
 
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 @Service
 @Transactional
+@RequiredArgsConstructor
+@Slf4j
 public class BoardServiceImpl implements BoardService {
 
-    private static final Logger LOGGER = LogManager.getLogger(BoardServiceImpl.class);
-
-    @Autowired
-    private BoardDao boardDao;
-
-    @Autowired
-    private PostitNoteDao postitNoteDao;
-
-    @Autowired
-    private GlobalService globalService;
+    private final BoardDao boardDao;
+    private final PostitNoteDao postitNoteDao;
+    private final GlobalService globalService;
+    private final BoardMapper boardMapper;
 
     @Override
     public List<BoardDto> getBoardList() {
         Iterable<Board> boardIterable = boardDao.findAll(Sort.by("orderNum", "id").ascending());
-        return Streams.stream(boardIterable).map(BoardMapper.INSTANCE::toDto).collect(Collectors.toList());
+        return Streams.stream(boardIterable).map(boardMapper::toDto).toList();
     }
 
     @Override
@@ -59,33 +53,33 @@ public class BoardServiceImpl implements BoardService {
             }
 
             board = new Board();
-            LOGGER.info("Create board");
+            log.info("Create board");
 
         } else {
             // Update
             Optional<Board> boardOpt = boardDao.findById(boardId);
             board = boardOpt.orElseThrow(() -> new NotFoundException("Board"));
-            LOGGER.info("Update board with the id : {}", boardId);
+            log.info("Update board with the id : {}", boardId);
         }
 
         board.setName(boardDto.getName());
         board.setOrderNum(boardDto.getOrderNum());
 
-        return BoardMapper.INSTANCE.toDto(boardDao.save(board));
+        return boardMapper.toDto(boardDao.save(board));
     }
 
     @Override
     public void deleteBoard(Long boardId) {
         Optional<Board> boardOpt = boardDao.findById(boardId);
         if (!boardOpt.isPresent()) {
-            LOGGER.warn("Board not found for deletion, id = %s", boardId);
+            log.warn("Board not found for deletion, id = %s", boardId);
             return;
         }
 
         Board board = boardOpt.get();
         board.getNoteList().forEach(postitNoteDao::delete);
         boardDao.delete(board);
-        LOGGER.info("Delete board with the id : {}", boardId);
+        log.info("Delete board with the id : {}", boardId);
     }
 
 }

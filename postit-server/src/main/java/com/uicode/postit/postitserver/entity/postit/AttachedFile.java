@@ -1,22 +1,26 @@
 package com.uicode.postit.postitserver.entity.postit;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
 import com.uicode.postit.postitserver.entity.AbstractDatedEntity;
 
 @Entity
 @Table(name = "postit_attached_file")
+@Getter
+@Setter
 public class AttachedFile extends AbstractDatedEntity {
 
     @Id
@@ -46,52 +50,5 @@ public class AttachedFile extends AbstractDatedEntity {
     @OneToOne(mappedBy = "attachedFile")
     private PostitNote postitNote;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFilename() {
-        return filename;
-    }
-
-    public void setFilename(String filename) {
-        this.filename = filename;
-    }
-
-    public Long getSize() {
-        return size;
-    }
-
-    public void setSize(Long size) {
-        this.size = size;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public AttachedFileData getFiledata() {
-        return filedata;
-    }
-
-    public void setFiledata(AttachedFileData filedata) {
-        this.filedata = filedata;
-    }
-
-    public PostitNote getPostitNote() {
-        return postitNote;
-    }
-
-    public void setPostitNote(PostitNote postitNote) {
-        this.postitNote = postitNote;
-    }
 
 }

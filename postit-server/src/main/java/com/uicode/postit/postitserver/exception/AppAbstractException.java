@@ -6,11 +6,11 @@ public abstract class AppAbstractException extends Exception {
 
     private static final long serialVersionUID = 5847072563164444146L;
 
-    public AppAbstractException(String message) {
+    protected AppAbstractException(String message) {
         super(message);
     }
 
-    public AppAbstractException(String message, Throwable cause) {
+    protected AppAbstractException(String message, Throwable cause) {
         super(message, cause);
     }
 

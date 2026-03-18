@@ -2,11 +2,8 @@ package com.uicode.postit.postitserver.controller;
 
 import java.util.Date;
 
-import javax.validation.ConstraintViolationException;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -15,6 +12,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.uicode.postit.postitserver.dto.global.ErrorDto;
 import com.uicode.postit.postitserver.exception.AppAbstractException;
@@ -22,13 +20,16 @@ import com.uicode.postit.postitserver.exception.functionnal.InvalidDataException
 import com.uicode.postit.postitserver.service.global.UserService;
 import com.uicode.postit.postitserver.util.ExceptionUtil;
 
+import jakarta.validation.ConstraintViolationException;
+import lombok.RequiredArgsConstructor;
+
 @RestControllerAdvice
+@RequiredArgsConstructor
 public class ControllerAdvice {
 
     private static final Logger LOGGER = LogManager.getLogger(ControllerAdvice.class);
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @ExceptionHandler(AppAbstractException.class)
     public ResponseEntity<ErrorDto> handleAppException(final AppAbstractException exception) {
@@ -64,6 +65,11 @@ public class ControllerAdvice {
         } else {
             return handleServerError(HttpStatus.FORBIDDEN, exception);
         }
+    }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<ErrorDto> handleConstraintViolation(NoHandlerFoundException exception) {
+        return handleServerError(HttpStatus.NOT_FOUND, exception);
     }
 
     @ExceptionHandler(Throwable.class)

@@ -6,8 +6,8 @@ import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.uicode.postit.postitserver.dto.postit.BoardDto;
 import com.uicode.postit.postitserver.dto.postit.PostitNoteDto;
@@ -21,8 +21,8 @@ import com.uicode.postit.postitserver.service.postit.BoardService;
 import com.uicode.postit.postitserver.service.postit.PostitNoteService;
 import com.uicode.postit.postitserver.util.parameter.ParameterConst;
 
-@SpringBootTest
-@AutoConfigureTestDatabase
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@ActiveProfiles("service-test")
 class PostitNoteServiceTest {
 
     @Autowired

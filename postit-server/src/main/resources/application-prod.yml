@@ -1,0 +1,19 @@
+# CORE
+debug: false
+trace: false
+
+spring:
+  devtools:
+    add-properties: false
+
+  # DATASOURCE
+  datasource:
+    url: ${DATASOURCE_URL}
+    name: ${DATASOURCE_NAME}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
+
+  jpa:
+    properties:
+      hibernate:
+        show-sql: true

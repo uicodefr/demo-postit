@@ -1,9 +1,9 @@
 -- # GLOBAL # --
 
-INSERT INTO global_parameter (name, value, client_view) VALUES
+INSERT INTO global_parameter (param_name, param_value, client_view) VALUES
     ('general.status', 'true', false);
 
-INSERT INTO global_parameter (name, value, client_view) VALUES
+INSERT INTO global_parameter (param_name, param_value, client_view) VALUES
     ('like.max', '1000', false);
 
 -- # POST IT # --
@@ -13,10 +13,10 @@ INSERT INTO postit_board
     ('Io', NOW(), NOW()), ('Europa', NOW(), NOW()),
     ('Ganymede', NOW(), NOW()), ('Callisto', NOW(), NOW());
     
-INSERT INTO global_parameter (name, value, client_view) VALUES
+INSERT INTO global_parameter (param_name, param_value, client_view) VALUES
     ('board.max', '5', true);
 
-INSERT INTO global_parameter (name, value, client_view) VALUES
+INSERT INTO global_parameter (param_name, param_value, client_view) VALUES
     ('note.max', '40', true);
 
 INSERT INTO postit_note
@@ -29,7 +29,7 @@ INSERT INTO postit_note
 
 -- # GLOBAL # --
 
-INSERT INTO global_parameter (name, value, client_view) VALUES
+INSERT INTO global_parameter (param_name, param_value, client_view) VALUES
     ('user.max', '10', true);
 
 INSERT INTO global_user (username, password, enabled) VALUES

@@ -2,6 +2,11 @@ package com.uicode.postit.postitserver.dto.postit;
 
 import com.uicode.postit.postitserver.dto.NamedEntityDto;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class PostitNoteDto extends NamedEntityDto {
 
     private String text;
@@ -14,45 +19,6 @@ public class PostitNoteDto extends NamedEntityDto {
 
     private AttachedFileDto attachedFile;
 
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public Long getBoardId() {
-        return boardId;
-    }
-
-    public void setBoardId(Long boardId) {
-        this.boardId = boardId;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public Integer getOrderNum() {
-        return orderNum;
-    }
-
-    public void setOrderNum(Integer orderNum) {
-        this.orderNum = orderNum;
-    }
-
-    public AttachedFileDto getAttachedFile() {
-        return attachedFile;
-    }
-
-    public void setAttachedFile(AttachedFileDto attachedFile) {
-        this.attachedFile = attachedFile;
-    }
 
     @Override
     public int hashCode() {

@@ -8,14 +8,17 @@ on:
 jobs:
   prepare:
     runs-on: ubuntu-latest
+    env:
+      SKIP_DEPLOY: true
     outputs:
       deploy: ${{ steps.init.outputs.DEPLOY }}
       serverVersion: ${{ steps.init.outputs.SERVER_VERSION }}
       clientVersion: ${{ steps.init.outputs.CLIENT_VERSION }}
+      skip_deploy: ${{ env.SKIP_DEPLOY }}
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
 
       - name: Init script
         id: init
@@ -28,34 +31,34 @@ jobs:
               deploy="${branchWithEnv[$branch]}"
           fi
           echo "Deploy: $deploy"
-          echo "::set-output name=DEPLOY::$deploy"
+          echo "DEPLOY=$deploy" >> $GITHUB_OUTPUT
           if [[ "$branch" = "master" ]]; then
             ./version.sh remove-snapshot
           fi
           serverVersion=$(./version.sh list server)
           echo "Server Version : $serverVersion"
-          echo "::set-output name=SERVER_VERSION::$serverVersion"
+          echo "SERVER_VERSION=$serverVersion" >> $GITHUB_OUTPUT
           clientVersion=$(./version.sh list client)
           echo "Client Version : $clientVersion"
-          echo "::set-output name=CLIENT_VERSION::$clientVersion"
+          echo "CLIENT_VERSION=$clientVersion" >> $GITHUB_OUTPUT
 
   build-server:
     needs: [prepare]
-    uses: uicodefr/demo-postit/.github/workflows/build-server.yml@v1
+    uses: ./.github/workflows/build-server.yml
     secrets:
       NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
       NEXUS_SETTINGS: ${{ secrets.NEXUS_SETTINGS }}
 
   build-client:
     needs: [prepare]
-    uses: uicodefr/demo-postit/.github/workflows/build-client.yml@v1
+    uses: ./.github/workflows/build-client.yml
     secrets:
       NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
 
   deploy:
     needs: [prepare, build-server, build-client]
-    if: ${{ needs.prepare.outputs.deploy }}
-    uses: uicodefr/demo-postit/.github/workflows/deploy.yml@v1
+    if: ${{ needs.prepare.outputs.deploy && needs.prepare.outputs.skip_deploy != 'true' }}
+    uses: ./.github/workflows/deploy.yml
     with:
       deploy: ${{ needs.prepare.outputs.deploy }}
       serverVersion: ${{ needs.prepare.outputs.serverVersion }}
