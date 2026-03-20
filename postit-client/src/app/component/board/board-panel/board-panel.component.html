@@ -1,47 +1,41 @@
-<div class="cardBoard" *ngIf="noteList">
-  <ng-container *ngIf="!noteDraggable">
-    <app-board-note
-      *ngFor="let note of noteList"
-      [note]="note"
-      [otherBoardList]="otherBoardList"
-      (takeOffNote)="takeOffNote($event)"
-      (changeNote)="refreshCurrentBoard()"
-      (orderNote)="reorderBoard($event)"
-      (moveNote)="moveNote($event)"
-    ></app-board-note>
-  </ng-container>
-  <ng-container *ngIf="noteDraggable">
-    <app-board-note
-      *ngFor="let note of noteList"
-      [note]="note"
-      [otherBoardList]="otherBoardList"
-      (takeOffNote)="takeOffNote($event)"
-      (changeNote)="refreshCurrentBoard()"
-      (orderNote)="reorderBoard($event)"
-      (moveNote)="moveNote($event)"
-      cdkDrag
-      [cdkDragData]="note"
-      class="noteDraggable"
-    ></app-board-note>
-  </ng-container>
+<div class="cardBoard">
+  @if (noteDraggable()) {
+    @for (note of noteList(); track note.id) {
+      <app-board-note
+        [note]="note"
+        [otherBoardList]="otherBoardList()"
+        (deleteNote)="refreshCurrentBoard()"
+        (changeNote)="refreshCurrentBoard()"
+        (orderNote)="reorderBoard($event)"
+        (moveNote)="moveNote($event)"
+        cdkDrag
+        [cdkDragData]="note"
+        class="noteDraggable"
+      />
+    }
+  } @else {
+    @for (note of noteList(); track note.id) {
+      <app-board-note
+        [note]="note"
+        [otherBoardList]="otherBoardList()"
+        (deleteNote)="refreshCurrentBoard()"
+        (changeNote)="refreshCurrentBoard()"
+        (orderNote)="reorderBoard($event)"
+        (moveNote)="moveNote($event)"
+      />
+    }
+  }
 
   <mat-card class="cardButtons">
     <mat-card-content>
       <div class="buttonCard">
-        <button (click)="refreshCurrentBoard()" mat-mini-fab color="primary" title="Refresh board" i18n-title>
+        <button (click)="refreshCurrentBoard()" matIconButton title="Refresh board" i18n-title="@@board.refreshBoard">
           <mat-icon>refresh</mat-icon>
         </button>
 
-        <button
-          *ngIf="parameterNoteMax && parameterNoteMax > noteList.length"
-          (click)="addNote()"
-          mat-raised-button
-          color="primary"
-          appHighlight
-          i18n
-        >
-          Add a note
-        </button>
+        @if (parameterNoteMax() && parameterNoteMax() > noteList().length) {
+          <button (click)="addNote()" matButton="elevated" appHighlight i18n="@@board.addNote">Add a note</button>
+        }
       </div>
     </mat-card-content>
   </mat-card>

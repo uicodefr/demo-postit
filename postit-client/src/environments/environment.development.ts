@@ -1,6 +1,6 @@
 export const environment = {
-  production: true,
+  production: false,
   baseUrl: '/postit-server',
   likeWebSocket: true,
-  likeTimerSecond: 60,
+  likeTimerSecond: 20,
 };

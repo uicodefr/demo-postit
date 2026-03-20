@@ -2,12 +2,12 @@
   <div class="mat-elevation-z2 myTable">
     <table mat-table [dataSource]="dataSource">
       <ng-container matColumnDef="id">
-        <th scope="col" mat-header-cell *matHeaderCellDef i18n>Id</th>
+        <th scope="col" mat-header-cell *matHeaderCellDef i18n="@@boardSettings.id">Id</th>
         <td mat-cell *matCellDef="let element">{{ element.id }}</td>
       </ng-container>
 
       <ng-container matColumnDef="name">
-        <th scope="col" mat-header-cell *matHeaderCellDef i18n>Name</th>
+        <th scope="col" mat-header-cell *matHeaderCellDef i18n="@@boardSettings.name">Name</th>
         <td mat-cell *matCellDef="let element" class="paddingTd">
           <mat-form-field>
             <input type="text" matInput placeholder="Name" i18n-placeholder [(ngModel)]="element.name" required />
@@ -16,7 +16,7 @@
       </ng-container>
 
       <ng-container matColumnDef="order">
-        <th scope="col" mat-header-cell *matHeaderCellDef i18n>Order</th>
+        <th scope="col" mat-header-cell *matHeaderCellDef i18n="@@boardSettings.order">Order</th>
         <td mat-cell *matCellDef="let element">
           <mat-form-field>
             <input
@@ -25,7 +25,7 @@
               max="100"
               matInput
               placeholder="Order"
-              i18n-placeholder
+              i18n-placeholder="@@boardSettings.order"
               [(ngModel)]="element.orderNum"
               required
             />
@@ -34,19 +34,15 @@
       </ng-container>
 
       <ng-container matColumnDef="actions">
-        <th scope="col" mat-header-cell *matHeaderCellDef i18n>Actions</th>
+        <th scope="col" mat-header-cell *matHeaderCellDef i18n="@@boardSettings.actions">Actions</th>
         <td mat-cell *matCellDef="let element" class="actionCell">
           <div class="actionZone">
-            <button
-              (click)="saveBoard(element)"
-              [disabled]="!isValidForSave(element)"
-              mat-raised-button
-              color="primary"
-              i18n
-            >
-              Save
+            <button (click)="saveBoard(element)" [disabled]="!isValidForSave(element)" matButton="elevated">
+              <ng-container i18n="@@generic.save">Save</ng-container>
             </button>
-            <button (click)="deleteBoard(element)" mat-raised-button color="warn" i18n>Delete</button>
+            <button class="mat-warn" (click)="deleteBoard(element)" matButton="elevated">
+              <ng-container i18n="@@generic.delete">Delete</ng-container>
+            </button>
           </div>
         </td>
       </ng-container>
@@ -59,6 +55,6 @@
   </div>
 
   <div class="creationZone">
-    <button (click)="createBoard()" mat-raised-button color="primary" i18n>Create board</button>
+    <button (click)="createBoard()" matButton="elevated" i18n="@@boardSettings.createBoard">Create board</button>
   </div>
 </div>

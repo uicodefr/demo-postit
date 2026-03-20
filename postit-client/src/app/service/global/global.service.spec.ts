@@ -1,11 +1,12 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { GlobalService } from './global.service';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { GlobalService } from '@app/service/global//global.service';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('GlobalService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      providers: [GlobalService, provideHttpClient(), provideHttpClientTesting()],
     });
   });
 

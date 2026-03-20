@@ -1,8 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AttachedFileDialogComponent } from './attached-file-dialog.component';
-import { AppMaterialModule } from 'src/app/app-material.module';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 describe('AttachedFileDialogComponent', () => {
@@ -11,12 +9,11 @@ describe('AttachedFileDialogComponent', () => {
 
   beforeEach(async () => {
     const mockDialogRef = {
-      close: jasmine.createSpy('close'),
+      close: vi.fn(),
     };
 
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, AppMaterialModule],
-      declarations: [AttachedFileDialogComponent],
+      imports: [AttachedFileDialogComponent],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: MatDialogRef, useValue: mockDialogRef },

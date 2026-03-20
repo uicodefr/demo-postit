@@ -1,8 +1,9 @@
-import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 
-import { PostitService } from 'src/app/service/postit/postit.service';
-import { PostitNote } from 'src/app/model/postit/postit-note';
+import { PostitService } from '@app/service/postit/postit.service';
+import { PostitNote } from '@app/model/postit/postit-note';
+import { SHARED_MATERIAL } from '@app/common-imports';
 
 export interface ColorizeNoteDialogData {
   noteId: number;
@@ -10,19 +11,18 @@ export interface ColorizeNoteDialogData {
 
 @Component({
   selector: 'app-colorize-note-dialog',
+  imports: [SHARED_MATERIAL, MatDialogModule],
   templateUrl: './colorize-note-dialog.component.html',
   styleUrls: ['./colorize-note-dialog.component.scss'],
 })
 export class ColorizeNoteDialogComponent {
-  public constructor(
-    private dialogRef: MatDialogRef<ColorizeNoteDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ColorizeNoteDialogData,
-    private postitService: PostitService
-  ) {}
+  private readonly dialogRef = inject(MatDialogRef<ColorizeNoteDialogComponent>);
+  private readonly dialogData = inject<ColorizeNoteDialogData>(MAT_DIALOG_DATA);
+  private readonly postitService = inject(PostitService);
 
   public chooseColor(color: string): void {
-    const saveNote = new PostitNote();
-    saveNote.id = this.data.noteId;
+    const saveNote = {} as PostitNote;
+    saveNote.id = this.dialogData.noteId;
     saveNote.color = color;
 
     this.postitService.updateNote(saveNote).subscribe((updatedNote) => {

@@ -1,21 +1,21 @@
-import { Injectable } from '@angular/core';
-import { User } from '../../model/global/user';
-import { UrlConstant } from '../../const/url-constant';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { UrlConstant } from '@app/const/url-constant';
+import { User } from '@app/model/global/user';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  public constructor(private httpClient: HttpClient) {}
+  private readonly httpClient = inject(HttpClient);
 
   public getCurrentUser(): Observable<User> {
     return this.httpClient.get<User>(UrlConstant.User.CURRENT_USER);
   }
 
-  public getUserList(): Observable<Array<User>> {
-    return this.httpClient.get<Array<User>>(UrlConstant.User.USERS);
+  public getUserList(): Observable<User[]> {
+    return this.httpClient.get<User[]>(UrlConstant.User.USERS);
   }
 
   public createUser(user: User): Observable<User> {
@@ -30,7 +30,7 @@ export class UserService {
     return this.httpClient.delete<void>(UrlConstant.User.USERS + '/' + userId);
   }
 
-  public getRoleList(): Observable<Array<string>> {
-    return this.httpClient.get<Array<string>>(UrlConstant.User.ROLES);
+  public getRoleList(): Observable<string[]> {
+    return this.httpClient.get<string[]>(UrlConstant.User.ROLES);
   }
 }

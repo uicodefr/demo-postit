@@ -1,18 +1,21 @@
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
 
-import { AuthGuard } from './auth.guard';
-import { AuthService } from './auth.service';
+import { AuthGuard } from '@app/service/auth/auth.guard';
+import { AuthService } from '@app/service/auth/auth.service';
+import { vi } from 'vitest';
 
 describe('AuthGuard', () => {
-  beforeEach(async () => {
-    const authSpy = jasmine.createSpyObj('AuthService', ['redirectToLogin']);
+  const authServiceMock = {
+    redirectToLogin: vi.fn(),
+  };
 
-    await TestBed.configureTestingModule({
-      providers: [{ provide: AuthService, useValue: authSpy }],
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [AuthGuard, { provide: AuthService, useValue: authServiceMock }],
     });
   });
 
-  it('should ...', inject([AuthGuard], (guard: AuthGuard) => {
+  it('should be created', inject([AuthGuard], (guard: AuthGuard) => {
     expect(guard).toBeTruthy();
   }));
 });

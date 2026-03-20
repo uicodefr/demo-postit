@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MatDialog } from '@angular/material/dialog';
 import { BoardNoteComponent } from './board-note.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { AppMaterialModule } from 'src/app/app-material.module';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('BoardNoteComponent', () => {
   let component: BoardNoteComponent;
@@ -11,9 +11,8 @@ describe('BoardNoteComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, AppMaterialModule],
-      declarations: [BoardNoteComponent],
-      providers: [MatDialog],
+      imports: [BoardNoteComponent],
+      providers: [MatDialog, provideHttpClient(), provideHttpClientTesting()],
     }).compileComponents();
   });
 

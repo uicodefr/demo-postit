@@ -1,17 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, provideRouter } from '@angular/router';
 import { BoardComponent } from './board.component';
 import { of } from 'rxjs';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AppMaterialModule } from 'src/app/app-material.module';
-import { UrlConstant } from 'src/app/const/url-constant';
-import { Board } from 'src/app/model/postit/board';
-import { GlobalConstant } from 'src/app/const/global-constant';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { UrlConstant } from '@app/const/url-constant';
+import { Board } from '@app/model/postit/board';
+import { GlobalConstant } from '@app/const/global-constant';
 import { BoardPanelComponent } from './board-panel/board-panel.component';
 import { BoardNoteComponent } from './board-note/board-note.component';
-import { PostitNote } from 'src/app/model/postit/postit-note';
+import { PostitNote } from '@app/model/postit/postit-note';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('BoardComponent', () => {
   let component: BoardComponent;
@@ -20,7 +18,7 @@ describe('BoardComponent', () => {
 
   const mockStandardRequest = () => {
     const mockRequestParamMax = httpMock.expectOne(
-      UrlConstant.Global.PARAMETERS + '/' + GlobalConstant.Parameter.NOTE_MAX
+      UrlConstant.Global.PARAMETERS + '/' + GlobalConstant.Parameter.NOTE_MAX,
     );
     mockRequestParamMax.flush('10');
 
@@ -29,24 +27,16 @@ describe('BoardComponent', () => {
       { id: 1, name: 'Board1' },
       { id: 2, name: 'Board2' },
       { id: 3, name: 'Board3' },
-    ] as Array<Board>);
+    ] as Board[]);
   };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        RouterTestingModule.withRoutes([
-          {
-            path: 'board',
-            component: BoardComponent,
-          },
-        ]),
-        AppMaterialModule,
-        BrowserAnimationsModule,
-      ],
-      declarations: [BoardComponent, BoardPanelComponent, BoardNoteComponent],
+      imports: [BoardComponent, BoardPanelComponent, BoardNoteComponent],
       providers: [
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+        provideRouter([{ path: 'board', component: BoardComponent }]),
         {
           provide: ActivatedRoute,
           useValue: {
@@ -62,7 +52,7 @@ describe('BoardComponent', () => {
   it('should create', () => {
     fixture = TestBed.createComponent(BoardComponent);
     component = fixture.componentInstance;
-    fixture.autoDetectChanges(true);
+    fixture.autoDetectChanges();
     expect(component).toBeTruthy();
   });
 
@@ -71,21 +61,21 @@ describe('BoardComponent', () => {
     activatedRouteMock.params = of({ id: '2' });
     fixture = TestBed.createComponent(BoardComponent);
     component = fixture.componentInstance;
-    fixture.autoDetectChanges(true);
+    fixture.autoDetectChanges();
 
     mockStandardRequest();
 
     await fixture.whenStable();
-    expect(component.parameterNoteMax).toEqual(10);
+    expect(component.parameterNoteMax()).toEqual(10);
     const noteRequestNote = httpMock.expectOne(UrlConstant.Postit.NOTES + '?boardId=2');
-    noteRequestNote.flush([{ id: 1, name: 'name', text: 'text', boardId: 2 }] as Array<PostitNote>);
+    noteRequestNote.flush([{ id: 1, name: 'name', text: 'text', boardId: 2 }] as PostitNote[]);
     httpMock.verify();
 
     await fixture.whenStable();
-    expect(component.view).toBeFalsy();
-    expect(component.selectedIndex).toEqual(1);
-    expect(component.noteListMap.size).toEqual(1);
-    expect(fixture.nativeElement.querySelector('.mat-tab-group')).toBeTruthy();
+    expect(component.activeView()).toBeFalsy();
+    expect(component.selectedIndex()).toEqual(1);
+    expect(component.noteListMap().size).toEqual(1);
+    expect(fixture.nativeElement.querySelector('.mat-mdc-tab-group')).toBeTruthy();
     expect(fixture.nativeElement.querySelector('.mat-accordion')).toBeFalsy();
     expect(fixture.nativeElement.querySelector('.flexTable')).toBeFalsy();
   });
@@ -95,14 +85,14 @@ describe('BoardComponent', () => {
     activatedRouteMock.params = of({ view: 'panels' });
     fixture = TestBed.createComponent(BoardComponent);
     component = fixture.componentInstance;
-    fixture.autoDetectChanges(true);
+    fixture.autoDetectChanges();
 
     mockStandardRequest();
 
     await fixture.whenStable();
     httpMock.verify();
-    expect(component.view).toEqual('panels');
-    expect(component.noteListMap.size).toEqual(0);
+    expect(component.activeView()).toEqual('panels');
+    expect(component.noteListMap().size).toEqual(0);
     expect(fixture.nativeElement.querySelector('.mat-tab-group')).toBeFalsy();
     expect(fixture.nativeElement.querySelector('.mat-accordion')).toBeTruthy();
     expect(fixture.nativeElement.querySelector('.flexTable')).toBeFalsy();
@@ -113,22 +103,22 @@ describe('BoardComponent', () => {
     activatedRouteMock.params = of({ view: 'table' });
     fixture = TestBed.createComponent(BoardComponent);
     component = fixture.componentInstance;
-    fixture.autoDetectChanges(true);
+    fixture.autoDetectChanges();
 
     mockStandardRequest();
 
     await fixture.whenStable();
     const noteRequestNote1 = httpMock.expectOne(UrlConstant.Postit.NOTES + '?boardId=1');
-    noteRequestNote1.flush([{ id: 1, name: 'name', text: 'text', boardId: 1 }] as Array<PostitNote>);
+    noteRequestNote1.flush([{ id: 1, name: 'name', text: 'text', boardId: 1 }] as PostitNote[]);
     const noteRequestNote2 = httpMock.expectOne(UrlConstant.Postit.NOTES + '?boardId=2');
-    noteRequestNote2.flush([{ id: 2, name: 'name', text: 'text', boardId: 2 }] as Array<PostitNote>);
+    noteRequestNote2.flush([{ id: 2, name: 'name', text: 'text', boardId: 2 }] as PostitNote[]);
     const noteRequestNote3 = httpMock.expectOne(UrlConstant.Postit.NOTES + '?boardId=3');
-    noteRequestNote3.flush([{ id: 3, name: 'name', text: 'text', boardId: 3 }] as Array<PostitNote>);
+    noteRequestNote3.flush([{ id: 3, name: 'name', text: 'text', boardId: 3 }] as PostitNote[]);
     httpMock.verify();
 
     await fixture.whenStable();
-    expect(component.view).toEqual('table');
-    expect(component.noteListMap.size).toEqual(3);
+    expect(component.activeView()).toEqual('table');
+    expect(component.noteListMap().size).toEqual(3);
     expect(fixture.nativeElement.querySelector('.mat-tab-group')).toBeFalsy();
     expect(fixture.nativeElement.querySelector('.mat-accordion')).toBeFalsy();
     expect(fixture.nativeElement.querySelector('.flexTable')).toBeTruthy();

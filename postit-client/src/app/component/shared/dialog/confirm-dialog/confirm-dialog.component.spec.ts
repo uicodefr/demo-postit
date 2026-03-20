@@ -9,16 +9,15 @@ describe('ConfirmDialogComponent', () => {
 
   beforeEach(async () => {
     const mockDialogRef = {
-      close: jasmine.createSpy('close'),
+      close: vi.fn(),
     };
 
     await TestBed.configureTestingModule({
-      declarations: [ConfirmDialogComponent],
+      imports: [ConfirmDialogComponent, MatDialogModule],
       providers: [
         { provide: MatDialogRef, useValue: mockDialogRef },
         { provide: MAT_DIALOG_DATA, useValue: {} },
       ],
-      imports: [MatDialogModule],
     }).compileComponents();
   });
 

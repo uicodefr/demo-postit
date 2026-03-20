@@ -1,11 +1,11 @@
-@import "../../../global.scss";
+@use 'src/global.scss' as global;
 
 .settings {
-    max-width: 1200px;
-    margin: auto;
-    padding: $margin-base;
+  max-width: 1200px;
+  margin: auto;
+  padding: global.$margin-base;
 }
 
 .refreshZone {
-    float: right;
+  float: right;
 }

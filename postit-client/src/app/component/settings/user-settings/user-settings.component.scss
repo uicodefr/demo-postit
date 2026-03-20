@@ -1,4 +1,4 @@
-@import '../../../../global.scss';
+@use 'src/global.scss' as global;
 
 .userSettings {
   .myTable {
@@ -19,8 +19,8 @@
     }
 
     .paddingTd {
-      padding-top: $margin-base;
-      padding-right: $margin-base;
+      padding-top: global.$margin-base;
+      padding-right: global.$margin-base;
     }
     .mat-form-field {
       width: 100%;
@@ -29,7 +29,7 @@
       width: 300px;
       .actionZone {
         button {
-          margin: 0 $margin-small;
+          margin: 0 global.$margin-small;
         }
       }
     }
@@ -55,7 +55,7 @@
   }
 
   .creationZone {
-    margin-top: $margin-base;
+    margin-top: global.$margin-base;
     text-align: center;
   }
 }

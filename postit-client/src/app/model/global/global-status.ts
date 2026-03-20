@@ -1,6 +1,6 @@
-export class GlobalStatus {
-  public status!: string;
-  public upDate!: Date;
-  public currentDate!: Date;
-  public version!: string;
+export interface GlobalStatus {
+  status: string;
+  upDate: Date;
+  currentDate: Date;
+  version: string;
 }

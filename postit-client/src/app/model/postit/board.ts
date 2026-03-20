@@ -1,3 +1,4 @@
 import { NamedEntity } from '../named-entity';
 
-export class Board extends NamedEntity {}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface Board extends NamedEntity {}

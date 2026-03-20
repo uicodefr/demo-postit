@@ -1,50 +1,43 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { GlobalInfoService } from 'src/app/service/util/global-info.service';
-import { PostitService } from 'src/app/service/postit/postit.service';
-import { AlertType } from 'src/app/const/alert-type';
-import { PostitNote } from 'src/app/model/postit/postit-note';
-import { ArrayUtil } from 'src/app/util/array-util';
-import { Board } from 'src/app/model/postit/board';
+import { Component, inject, input, output } from '@angular/core';
+import { GlobalInfoService } from '@app/service/util/global-info.service';
+import { PostitService } from '@app/service/postit/postit.service';
+import { AlertType } from '@app/const/alert-type';
+import { PostitNote } from '@app/model/postit/postit-note';
+import { Board } from '@app/model/postit/board';
+import { SHARED_MATERIAL } from '@app/common-imports';
+import { MatCardModule } from '@angular/material/card';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { BoardNoteComponent } from '@app/component/board/board-note/board-note.component';
 
 @Component({
   selector: 'app-board-panel',
+  imports: [SHARED_MATERIAL, MatCardModule, DragDropModule, BoardNoteComponent],
   templateUrl: './board-panel.component.html',
   styleUrls: ['./board-panel.component.scss'],
 })
 export class BoardPanelComponent {
-  @Input()
-  public board: Board;
+  private readonly globalInfoService = inject(GlobalInfoService);
+  private readonly postitService = inject(PostitService);
 
-  @Input()
-  public noteList: Array<PostitNote> = [];
+  public board = input<Board>({} as Board);
+  public noteList = input<PostitNote[]>([]);
+  public otherBoardList = input<Board[]>([]);
+  public parameterNoteMax = input(0);
+  public noteDraggable = input(false);
 
-  @Input()
-  public otherBoardList: Array<Board> = [];
-
-  @Input()
-  public parameterNoteMax = 0;
-
-  @Input()
-  public noteDraggable = false;
-
-  @Output()
-  public askRefreshBoard = new EventEmitter<number>();
-
-  constructor(private globalInfoService: GlobalInfoService, private postitService: PostitService) {
-    this.board = new Board();
-  }
+  public askRefreshBoard = output<number>();
 
   public refreshCurrentBoard(): void {
-    this.askRefreshBoard.next(this.board.id);
+    this.askRefreshBoard.emit(this.board().id);
   }
 
   public addNote(): void {
-    const newNote = new PostitNote();
-    newNote.boardId = this.board.id;
+    const newNote = {} as PostitNote;
+    newNote.boardId = this.board().id;
     newNote.name = $localize`:@@board.newNote:New note`;
 
     this.postitService.createNote(newNote).subscribe((noteCreated) => {
-      this.noteList.push(noteCreated);
+      this.noteList().push(noteCreated);
       this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@board.newNoteCreated:New note created`);
 
       this.refreshCurrentBoard();
@@ -53,7 +46,7 @@ export class BoardPanelComponent {
 
   public reorderBoard(note: PostitNote): void {
     let orderNum = 1;
-    for (const noteOfBoard of this.noteList) {
+    for (const noteOfBoard of this.noteList()) {
       if (noteOfBoard.id === note.id) {
         noteOfBoard.orderNum = note.orderNum;
       } else {
@@ -64,20 +57,15 @@ export class BoardPanelComponent {
       }
     }
 
-    this.noteList.sort((note1, note2) => (note1.orderNum ? note1.orderNum : 0) - (note2.orderNum ? note2.orderNum : 0));
-
-    this.refreshCurrentBoard();
-  }
-
-  public takeOffNote(note: PostitNote): void {
-    const noteList = this.noteList;
-    ArrayUtil.removeElement(noteList, (value) => value.id === note.id);
+    this.noteList().sort(
+      (note1, note2) => (note1.orderNum ? note1.orderNum : 0) - (note2.orderNum ? note2.orderNum : 0),
+    );
 
     this.refreshCurrentBoard();
   }
 
   public moveNote(note: PostitNote): void {
     this.refreshCurrentBoard();
-    this.askRefreshBoard.next(note.boardId);
+    this.askRefreshBoard.emit(note.boardId);
   }
 }

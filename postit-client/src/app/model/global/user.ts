@@ -1,8 +1,8 @@
 import { IdEntity } from '../id-entity';
 
-export class User extends IdEntity {
-  username!: string;
+export interface User extends IdEntity {
+  username: string;
   password?: string;
-  enabled!: boolean;
-  roleList!: Array<string>;
+  enabled: boolean;
+  roleList: string[];
 }

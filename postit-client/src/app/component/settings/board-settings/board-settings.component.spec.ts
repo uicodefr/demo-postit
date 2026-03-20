@@ -1,10 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialog } from '@angular/material/dialog';
 import { BoardSettingsComponent } from './board-settings.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { AppMaterialModule } from 'src/app/app-material.module';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('BoardSettingsComponent', () => {
   let component: BoardSettingsComponent;
@@ -12,9 +10,8 @@ describe('BoardSettingsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BoardSettingsComponent],
-      providers: [MatDialog],
-      imports: [HttpClientTestingModule, AppMaterialModule, BrowserAnimationsModule, FormsModule],
+      imports: [BoardSettingsComponent],
+      providers: [provideHttpClient(), provideHttpClientTesting(), MatDialog],
     }).compileComponents();
   });
 

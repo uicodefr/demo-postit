@@ -1,8 +1,8 @@
 import { IdEntity } from '../id-entity';
 
-export class AttachedFile extends IdEntity {
-  public postitNoteId!: number;
-  public filename!: string;
-  public size!: number;
-  public type!: number;
+export interface AttachedFile extends IdEntity {
+  postitNoteId: number;
+  filename: string;
+  size: number;
+  type: number;
 }

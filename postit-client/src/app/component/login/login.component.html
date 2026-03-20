@@ -1,45 +1,65 @@
 <div class="login">
+  <h1 i18n="@@login.signIn">Sign in</h1>
 
-  <h1 i18n>Sign in</h1>
+  @if (userConnected()) {
+    <mat-card class="alreadyConnected">
+      <mat-card-content class="loginCardContent">
+        <ng-container i18n="@@login.youAreConnectedAs">You are connected as</ng-container>
+        <em> {{ userConnected()?.username }} </em>
+        <br />
 
-  <mat-card *ngIf="!userConnected" class="mat-elevation-z4">
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="loginForm">
-
-      <mat-form-field>
-        <input type="text" matInput placeholder="Username" i18n-placeholder formControlName="username">
-      </mat-form-field>
-
-      <mat-form-field>
-        <input type="password" matInput placeholder="Password" i18n-placeholder formControlName="password">
-      </mat-form-field>
-
-      <div *ngIf="!loginInProgress" class="buttonZone">
-        <button type="submit" mat-button mat-raised-button color="primary" cdkFocusInitial i18n>
-          LOGIN
+        <button
+          class="mat-warn"
+          type="button"
+          matButton="elevated"
+          cdkFocusInitial
+          (click)="logout()"
+          i18n="@@login.logout"
+        >
+          LOGOUT
         </button>
-      </div>
+      </mat-card-content>
+    </mat-card>
+  } @else {
+    <mat-card>
+      <mat-card-content class="loginCardContent">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="loginForm">
+          <mat-form-field>
+            <input
+              type="text"
+              matInput
+              placeholder="Username"
+              i18n-placeholder="@@login.username"
+              formControlName="username"
+            />
+          </mat-form-field>
 
-      <div *ngIf="loginInProgress">
-        <mat-progress-bar mode="indeterminate" color="accent">
-        </mat-progress-bar>
-      </div>
+          <mat-form-field>
+            <input
+              type="password"
+              matInput
+              placeholder="Password"
+              i18n-placeholder="@@login.password"
+              formControlName="password"
+            />
+          </mat-form-field>
 
-    </form>
-  </mat-card>
-
-  <mat-card *ngIf="userConnected" class="mat-elevation-z4" class="alreadyConnected">
-    <ng-container i18n>You are connected as</ng-container>
-    <em> {{ userConnected.username }} </em>
-    <br />
-
-    <button type="button" mat-button mat-raised-button color="warn" cdkFocusInitial (click)="logout()" i18n>
-      LOGOUT
-    </button>
-  </mat-card>
+          @if (loginInProgress()) {
+            <div>
+              <mat-progress-bar class="mat-tertiary" mode="indeterminate" />
+            </div>
+          } @else {
+            <div class="buttonZone">
+              <button type="submit" matButton="elevated" cdkFocusInitial i18n="@@login.login">LOGIN</button>
+            </div>
+          }
+        </form>
+      </mat-card-content>
+    </mat-card>
+  }
 
   <div class="help">
-    <ng-container i18n>Use the following username/password for Sign in :</ng-container> <br />
+    <ng-container i18n="@@login.help">Use the following username/password for Sign in :</ng-container> <br />
     admin/admin or superadmin/superadmin
   </div>
-
 </div>

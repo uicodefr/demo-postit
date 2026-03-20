@@ -1,38 +1,40 @@
-@import "../../../global.scss";
+@use 'src/global.scss' as global;
 
 .login {
+  min-width: 300px;
+  width: 50%;
+  max-width: 600px;
+  margin: auto;
 
-    min-width: 300px;
-    width: 50%;
-    max-width: 600px;
-    margin: auto;
+  .loginCardContent {
+    padding: global.$margin-large;
+  }
 
-    .loginForm {
-        padding: $margin-large;
-        display: flex;
-        flex-direction: column;
-        text-align: center;
+  .loginForm {
+    padding: global.$margin-large;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
 
-        & > * {
-            margin: $margin-base;
-        }
-
-        .buttonZone button {
-            width: 50%;
-        }
+    & > * {
+      margin: global.$margin-base;
     }
 
-    .alreadyConnected {
-        text-align: center;
-        font-size: 105%;
-        button {
-            margin-top: $margin-large;
-        }
+    .buttonZone button {
+      width: 50%;
     }
+  }
 
-    .help {
-        margin-top: $margin-large;
-        text-align: center;
+  .alreadyConnected {
+    text-align: center;
+    font-size: 105%;
+    button {
+      margin-top: global.$margin-very-large;
     }
+  }
 
+  .help {
+    margin-top: global.$margin-large;
+    text-align: center;
+  }
 }

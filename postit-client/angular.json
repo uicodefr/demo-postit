@@ -1,6 +1,10 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
+  "cli": {
+    "packageManager": "npm",
+    "schematicCollections": ["angular-eslint"]
+  },
   "newProjectRoot": "projects",
   "projects": {
     "postit-client": {
@@ -8,7 +12,8 @@
         "sourceLocale": "en",
         "locales": {
           "fr": {
-            "translation": "src/locale/messages.fr.xlf"
+            "translation": "src/locale/messages.fr.xlf",
+            "baseHref": "fr"
           }
         }
       },
@@ -16,9 +21,6 @@
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
-        },
-        "@schematics/angular:application": {
-          "strict": true
         }
       },
       "root": "",
@@ -26,92 +28,72 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular/build:application",
           "options": {
-            "outputPath": "dist/postit-client",
-            "index": "src/index.html",
-            "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
+            "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
-            "i18nMissingTranslation": "error",
             "inlineStyleLanguage": "scss",
-            "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/global.scss", "src/styles.scss", "src/mytheme.scss"],
-            "scripts": []
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "public"
+              }
+            ],
+            "styles": ["src/styles.scss"],
+            "polyfills": ["@angular/localize/init"],
+            "allowedCommonJsDependencies": ["@stomp/stompjs"],
+            "i18nMissingTranslation": "error",
+            "localize": ["fr", "en"]
           },
           "configurations": {
             "production": {
-              "baseHref": "/postit/",
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ],
-              "outputHashing": "all",
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "1.2mb",
-                  "maximumError": "2mb"
+                  "maximumWarning": "800kB",
+                  "maximumError": "1.5MB"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
                 }
-              ]
-            },
-            "fr": {
-              "localize": ["fr"]
+              ],
+              "outputHashing": "all"
             },
             "development": {
-              "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
-              "namedChunks": true
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.development.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "proxyConfig": "proxy.conf.json",
-            "browserTarget": "postit-client:build"
-          },
+          "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "postit-client:build:production"
-            },
-            "fr": {
-              "browserTarget": "postit-client:build:fr"
+              "buildTarget": "postit-client:build:production"
             },
             "development": {
-              "browserTarget": "postit-client:build:development"
+              "buildTarget": "postit-client:build:development"
             }
           },
-          "defaultConfiguration": "development"
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "defaultConfiguration": "development",
           "options": {
-            "browserTarget": "postit-client:build"
+            "proxyConfig": "proxy.conf.json"
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "tsconfig.spec.json",
-            "karmaConfig": "karma.conf.js",
-            "inlineStyleLanguage": "scss",
-            "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/global.scss", "src/styles.scss", "src/mytheme.scss"],
-            "scripts": []
+            "runnerConfig": true
           }
         },
         "lint": {
@@ -122,9 +104,5 @@
         }
       }
     }
-  },
-  "defaultProject": "postit-client",
-  "cli": {
-    "defaultCollection": "@angular-eslint/schematics"
   }
 }

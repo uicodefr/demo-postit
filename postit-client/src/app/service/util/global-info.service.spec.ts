@@ -1,7 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { GlobalInfoService } from './global-info.service';
+import { GlobalInfoService } from '@app/service/util/global-info.service';
 
 describe('GlobalInfoService', () => {
   beforeEach(() => {

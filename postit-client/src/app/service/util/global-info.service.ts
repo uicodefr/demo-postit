@@ -1,29 +1,25 @@
-import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { inject, Injectable, signal } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
-import { AlertType } from '../../const/alert-type';
-import { GlobalConstant } from '../../const/global-constant';
+import { GlobalConstant } from '@app/const/global-constant';
+import { AlertType } from '@app/const/alert-type';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GlobalInfoService {
-  private loaderSubject = new BehaviorSubject<boolean>(false);
+  private readonly snackBar = inject(MatSnackBar);
 
-  public constructor(private snackBar: MatSnackBar) {}
-
-  public getLoaderObservable(): Observable<boolean> {
-    return this.loaderSubject.asObservable();
-  }
+  private readonly _isLoading = signal<boolean>(false);
+  public readonly isLoading = this._isLoading.asReadonly();
 
   public notifLoader(displayLoader: boolean): void {
-    this.loaderSubject.next(displayLoader);
+    this._isLoading.set(displayLoader);
   }
 
   public showAlert(alertType: AlertType, message: string, duration?: number): void {
     this.snackBar.open(message, $localize`:@@global.close:Close`, {
-      duration: duration ? duration : GlobalConstant.Display.NOTIFICATION_DELAY,
+      duration: duration || GlobalConstant.Display.NOTIFICATION_DELAY,
       panelClass: [this.getAlertClass(alertType)],
     } as MatSnackBarConfig);
   }

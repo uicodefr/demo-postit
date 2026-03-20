@@ -1,22 +1,22 @@
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
+import { SHARED_COMMON, SHARED_ROUTER } from '@app/common-imports';
 
 @Component({
   selector: 'app-view-list',
+  imports: [SHARED_COMMON, SHARED_ROUTER, MatDividerModule, MatListModule],
   templateUrl: './view-list.component.html',
   styleUrls: ['./view-list.component.scss'],
 })
 export class ViewListComponent {
-  public currentView = 'tabs';
+  private readonly matbottomSheetRef = inject(MatBottomSheetRef<ViewListComponent>);
+  public readonly bottomData = inject<{ currentView: string }>(MAT_BOTTOM_SHEET_DATA);
 
-  constructor(
-    private matbottomSheetRef: MatBottomSheetRef<ViewListComponent>,
-    @Inject(MAT_BOTTOM_SHEET_DATA) public data: any
-  ) {
-    this.currentView = data.currentView;
-  }
+  public currentView = this.bottomData.currentView;
 
-  public openLink(event: MouseEvent): void {
+  public openLink(): void {
     this.matbottomSheetRef.dismiss();
   }
 

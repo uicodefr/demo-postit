@@ -1,14 +1,14 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { UrlConstant } from 'src/app/const/url-constant';
-import { AttachedFile } from 'src/app/model/postit/attached-file';
 import { Observable } from 'rxjs';
+import { AttachedFile } from '@app/model/postit/attached-file';
+import { UrlConstant } from '@app/const/url-constant';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AttachedFileService {
-  constructor(private httpClient: HttpClient) {}
+  private readonly httpClient = inject(HttpClient);
 
   public uploadFile(file: File, noteId: number): Observable<AttachedFile> {
     const formData = new FormData();

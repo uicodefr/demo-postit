@@ -1,45 +1,46 @@
-import { Injectable } from '@angular/core';
+import { computed, inject, Injectable, Signal, signal } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { ReplaySubject, Observable, map, catchError, of, first } from 'rxjs';
-import { User } from '../../model/global/user';
-import { UserService } from '../global/user.service';
-import { UrlConstant } from '../../const/url-constant';
+import { Observable, map, catchError, of } from 'rxjs';
+import { UserService } from '@app/service/global/user.service';
+import { User } from '@app/model/global/user';
+import { UrlConstant } from '@app/const/url-constant';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private userSubject = new ReplaySubject<User | null>(1);
+  private readonly router = inject(Router);
+  private readonly httpClient = inject(HttpClient);
+  private readonly userService = inject(UserService);
+
+  private readonly _currentUser = signal<User | null>(null);
+  public readonly currentUser = this._currentUser.asReadonly();
+
+  private readonly _isUserLoaded = signal(false);
+  public readonly isUserLoaded = this._isUserLoaded.asReadonly();
 
   private routeBeforeLogin: ActivatedRouteSnapshot | null = null;
-
-  public constructor(private router: Router, private httpClient: HttpClient, private userService: UserService) {}
-
-  public getCurrentUser(): Observable<User | null> {
-    return this.userSubject.asObservable();
-  }
 
   public getRefreshedCurrentUser(): Observable<User> {
     return this.userService.getCurrentUser().pipe(
       map((user) => {
-        this.userSubject.next(user);
+        this._currentUser.set(user);
+        this._isUserLoaded.set(true);
         return user;
-      })
+      }),
     );
   }
 
-  public userHasRoles(roleList: Array<string>): Observable<boolean> {
-    return this.getCurrentUser().pipe(
-      first(),
-      map((user) => {
-        if (!user?.roleList) {
-          return false;
-        } else {
-          return !roleList || roleList.every((role) => user.roleList && user.roleList.includes(role));
-        }
-      })
-    );
+  public userHasRoles(roleList: string[]): Signal<boolean> {
+    return computed(() => {
+      const user = this.currentUser();
+      if (user?.roleList) {
+        return !roleList || roleList.every((role) => user.roleList?.includes(role));
+      } else {
+        return false;
+      }
+    });
   }
 
   public redirectToLogin(oldRoute: ActivatedRouteSnapshot | null): void {
@@ -54,18 +55,18 @@ export class AuthService {
 
     return this.httpClient.post<User>(UrlConstant.LOGIN, loginFormData).pipe(
       map((user) => {
-        this.userSubject.next(user);
-        if (user && this.routeBeforeLogin && this.routeBeforeLogin.routeConfig) {
+        this._currentUser.set(user);
+        if (user && this.routeBeforeLogin?.routeConfig) {
           this.router.navigate([this.routeBeforeLogin.routeConfig.path]);
         }
         return !!user;
       }),
-      catchError(() => of(false))
+      catchError(() => of(false)),
     );
   }
 
   public logout(): Observable<void> {
-    this.userSubject.next(null);
+    this._currentUser.set(null);
     return this.httpClient.post<void>(UrlConstant.LOGOUT, null).pipe(catchError(() => of()));
   }
 }

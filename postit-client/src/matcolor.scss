@@ -1,0 +1,18 @@
+@use 'src/global.scss' as global;
+@use '@angular/material' as mat;
+
+.mat-tertiary {
+  @include mat.progress-spinner-overrides(
+    (
+      active-indicator-color: var(--mat-sys-tertiary),
+    )
+  );
+}
+
+.mat-warn {
+  @include mat.button-overrides(
+    (
+      protected-label-text-color: global.$color-red-error,
+    )
+  );
+}

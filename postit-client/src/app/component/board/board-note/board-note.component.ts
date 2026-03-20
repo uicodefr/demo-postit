@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, computed, effect, inject, input, output, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { PostitNote } from '../../../model/postit/postit-note';
@@ -9,42 +9,61 @@ import { AlertType } from '../../../const/alert-type';
 import { EditNoteDialogComponent } from '../edit-note-dialog/edit-note-dialog.component';
 import { GlobalConstant } from '../../../const/global-constant';
 import { ColorizeNoteDialogComponent } from '../colorize-note-dialog/colorize-note-dialog.component';
-import { Board } from 'src/app/model/postit/board';
-import { AttachedFileService } from 'src/app/service/postit/attached-file.service';
+import { Board } from '@app/model/postit/board';
+import { AttachedFileService } from '@app/service/postit/attached-file.service';
 import { AttachedFileDialogComponent } from '../attached-file-dialog/attached-file-dialog.component';
-import { GlobalService } from 'src/app/service/global/global.service';
+import { GlobalService } from '@app/service/global/global.service';
+import { MatCardModule } from '@angular/material/card';
+import { SHARED_COMMON, SHARED_MATERIAL } from '@app/common-imports';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-board-note',
+  imports: [SHARED_COMMON, SHARED_MATERIAL, MatCardModule, MatMenuModule],
   templateUrl: './board-note.component.html',
   styleUrls: ['./board-note.component.scss'],
 })
 export class BoardNoteComponent implements OnInit {
-  @Input()
-  public note: PostitNote;
-  @Input()
-  public otherBoardList: Array<Board> = [];
-
-  @Output()
-  public takeOffNote = new EventEmitter<PostitNote>();
-  @Output()
-  public changeNote = new EventEmitter<PostitNote>();
-  @Output()
-  public orderNote = new EventEmitter<PostitNote>();
-  @Output()
-  public moveNote = new EventEmitter<PostitNote>();
+  private readonly dialog = inject(MatDialog);
+  private readonly globalInfoService = inject(GlobalInfoService);
+  private readonly globalService = inject(GlobalService);
+  private readonly postitService = inject(PostitService);
+  private readonly attachedFileService = inject(AttachedFileService);
 
   private parameterUploadSizeMax = 0;
 
-  public constructor(
-    private dialog: MatDialog,
-    private globalInfoService: GlobalInfoService,
-    private globalService: GlobalService,
-    private postitService: PostitService,
-    private attachedFileService: AttachedFileService
-  ) {
-    this.note = new PostitNote();
+  public note = input<PostitNote>({} as PostitNote);
+  public otherBoardList = input<Board[]>([]);
+
+  public changeNote = output<PostitNote>();
+  public orderNote = output<PostitNote>();
+  public moveNote = output<PostitNote>();
+  public deleteNote = output<PostitNote>();
+
+  public localChangedNote = signal<PostitNote | null>(null);
+
+  constructor() {
+    effect(() => {
+      this.note();
+      this.localChangedNote.set(null);
+    });
   }
+
+  public validNote = computed(() => {
+    const localNote = this.localChangedNote();
+    if (localNote) {
+      return localNote;
+    }
+    return this.note();
+  });
+
+  public colorClass = computed(() => {
+    if (this.validNote().color && GlobalConstant.Functional.VALID_COLOR_LIST.includes(this.validNote().color)) {
+      return this.validNote().color;
+    } else {
+      return GlobalConstant.Functional.DEFAULT_COLOR;
+    }
+  });
 
   public ngOnInit(): void {
     this.globalService.getParameterValue(GlobalConstant.Parameter.UPLOAD_SIZE_MAX).subscribe((parameterValue) => {
@@ -52,28 +71,20 @@ export class BoardNoteComponent implements OnInit {
     });
   }
 
-  public getColorClass(): string {
-    if (this.note.color && GlobalConstant.Functional.VALID_COLOR_LIST.includes(this.note.color)) {
-      return this.note.color;
-    } else {
-      return GlobalConstant.Functional.DEFAULT_COLOR;
-    }
-  }
-
   public changeOrder(orderIncrement: number): void {
-    const saveNote = new PostitNote();
-    saveNote.id = this.note.id;
-    saveNote.orderNum = (this.note.orderNum ? this.note.orderNum : 0) + orderIncrement;
+    const saveNote = {} as PostitNote;
+    saveNote.id = this.validNote().id;
+    saveNote.orderNum = (this.validNote().orderNum ? this.validNote().orderNum : 0) + orderIncrement;
 
     this.postitService.updateNote(saveNote).subscribe((updatedNote) => {
-      this.note = updatedNote;
-      this.orderNote.emit(this.note);
+      this.localChangedNote.set(updatedNote);
+      this.orderNote.emit(updatedNote);
     });
   }
 
   public changeToBoard(board: Board): void {
-    const moveNote = new PostitNote();
-    moveNote.id = this.note.id;
+    const moveNote = {} as PostitNote;
+    moveNote.id = this.validNote().id;
     moveNote.boardId = board.id;
 
     this.postitService.updateNote(moveNote).subscribe((updatedNote) => {
@@ -83,11 +94,11 @@ export class BoardNoteComponent implements OnInit {
   }
 
   public edit(): void {
-    if (!this.note.id) {
+    if (!this.validNote().id) {
       return;
     }
 
-    this.postitService.getNote(this.note.id).subscribe((editedNote) => {
+    this.postitService.getNote(this.validNote().id).subscribe((editedNote) => {
       const editDialog = this.dialog.open(EditNoteDialogComponent, {
         width: GlobalConstant.Display.DIALOG_WIDTH,
         data: {
@@ -105,7 +116,7 @@ export class BoardNoteComponent implements OnInit {
     const colorDialog = this.dialog.open(ColorizeNoteDialogComponent, {
       width: GlobalConstant.Display.DIALOG_WIDTH,
       data: {
-        noteId: this.note.id,
+        noteId: this.validNote().id,
       },
     });
 
@@ -117,23 +128,24 @@ export class BoardNoteComponent implements OnInit {
   public viewAttachedFile(): void {
     const attachedFileDialog = this.dialog.open(AttachedFileDialogComponent, {
       width: GlobalConstant.Display.DIALOG_WIDTH,
-      data: this.note.attachedFile,
+      data: this.validNote().attachedFile,
     });
 
     attachedFileDialog.afterClosed().subscribe((deleteAttachedFile) => {
       if (deleteAttachedFile) {
-        this.note.attachedFile = null;
-        this.changeNote.emit(this.note);
+        const noteWithDeletedFile = { ...this.validNote(), attachedFile: null } as PostitNote;
+        this.localChangedNote.set(noteWithDeletedFile);
+        this.changeNote.emit(noteWithDeletedFile);
       }
     });
   }
 
-  public uploadFile(eventUpload: EventTarget | undefined | null): void {
-    const uploadFile = (eventUpload as any)?.files as FileList | null;
-    if (!uploadFile || uploadFile.length !== 1) {
+  public uploadFile(eventUpload: HTMLInputElement): void {
+    const uploadFile = eventUpload?.files;
+    if (uploadFile?.length !== 1) {
       this.globalInfoService.showAlert(
         AlertType.WARNING,
-        $localize`:@@boardNote.fileNotSelected:Please select one file`
+        $localize`:@@boardNote.fileNotSelected:Please select one file`,
       );
       return;
     }
@@ -142,15 +154,16 @@ export class BoardNoteComponent implements OnInit {
       return;
     }
 
-    if (uploadFile && uploadFile.length > 0 && this.note.id) {
-      this.attachedFileService.uploadFile(uploadFile[0], this.note.id).subscribe((attachedFile) => {
-        this.note.attachedFile = attachedFile;
-        this.changeNoteAfterUpdate(this.note, $localize`:@@boardNote.fileUploaded:File uploaded`);
+    if (uploadFile && uploadFile.length > 0 && this.validNote().id) {
+      this.attachedFileService.uploadFile(uploadFile[0], this.validNote().id).subscribe((attachedFile) => {
+        const noteWithAttachedFile = { ...this.validNote(), attachedFile } as PostitNote;
+        this.localChangedNote.set(noteWithAttachedFile);
+        this.changeNoteAfterUpdate(noteWithAttachedFile, $localize`:@@boardNote.fileUploaded:File uploaded`);
       });
     }
   }
 
-  public deleteNote(): void {
+  public deleteNoteAfterConfirm(): void {
     const confirmDialogData = {
       title: $localize`:@@boardNote.deleteNote:Delete note`,
       message: $localize`:@@boardNote.deleteNoteConfirm:Are you sure to delete this note ?`,
@@ -163,10 +176,10 @@ export class BoardNoteComponent implements OnInit {
     });
 
     confirmDialog.afterClosed().subscribe((confirmation) => {
-      if (confirmation === true && this.note.id) {
-        this.postitService.deleteNote(this.note.id).subscribe(() => {
+      if (confirmation === true && this.validNote().id) {
+        this.postitService.deleteNote(this.validNote().id).subscribe(() => {
           this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@boardNote.noteDeleted:Note deleted`);
-          this.takeOffNote.emit(this.note);
+          this.deleteNote.emit(this.validNote());
         });
       }
     });
@@ -174,8 +187,8 @@ export class BoardNoteComponent implements OnInit {
 
   private changeNoteAfterUpdate(updatedNote: PostitNote, message?: string): void {
     if (updatedNote) {
-      Object.assign(this.note, updatedNote);
-      this.changeNote.emit(this.note);
+      this.localChangedNote.set(updatedNote);
+      this.changeNote.emit(updatedNote);
       if (message) {
         this.globalInfoService.showAlert(AlertType.SUCCESS, message);
       }

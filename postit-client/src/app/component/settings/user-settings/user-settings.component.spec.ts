@@ -1,10 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { UserSettingsComponent } from './user-settings.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { AppMaterialModule } from 'src/app/app-material.module';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('UserSettingsComponent', () => {
   let component: UserSettingsComponent;
@@ -12,9 +10,8 @@ describe('UserSettingsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UserSettingsComponent],
-      providers: [MatDialog],
-      imports: [HttpClientTestingModule, AppMaterialModule, BrowserAnimationsModule, FormsModule],
+      imports: [UserSettingsComponent],
+      providers: [provideHttpClient(), provideHttpClientTesting(), MatDialog],
     }).compileComponents();
   });
 

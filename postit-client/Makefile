@@ -20,12 +20,12 @@ test:
 buildOnly:
 	@echo "buildOnly (version: $(VERSION))"
 	npm ci
-	npm run ng -- build --prod --localize
+	npm run ng -- build --localize
 
 build:
 	@echo "build (version: $(VERSION))"
 	npm ci
-	npm run ng -- build --prod --localize
+	npm run ng -- build --localize
 	cd ./dist && zip -r ../postit-client-$(VERSION).zip ./postit-client
 	curl -v --progress-bar -u $(NEXUS_USER):$$NEXUS_PASSWORD -F "raw.directory=$(RAW_GROUP_ID)" -F "raw.asset1=@./$(RAW_ARTIFACT_ID)-$(VERSION).zip" -F "raw.asset1.filename=$(RAW_ARTIFACT_ID)-$(VERSION).zip" $(NEXUS_RAW_PUSH_URL)
 	rm postit-client-$(VERSION).zip

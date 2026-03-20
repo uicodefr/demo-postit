@@ -8,7 +8,7 @@ describe('LocalizeDictionaryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LocalizeDictionaryComponent],
+      imports: [LocalizeDictionaryComponent],
     }).compileComponents();
   });
 

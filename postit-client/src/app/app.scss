@@ -1,0 +1,14 @@
+@use 'src/global.scss' as global;
+
+.unavailableApp {
+  margin-top: 50px;
+  color: global.$color-red-error;
+  text-align: center;
+  font-size: 400%;
+}
+
+.initLoading {
+  width: 200px;
+  margin: auto;
+  padding-top: 10%;
+}

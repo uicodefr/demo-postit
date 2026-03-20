@@ -1,16 +1,15 @@
-import { Injectable } from '@angular/core';
-import { UrlConstant } from '../../const/url-constant';
-import { GlobalStatus } from '../../model/global/global-status';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, map } from 'rxjs';
+import { UrlConstant } from '@app/const/url-constant';
+import { GlobalStatus } from '@app/model/global/global-status';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GlobalService {
-  private parameterMap = new Map<string, string>();
-
-  public constructor(private httpClient: HttpClient) {}
+  private readonly httpClient = inject(HttpClient);
+  private readonly parameterMap = new Map<string, string>();
 
   // Status & Parameter
 
@@ -26,7 +25,7 @@ export class GlobalService {
         map((parameterValue) => {
           this.parameterMap.set(parameterName, parameterValue);
           return parameterValue;
-        })
+        }),
       );
     }
   }

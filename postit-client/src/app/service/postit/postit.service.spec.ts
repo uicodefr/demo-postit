@@ -1,8 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-import { PostitService } from './postit.service';
-import { Board } from '../../model/postit/board';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { UrlConstant } from 'src/app/const/url-constant';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { UrlConstant } from '@app/const/url-constant';
+import { Board } from '@app/model/postit/board';
+import { PostitService } from '@app/service/postit/postit.service';
+import { provideHttpClient } from '@angular/common/http';
 
 let postitService: PostitService;
 let httpMock: HttpTestingController;
@@ -10,7 +11,7 @@ let httpMock: HttpTestingController;
 describe('PostitService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      providers: [PostitService, provideHttpClient(), provideHttpClientTesting()],
     });
 
     postitService = TestBed.inject(PostitService);
@@ -18,9 +19,8 @@ describe('PostitService', () => {
   });
 
   it('getBoardList should call the correct url', () => {
-    const boardList: Array<Board> = [];
-    boardList.push({ id: 1, name: 'Test 1' });
-    boardList.push({ id: 2, name: 'Test 2' });
+    const boardList: Board[] = [];
+    boardList.push({ id: 1, name: 'Test 1' }, { id: 2, name: 'Test 2' });
 
     postitService.getBoardList().subscribe((result) => {
       expect(result).toBe(boardList);

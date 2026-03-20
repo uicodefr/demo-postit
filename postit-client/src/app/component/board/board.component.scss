@@ -1,4 +1,4 @@
-@import '../../../global.scss';
+@use 'src/global.scss' as global;
 
 .board {
   .changeDisplayMenu {
@@ -17,27 +17,30 @@
   }
 
   .boardTitle {
-    font-size: $font-boost-base;
+    font-size: global.$font-boost-base;
   }
 
-  // Tabs
-  .mat-tab-labels {
-    background-color: white;
-  }
+  ::ng-deep {
+    // Tabs
+    .mat-mdc-tab-labels {
+      background-color: white;
+    }
 
-  // Panels
-  .mat-expansion-panel {
-    background: transparent;
-    margin: $margin-base;
-  }
-  .mat-expansion-panel-header {
-    background: white;
+    // Panels
+    .mat-expansion-panel {
+      background: transparent;
+      margin: global.$margin-base;
+    }
+    .mat-expansion-panel-header,
+    .mat-expansion-panel-content-wrapper {
+      background: white !important;
+    }
   }
 
   // Table
   .flexTable {
     display: flex;
-    margin: $margin-base;
+    margin: global.$margin-base;
     justify-content: center;
     flex-wrap: wrap;
     .flexPanel {

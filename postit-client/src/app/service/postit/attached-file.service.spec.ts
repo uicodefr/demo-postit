@@ -1,13 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AttachedFileService } from './attached-file.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { AttachedFileService } from '@app/service/postit/attached-file.service';
 
 describe('AttachedFileService', () => {
   let service: AttachedFileService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ imports: [HttpClientTestingModule] });
+    TestBed.configureTestingModule({
+      providers: [AttachedFileService, provideHttpClient(), provideHttpClientTesting()],
+    });
     service = TestBed.inject(AttachedFileService);
   });
 

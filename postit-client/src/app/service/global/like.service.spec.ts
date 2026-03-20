@@ -1,16 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 
-import { LikeService } from './like.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { LikeService } from '@app/service/global/like.service';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
 
-let likeService: LikeService;
 describe('LikeService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      providers: [LikeService, provideHttpClient(), provideHttpClientTesting()],
     });
-
-    likeService = TestBed.inject(LikeService);
   });
 
   it('should be created', () => {

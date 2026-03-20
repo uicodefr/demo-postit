@@ -1,8 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ColorizeNoteDialogComponent } from './colorize-note-dialog.component';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AppMaterialModule } from 'src/app/app-material.module';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ColorizeNoteDialogComponent', () => {
   let component: ColorizeNoteDialogComponent;
@@ -10,12 +8,11 @@ describe('ColorizeNoteDialogComponent', () => {
 
   beforeEach(async () => {
     const mockDialogRef = {
-      close: jasmine.createSpy('close'),
+      close: vi.fn(),
     };
 
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, AppMaterialModule],
-      declarations: [ColorizeNoteDialogComponent],
+      imports: [ColorizeNoteDialogComponent],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: MatDialogRef, useValue: mockDialogRef },

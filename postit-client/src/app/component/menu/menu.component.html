@@ -1,0 +1,38 @@
+<mat-toolbar>
+  <h1>
+    <a matButton class="appName" routerLink="/" title="Home" i18n-title="@@menu.home"> {{ title() }} </a>
+  </h1>
+  <button matIconButton (click)="like()" title="Like" i18n-title="@@menu.like">
+    <mat-icon [matBadge]="countLikes()" matBadgePosition="above after" matBadgeOverlap="false" aria-hidden="false">
+      thumb_up
+    </mat-icon>
+  </button>
+
+  <span class="fill-remaining-space"></span>
+
+  @if (isLoading()) {
+    <mat-progress-spinner class="mat-tertiary" mode="indeterminate" diameter="30" />
+  }
+
+  <button matButton [matMenuTriggerFor]="langMenu" title="Change language" i18n-title="@@menu.changeLanguage">
+    <mat-icon>language</mat-icon>
+  </button>
+  <mat-menu #langMenu="matMenu">
+    <button mat-menu-item i18n="@@menu.english" (click)="changeLang('en')">English</button>
+    <button mat-menu-item i18n="@@menu.french" (click)="changeLang('fr')">French</button>
+  </mat-menu>
+
+  <a matIconButton download="notes.csv" [href]="exportNotesUrl" title="Export" i18n-title="@@menu.export">
+    <mat-icon>get_app</mat-icon>
+  </a>
+  <button matButton routerLink="/settings" title="Settings" i18n-title="@@menu.settings">
+    <mat-icon>settings</mat-icon> &nbsp;
+    <ng-container i18n="@@menu.settings">Settings</ng-container>
+  </button>
+
+  @if (isLoggedIn()) {
+    <button matIconButton (click)="logout()" title="Logout" i18n-title="@@menu.logout">
+      <mat-icon>close</mat-icon>
+    </button>
+  }
+</mat-toolbar>

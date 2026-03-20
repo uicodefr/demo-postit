@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EditNoteDialogComponent } from './edit-note-dialog.component';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { AppMaterialModule } from 'src/app/app-material.module';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('EditNoteDialogComponent', () => {
   let component: EditNoteDialogComponent;
@@ -10,13 +10,14 @@ describe('EditNoteDialogComponent', () => {
 
   beforeEach(async () => {
     const mockDialogRef = {
-      close: jasmine.createSpy('close'),
+      close: vi.fn(),
     };
 
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, AppMaterialModule],
-      declarations: [EditNoteDialogComponent],
+      imports: [EditNoteDialogComponent],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: MatDialogRef, useValue: mockDialogRef },
       ],

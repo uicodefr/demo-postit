@@ -1,10 +1,10 @@
 import { NamedEntity } from '../named-entity';
 import { AttachedFile } from './attached-file';
 
-export class PostitNote extends NamedEntity {
-  public text!: string;
-  public boardId!: number;
-  public color!: string;
-  public orderNum!: number;
-  public attachedFile!: AttachedFile | null;
+export interface PostitNote extends NamedEntity {
+  text: string;
+  boardId: number;
+  color: string;
+  orderNum: number;
+  attachedFile?: AttachedFile | null;
 }

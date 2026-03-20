@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ViewListComponent } from './view-list.component';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
-import { AppMaterialModule } from 'src/app/app-material.module';
+import { provideRouter } from '@angular/router';
 
 describe('ViewListComponent', () => {
   let component: ViewListComponent;
@@ -9,13 +9,13 @@ describe('ViewListComponent', () => {
 
   beforeEach(async () => {
     const mockBottomSheetRef = {
-      dismiss: jasmine.createSpy('dismiss'),
+      dismiss: vi.fn(),
     };
 
     await TestBed.configureTestingModule({
-      imports: [AppMaterialModule],
-      declarations: [ViewListComponent],
+      imports: [ViewListComponent],
       providers: [
+        provideRouter([]),
         { provide: MatBottomSheetRef, useValue: mockBottomSheetRef },
         { provide: MAT_BOTTOM_SHEET_DATA, useValue: {} },
       ],

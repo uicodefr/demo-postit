@@ -1,63 +1,84 @@
-<mat-card class="card" [ngClass]="getColorClass()" appHighlight>
+<mat-card class="card" [ngClass]="colorClass()" appHighlight>
   <mat-card-header>
     <mat-card-title class="titleCard">
-      {{ note.name }}
+      {{ validNote().name }}
     </mat-card-title>
   </mat-card-header>
 
   <mat-card-content (dblclick)="edit()">
-    <p class="text">{{ note.text }}</p>
+    <p class="text">{{ validNote().text }}</p>
   </mat-card-content>
 
   <mat-card-actions>
-    <button (click)="changeOrder(-1)" mat-icon-button title="Move up" i18n-title>
+    <button (click)="changeOrder(-1)" matIconButton title="Move up" i18n-title="@@note.moveUp">
       <mat-icon>arrow_upward</mat-icon>
     </button>
-    <button (click)="changeOrder(1)" mat-icon-button title="Move down" i18n-title>
+    <button (click)="changeOrder(1)" matIconButton title="Move down" i18n-title="@@note.moveDown">
       <mat-icon>arrow_downward</mat-icon>
     </button>
 
-    <button mat-icon-button [matMenuTriggerFor]="boardMenu" title="Move to another board" i18n-title>
+    <button
+      matIconButton
+      [matMenuTriggerFor]="boardMenu"
+      title="Move to another board"
+      i18n-title="@@note.moveToAnotherBoard"
+    >
       <mat-icon>forward</mat-icon>
     </button>
     <mat-menu #boardMenu="matMenu">
-      <button *ngFor="let board of otherBoardList" mat-menu-item (click)="changeToBoard(board)">
-        {{ board.name }}
-      </button>
+      @for (board of otherBoardList(); track board.id) {
+        <button mat-menu-item (click)="changeToBoard(board)">
+          {{ board.name }}
+        </button>
+      }
     </mat-menu>
 
-    <button (click)="edit()" mat-button i18n title="Edit content" i18n-title>EDIT</button>
+    <button
+      class="editBtn"
+      (click)="edit()"
+      matButton
+      title="Edit content"
+      i18n-title="@@note.edit.title"
+      i18n="@@note.edit.label"
+    >
+      EDIT
+    </button>
 
-    <button (click)="changeColor()" mat-icon-button title="Change color" i18n-title>
+    <button (click)="changeColor()" matIconButton title="Change Color" i18n-title="@@note.changeColor">
       <mat-icon>colorize</mat-icon>
     </button>
 
-    <button
-      *ngIf="note.attachedFile"
-      (click)="viewAttachedFile()"
-      mat-icon-button
-      mat-raised-button
-      title="View the attachment"
-      i18n-title
-    >
-      <mat-icon>cloud_download</mat-icon>
-    </button>
-    <ng-container *ngIf="!note.attachedFile">
+    @if (validNote().attachedFile) {
+      <button
+        class="downloadBtn"
+        (click)="viewAttachedFile()"
+        matIconButton
+        title="View the attachment"
+        i18n-title="@@note.viewTheAttachment"
+      >
+        <mat-icon>cloud_download</mat-icon>
+      </button>
+    } @else {
       <input
         #inputFile
         hidden="true"
         type="file"
-        onclick="this.value=null"
-        (change)="uploadFile($event?.target)"
+        onclick="this.value = null"
+        (change)="uploadFile($event.target)"
         title="hidden upload"
       />
-      <button (click)="inputFile.click()" mat-icon-button title="Upload an attachment" i18n-title>
+      <button
+        (click)="inputFile.click()"
+        matIconButton
+        title="Upload an attachment"
+        i18n-title="@@note.uploadAttachment"
+      >
         <mat-icon>cloud_upload</mat-icon>
       </button>
-    </ng-container>
+    }
 
-    <div class="buttonRight">
-      <button (click)="deleteNote()" mat-icon-button title="Delete" i18n-title>
+    <div class="buttonRightContainer">
+      <button (click)="deleteNoteAfterConfirm()" matIconButton title="Delete" i18n-title="@@generic.delete">
         <mat-icon>delete_outline</mat-icon>
       </button>
     </div>

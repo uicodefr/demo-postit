@@ -1,20 +1,20 @@
-import { Injectable } from '@angular/core';
-import { UrlConstant } from '../../const/url-constant';
-import { Board } from '../../model/postit/board';
-import { PostitNote } from '../../model/postit/postit-note';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { UrlConstant } from '@app/const/url-constant';
+import { Board } from '@app/model/postit/board';
+import { PostitNote } from '@app/model/postit/postit-note';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PostitService {
-  public constructor(private httpClient: HttpClient) {}
+  private readonly httpClient = inject(HttpClient);
 
   // Boards
 
-  public getBoardList(): Observable<Array<Board>> {
-    return this.httpClient.get<Array<Board>>(UrlConstant.Postit.BOARDS);
+  public getBoardList(): Observable<Board[]> {
+    return this.httpClient.get<Board[]>(UrlConstant.Postit.BOARDS);
   }
 
   public createBoard(board: Board): Observable<Board> {
@@ -31,8 +31,8 @@ export class PostitService {
 
   // Notes
 
-  public getNoteList(boardId: number): Observable<Array<PostitNote>> {
-    return this.httpClient.get<Array<PostitNote>>(UrlConstant.Postit.NOTES, { params: { boardId: '' + boardId } });
+  public getNoteList(boardId: number): Observable<PostitNote[]> {
+    return this.httpClient.get<PostitNote[]>(UrlConstant.Postit.NOTES, { params: { boardId: '' + boardId } });
   }
 
   public getNote(noteId: number): Observable<PostitNote> {

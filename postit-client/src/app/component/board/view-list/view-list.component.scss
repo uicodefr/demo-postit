@@ -1,10 +1,19 @@
-@import '../../../../global.scss';
+@use 'src/global.scss' as global;
+
 .indication {
   font-style: italic;
-  font-size: $font-default-size;
-  margin-left: $margin-small;
+  font-size: global.$font-default-size;
+  margin-left: global.$margin-small;
 }
 
 .viewSelected {
-  font-weight: bold;
+  ::ng-deep {
+    .mat-mdc-list-item-unscoped-content {
+      font-weight: 500;
+    }
+  }
+}
+
+.mat-divider {
+  margin: global.$margin-small 0;
 }

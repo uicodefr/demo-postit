@@ -6,6 +6,9 @@ info:
 http:
   method: POST
   url: http://localhost:8080/global/likes
+  headers:
+    - name: X-XSRF-TOKEN
+      value: 0471e157-914e-41a1-9987-f58aa304fa92
   auth: inherit
 
 settings:

@@ -1,40 +1,45 @@
-@import '../../../../global.scss';
+@use 'src/global.scss' as global;
 
 .card {
   width: 400px;
-  margin: $margin-small;
+  margin: global.$margin-small;
   transition: height 1s;
 
   .titleCard {
-    font-size: $font-boost-small;
+    font-size: global.$font-boost-small;
   }
   .text {
     white-space: pre-wrap;
   }
-  .buttonRight {
-    float: right;
+  .buttonRightContainer {
+    flex: 1;
+    text-align: right;
   }
 
-  .mat-raised-button.mat-icon-button {
-    background-color: #ffffff70;
+  .downloadBtn {
+    background-color: #ffffff60;
+  }
+
+  .editBtn {
+    color: global.$color-default-text;
   }
 
   &.white {
-    background-color: $color-white-postit;
+    background-color: global.$color-white-postit;
   }
   &.yellow {
-    background-color: $color-yellow-postit;
+    background-color: global.$color-yellow-postit;
   }
   &.orange {
-    background-color: $color-orange-postit;
+    background-color: global.$color-orange-postit;
   }
   &.blue {
-    background-color: $color-blue-postit;
+    background-color: global.$color-blue-postit;
   }
   &.green {
-    background-color: $color-green-postit;
+    background-color: global.$color-green-postit;
   }
   &.pink {
-    background-color: $color-pink-postit;
+    background-color: global.$color-pink-postit;
   }
 }

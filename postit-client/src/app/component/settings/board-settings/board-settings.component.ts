@@ -1,38 +1,40 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, viewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
-import { Board } from 'src/app/model/postit/board';
-import { PostitService } from 'src/app/service/postit/postit.service';
+import { Board } from '@app/model/postit/board';
+import { PostitService } from '@app/service/postit/postit.service';
 import {
   ConfirmDialogData,
   ConfirmDialogComponent,
-} from 'src/app/component/shared/dialog/confirm-dialog/confirm-dialog.component';
-import { GlobalConstant } from 'src/app/const/global-constant';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-import { GlobalInfoService } from 'src/app/service/util/global-info.service';
-import { AlertType } from 'src/app/const/alert-type';
+} from '@app/component/shared/dialog/confirm-dialog/confirm-dialog.component';
+import { GlobalConstant } from '@app/const/global-constant';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { GlobalInfoService } from '@app/service/util/global-info.service';
+import { AlertType } from '@app/const/alert-type';
+import { SHARED_FORM, SHARED_MATERIAL } from '@app/common-imports';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-board-settings',
+  imports: [SHARED_FORM, SHARED_MATERIAL, MatTableModule, MatPaginatorModule, MatFormFieldModule, MatInputModule],
   templateUrl: './board-settings.component.html',
   styleUrls: ['./board-settings.component.scss'],
 })
 export class BoardSettingsComponent implements OnInit {
-  @ViewChild(MatPaginator, { static: true })
-  public paginator: MatPaginator | undefined;
+  private readonly dialog = inject(MatDialog);
+  private readonly postitService = inject(PostitService);
+  private readonly globalInfoService = inject(GlobalInfoService);
+
+  public readonly paginator = viewChild(MatPaginator);
+
   public displayedColumns = ['id', 'name', 'order', 'actions'];
   public dataSource = new MatTableDataSource<Board>();
 
-  public constructor(
-    private dialog: MatDialog,
-    private postitService: PostitService,
-    private globalInfoService: GlobalInfoService
-  ) {}
-
   public ngOnInit(): void {
-    if (this.paginator) {
-      this.dataSource.paginator = this.paginator;
+    if (this.paginator()) {
+      this.dataSource.paginator = this.paginator();
     }
     this.getBoardList();
   }
@@ -42,14 +44,14 @@ export class BoardSettingsComponent implements OnInit {
   }
 
   public isValidForSave(board: Board): boolean {
-    return !!(board && board.name && board.name.length > 1);
+    return !!(board?.name && board.name.length > 1);
   }
 
   public saveBoard(board: Board): void {
     if (!this.isValidForSave(board)) {
       return;
     }
-    this.postitService.updateBoard(board).subscribe((updatedBoard) => {
+    this.postitService.updateBoard(board).subscribe(() => {
       this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@boardSettings.boardUpdated:Board updated`);
       this.getBoardList();
     });
@@ -78,10 +80,10 @@ export class BoardSettingsComponent implements OnInit {
   }
 
   public createBoard(): void {
-    const newBoard = new Board();
+    const newBoard = {} as Board;
     newBoard.name = $localize`:@@boardSettings.newBoard:New board`;
 
-    this.postitService.createBoard(newBoard).subscribe((createdBoard) => {
+    this.postitService.createBoard(newBoard).subscribe(() => {
       this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@boardSettings.boardCreated:Board created`);
       this.getBoardList();
     });

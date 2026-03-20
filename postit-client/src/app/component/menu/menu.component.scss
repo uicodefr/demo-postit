@@ -1,0 +1,11 @@
+@use 'src/global.scss' as global;
+
+.mat-toolbar {
+  min-width: 800px;
+  background-color: #e6edf9;
+}
+
+.appName {
+  margin-right: 20px;
+  font-size: global.$font-boost-base;
+}

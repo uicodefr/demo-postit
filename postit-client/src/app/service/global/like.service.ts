@@ -1,10 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { inject, Injectable, signal } from '@angular/core';
+import { environment } from '@env/environment';
 import { Client, StompConfig } from '@stomp/stompjs';
-import { UrlConstant } from '../../const/url-constant';
-import { CountLikes } from '../../model/global/count-likes';
 import { HttpClient } from '@angular/common/http';
+import { UrlConstant } from '@app/const/url-constant';
+import { CountLikes } from '@app/model/global/count-likes';
 
 @Injectable({
   providedIn: 'root',
@@ -13,15 +12,12 @@ export class LikeService {
   private static readonly COUNT_LIKE_TIMER = environment.likeTimerSecond;
   private static readonly LIKE_WEB_SOCKET = environment.likeWebSocket;
 
-  private countLikeSubject = new Subject<number>();
+  private readonly httpClient = inject(HttpClient);
+
+  private readonly _countLikes = signal<number>(0);
+  public readonly countLikes = this._countLikes.asReadonly();
 
   private stompClient: Client | undefined;
-
-  public constructor(private httpClient: HttpClient) {}
-
-  public getCountLikeObservable(): Observable<number> {
-    return this.countLikeSubject.asObservable();
-  }
 
   public listenCountLikeTimer(): void {
     this.countLike();
@@ -30,7 +26,7 @@ export class LikeService {
       // Use WebSocket (with Stomp)
       const config = new StompConfig();
       config.brokerURL = this.convertToWebSocketUrl(UrlConstant.WebSocket.CONNECTION);
-      config.onConnect = (receipt) => {
+      config.onConnect = () => {
         this.countLike();
 
         if (!this.stompClient) {
@@ -40,7 +36,7 @@ export class LikeService {
         this.stompClient.subscribe(UrlConstant.WebSocket.LISTEN_LIKE_COUNT, (countLikesMsg) => {
           if (countLikesMsg.command === 'MESSAGE') {
             const countLikes = JSON.parse(countLikesMsg.body) as CountLikes;
-            this.countLikeSubject.next(countLikes.count);
+            this._countLikes.set(countLikes.count);
           } else {
             console.error('Wrong message from the websocket', countLikesMsg);
           }
@@ -68,16 +64,16 @@ export class LikeService {
 
   private countLike(): void {
     this.httpClient.get<CountLikes>(UrlConstant.Global.LIKE_COUNT).subscribe((countLikes) => {
-      this.countLikeSubject.next(countLikes.count);
+      this._countLikes.set(countLikes.count);
     });
   }
 
   private convertToWebSocketUrl(path: string): string {
     let webSocketUrl = 'ws:';
-    if (window.location.protocol === 'https:') {
+    if (globalThis.location.protocol === 'https:') {
       webSocketUrl = 'wss:';
     }
-    webSocketUrl += '//' + window.location.host;
+    webSocketUrl += '//' + globalThis.location.host;
     webSocketUrl += path;
     return webSocketUrl;
   }

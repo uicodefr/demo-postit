@@ -1,4 +1,4 @@
-<h2 mat-dialog-title> {{ data.title }} </h2>
+<h2 mat-dialog-title>{{ data.title }}</h2>
 
 <mat-dialog-content class="confirmDialog">
   <p>
@@ -7,20 +7,18 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>
-    <ng-container *ngIf="data.cancel">
+  <button matButton mat-dialog-close>
+    @if (data.cancel) {
       {{ data.cancel }}
-    </ng-container>
-    <ng-container *ngIf="!data.cancel" i18n>
-      Cancel
-    </ng-container>
+    } @else {
+      <ng-container i18n="@@generic.cancel">Cancel</ng-container>
+    }
   </button>
-  <button mat-button color="primary" [mat-dialog-close]="true" cdkFocusInitial>
-    <ng-container *ngIf="data.confirm">
+  <button matButton [mat-dialog-close]="true" cdkFocusInitial>
+    @if (data.confirm) {
       {{ data.confirm }}
-    </ng-container>
-    <ng-container *ngIf="!data.confirm" i18n>
-      Confirm
-    </ng-container>
+    } @else {
+      <ng-container i18n="@@generic.confirm">Confirm</ng-container>
+    }
   </button>
 </mat-dialog-actions>

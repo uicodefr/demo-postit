@@ -1,28 +1,29 @@
-@import "../../../../global.scss";
+@use 'src/global.scss' as global;
+
 .buttonList {
-    padding: $margin-large;
-    button {
-        text-align: center;
-        margin-right: $margin-small;
-        margin-left: $margin-small;
-        color: $color-black-text;
-    }
-    .white {
-        background-color: $color-white-postit;
-    }
-    .yellow {
-        background-color: $color-yellow-postit;
-    }
-    .orange {
-        background-color: $color-orange-postit;
-    }
-    .blue {
-        background-color: $color-blue-postit;
-    }
-    .green {
-        background-color: $color-green-postit;
-    }
-    .pink {
-        background-color: $color-pink-postit;
-    }
+  padding: global.$margin-large;
+  button {
+    text-align: center;
+    margin-right: global.$margin-small;
+    margin-left: global.$margin-small;
+    color: global.$color-black-text;
+  }
+  .white {
+    background-color: global.$color-white-postit;
+  }
+  .yellow {
+    background-color: global.$color-yellow-postit;
+  }
+  .orange {
+    background-color: global.$color-orange-postit;
+  }
+  .blue {
+    background-color: global.$color-blue-postit;
+  }
+  .green {
+    background-color: global.$color-green-postit;
+  }
+  .pink {
+    background-color: global.$color-pink-postit;
+  }
 }

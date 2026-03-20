@@ -1,0 +1,16 @@
+@if (initApp()) {
+  <div>
+    <app-menu [isLoggedIn]="isLoggedIn()" />
+    @if (availableApp()) {
+      <router-outlet></router-outlet>
+    } @else {
+      <div class="unavailableApp" i18n="@@app.applicationUnavailable">Application Unavailable</div>
+    }
+  </div>
+} @else {
+  <div class="initLoading">
+    <mat-spinner diameter="200"></mat-spinner>
+  </div>
+}
+
+<div style="display: none">version: {{ appVersion }}</div>
