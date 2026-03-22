@@ -4,6 +4,7 @@
   @if (editedNote) {
     <mat-form-field class="formField">
       <input
+        data-testid="titleInput"
         type="text"
         matInput
         placeholder="Title"
@@ -15,6 +16,7 @@
 
     <mat-form-field class="formField">
       <textarea
+        data-testid="messageInput"
         matInput
         placeholder="Message"
         aria-label="message"
@@ -27,7 +29,7 @@
 
 <mat-dialog-actions align="end">
   <div class="buttonCenter">
-    <button matButton mat-dialog-close i18n="@@generic.cancel">Cancel</button>
-    <button (click)="saveEdit()" matButton cdkFocusInitial i18n="@@generic.save">Save</button>
+    <button data-testid="cancelBtn" matButton mat-dialog-close i18n="@@generic.cancel">Cancel</button>
+    <button (click)="saveEdit()" data-testid="saveBtn" matButton cdkFocusInitial i18n="@@generic.save">Save</button>
   </div>
 </mat-dialog-actions>

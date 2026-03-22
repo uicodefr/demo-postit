@@ -1,4 +1,4 @@
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, inject, input, OnInit, signal } from '@angular/core';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
@@ -27,7 +27,7 @@ import { GlobalInfoService } from '@app/service/util/global-info.service';
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss',
 })
-export class MenuComponent {
+export class MenuComponent implements OnInit {
   public exportNotesUrl = UrlConstant.Postit.NOTES_EXPORT;
 
   private readonly router = inject(Router);
@@ -35,12 +35,16 @@ export class MenuComponent {
   private readonly likeService = inject(LikeService);
   private readonly authService = inject(AuthService);
 
-  protected readonly title = signal('Post-It');
-
   public readonly isLoggedIn = input(false);
+
+  protected readonly title = signal('Post-It');
 
   public isLoading = this.globalInfoService.isLoading;
   public countLikes = this.likeService.countLikes;
+
+  ngOnInit(): void {
+    this.likeService.listenCountLikeTimer();
+  }
 
   public like(): void {
     this.likeService.addLike();

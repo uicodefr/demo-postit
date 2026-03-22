@@ -26,6 +26,7 @@
             @if (board.id) {
               <app-board-panel
                 [board]="board"
+                [isLoading]="getIsBoardLoading(board.id)"
                 [noteList]="getNoteList(board.id)"
                 [otherBoardList]="getOtherBoardList(board.id)"
                 [parameterNoteMax]="parameterNoteMax()"
@@ -47,6 +48,7 @@
               @if (board.id) {
                 <app-board-panel
                   [board]="board"
+                  [isLoading]="getIsBoardLoading(board.id)"
                   [noteList]="getNoteList(board.id)"
                   [otherBoardList]="getOtherBoardList(board.id)"
                   [parameterNoteMax]="parameterNoteMax()"
@@ -75,6 +77,7 @@
               @if (board.id) {
                 <app-board-panel
                   [board]="board"
+                  [isLoading]="getIsBoardLoading(board.id)"
                   [noteList]="getNoteList(board.id)"
                   [otherBoardList]="getOtherBoardList(board.id)"
                   [parameterNoteMax]="parameterNoteMax()"

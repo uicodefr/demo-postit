@@ -10,7 +10,7 @@ import { User } from '@app/model/global/user';
 export class UserService {
   private readonly httpClient = inject(HttpClient);
 
-  public getCurrentUser(): Observable<User> {
+  public getCurrentUser(): Observable<User | null> {
     return this.httpClient.get<User>(UrlConstant.User.CURRENT_USER);
   }
 

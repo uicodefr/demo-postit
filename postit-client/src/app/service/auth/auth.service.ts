@@ -1,7 +1,7 @@
 import { computed, inject, Injectable, Signal, signal } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map, catchError, of } from 'rxjs';
+import { Observable, map, catchError, of, throwError } from 'rxjs';
 import { UserService } from '@app/service/global/user.service';
 import { User } from '@app/model/global/user';
 import { UrlConstant } from '@app/const/url-constant';
@@ -22,12 +22,17 @@ export class AuthService {
 
   private routeBeforeLogin: ActivatedRouteSnapshot | null = null;
 
-  public getRefreshedCurrentUser(): Observable<User> {
+  public getRefreshedCurrentUser(): Observable<User | null> {
     return this.userService.getCurrentUser().pipe(
       map((user) => {
         this._currentUser.set(user);
         this._isUserLoaded.set(true);
         return user;
+      }),
+      catchError((error) => {
+        this._currentUser.set(null);
+        this._isUserLoaded.set(true);
+        return throwError(() => error);
       }),
     );
   }

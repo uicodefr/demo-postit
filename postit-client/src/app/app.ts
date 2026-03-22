@@ -4,7 +4,6 @@ import { UrlConstant } from '@app/const/url-constant';
 import { appInfo } from '@app/app.info';
 import { AuthService } from '@app/service/auth/auth.service';
 import { GlobalService } from '@app/service/global/global.service';
-import { LikeService } from '@app/service/global/like.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MenuComponent } from '@app/component/menu/menu.component';
 
@@ -16,7 +15,6 @@ import { MenuComponent } from '@app/component/menu/menu.component';
 })
 export class App implements OnInit {
   private readonly globalService = inject(GlobalService);
-  private readonly likeService = inject(LikeService);
   private readonly authService = inject(AuthService);
 
   protected readonly title = signal('Post-It');
@@ -31,8 +29,6 @@ export class App implements OnInit {
   public appVersion = appInfo.version;
 
   public ngOnInit(): void {
-    this.likeService.listenCountLikeTimer();
-
     // Check app status
     this.globalService.getStatus().subscribe({
       next: (status) => {

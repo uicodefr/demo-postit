@@ -57,10 +57,15 @@
         <th scope="col" mat-header-cell *matHeaderCellDef i18n="@@userSettings.actions">Actions</th>
         <td mat-cell *matCellDef="let element" class="actionCell">
           <div class="actionZone">
-            <button (click)="saveUser(element)" [disabled]="!isValidForSave(element)" matButton="elevated">
+            <button
+              data-testid="saveBtn"
+              matButton="elevated"
+              [disabled]="!isValidForSave(element)"
+              (click)="saveUser(element)"
+            >
               <ng-container i18n="@@generic.save">Save</ng-container>
             </button>
-            <button class="mat-warn" (click)="deleteUser(element)" matButton="elevated">
+            <button data-testid="deleteBtn" class="mat-warn" matButton="elevated" (click)="deleteUser(element)">
               <ng-container i18n="@@generic.delete">Delete</ng-container>
             </button>
           </div>
@@ -75,6 +80,8 @@
   </div>
 
   <div class="creationZone">
-    <button (click)="createUser()" matButton="elevated" i18n="@@userSettings.createUser">Create user</button>
+    <button data-testid="createBtn" matButton="elevated" i18n="@@userSettings.createUser" (click)="createUser()">
+      Create user
+    </button>
   </div>
 </div>

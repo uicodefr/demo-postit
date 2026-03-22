@@ -7,14 +7,14 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button matButton mat-dialog-close>
+  <button data-testid="cancelBtn" matButton [mat-dialog-close]="false">
     @if (data.cancel) {
       {{ data.cancel }}
     } @else {
       <ng-container i18n="@@generic.cancel">Cancel</ng-container>
     }
   </button>
-  <button matButton [mat-dialog-close]="true" cdkFocusInitial>
+  <button data-testid="confirmBtn" matButton [mat-dialog-close]="true" cdkFocusInitial>
     @if (data.confirm) {
       {{ data.confirm }}
     } @else {

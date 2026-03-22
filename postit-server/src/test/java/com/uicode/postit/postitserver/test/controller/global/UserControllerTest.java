@@ -25,6 +25,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.uicode.postit.postitserver.dto.global.UserDto;
 import com.uicode.postit.postitserver.dto.postit.BoardDto;
 import com.uicode.postit.postitserver.test.config.TestContainersConfig;
+import com.uicode.postit.postitserver.test.config.user.WithMockCustomUser;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import(TestContainersConfig.class)
@@ -48,6 +49,28 @@ class UserControllerTest {
                 .defaultRequest(post("/").with(csrf()))
                 .configureClient()
                 .build();
+    }
+
+    @Test
+    @WithAnonymousUser
+    void usersMe_anonymous() {
+        webTestClient.get()
+        .uri("/users/me")
+        .exchange()
+        .expectStatus().isNoContent();
+    }
+
+    @Test
+    @WithMockCustomUser(username = "userMock", roles= {"USER_WRITE"})
+    void usersMe_connected() {
+        webTestClient.get()
+        .uri("/users/me")
+        .exchange()
+        .expectStatus().isOk()
+        .expectBody(UserDto.class).value(dto -> {
+            Assertions.assertThat(dto.getUsername()).isEqualTo("userMock");
+            Assertions.assertThat(dto.getRoleList()).hasSize(1).contains("USER_WRITE");
+        });
     }
 
     @Test

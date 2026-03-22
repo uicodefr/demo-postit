@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
         }
         Object userPrincipalObj = authentication.getPrincipal();
         if (userPrincipalObj instanceof User userPrincipal) {
-            return userMapper.toDto( userPrincipal);
+            return userMapper.toDto(userPrincipal);
         } else {
             return null;
         }

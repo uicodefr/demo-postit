@@ -1,4 +1,4 @@
-import { NamedEntity } from '../named-entity';
+import { NamedEntity } from '@app/model/named-entity';
 import { AttachedFile } from './attached-file';
 
 export interface PostitNote extends NamedEntity {

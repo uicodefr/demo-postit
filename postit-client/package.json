@@ -4,10 +4,13 @@
   "scripts": {
     "ng": "ng",
     "serve": "ng serve",
-    "build": "ng build",
+    "build": "ng build --localize",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "testCI": "ng test --no-watch",
+    "testCoverage": "ng test --no-watch --coverage",
+    "lint": "ng lint",
+    "localize": "ng extract-i18n"
   },
   "private": true,
   "packageManager": "npm@11.9.0",
@@ -30,6 +33,7 @@
     "@angular/compiler-cli": "^21.2.0",
     "@angular/localize": "^21.2.5",
     "@eslint/js": "^10.0.1",
+    "@vitest/coverage-v8": "^4.1.0",
     "angular-eslint": "21.3.1",
     "eslint": "^10.0.3",
     "jsdom": "^28.0.0",

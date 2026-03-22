@@ -9,6 +9,14 @@
   );
 }
 
+.mat-neutral {
+  @include mat.progress-spinner-overrides(
+    (
+      active-indicator-color: global.$color-default-text,
+    )
+  );
+}
+
 .mat-warn {
   @include mat.button-overrides(
     (

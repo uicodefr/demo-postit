@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
   });
 
   public ngOnInit(): void {
-    this.authService.getRefreshedCurrentUser();
+    this.authService.getRefreshedCurrentUser().subscribe();
   }
 
   public onSubmit(): void {
@@ -61,6 +61,6 @@ export class LoginComponent implements OnInit {
   }
 
   public logout(): void {
-    this.authService.logout();
+    this.authService.logout().subscribe();
   }
 }

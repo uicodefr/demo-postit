@@ -3,6 +3,7 @@ package com.uicode.postit.postitserver.controller.global;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,8 +31,13 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/me")
-    public UserDto getCurrentUser() {
-        return userService.getCurrentUser();
+    public ResponseEntity<UserDto> getCurrentUser() {
+        UserDto user = userService.getCurrentUser();
+        if (user == null) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.ok(user);
+        }
     }
 
     @GetMapping()

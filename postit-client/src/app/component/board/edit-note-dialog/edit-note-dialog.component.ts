@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 
-import { PostitNote } from '../../../model/postit/postit-note';
+import { PostitNote } from '@app/model/postit/postit-note';
 import { PostitService } from '@app/service/postit/postit.service';
 import { SHARED_FORM, SHARED_MATERIAL } from '@app/common-imports';
 import { MatFormFieldModule } from '@angular/material/form-field';

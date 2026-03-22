@@ -1,4 +1,4 @@
-import { IdEntity } from '../id-entity';
+import { IdEntity } from '@app/model/id-entity';
 
 export interface User extends IdEntity {
   username: string;

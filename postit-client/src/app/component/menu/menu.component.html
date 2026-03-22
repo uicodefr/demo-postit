@@ -2,7 +2,7 @@
   <h1>
     <a matButton class="appName" routerLink="/" title="Home" i18n-title="@@menu.home"> {{ title() }} </a>
   </h1>
-  <button matIconButton (click)="like()" title="Like" i18n-title="@@menu.like">
+  <button data-testid="likeBtn" matIconButton (click)="like()" title="Like" i18n-title="@@menu.like">
     <mat-icon [matBadge]="countLikes()" matBadgePosition="above after" matBadgeOverlap="false" aria-hidden="false">
       thumb_up
     </mat-icon>
@@ -11,7 +11,7 @@
   <span class="fill-remaining-space"></span>
 
   @if (isLoading()) {
-    <mat-progress-spinner class="mat-tertiary" mode="indeterminate" diameter="30" />
+    <mat-progress-spinner class="mat-tertiary" mode="indeterminate" diameter="30" strokeWidth="5" />
   }
 
   <button matButton [matMenuTriggerFor]="langMenu" title="Change language" i18n-title="@@menu.changeLanguage">
@@ -31,7 +31,7 @@
   </button>
 
   @if (isLoggedIn()) {
-    <button matIconButton (click)="logout()" title="Logout" i18n-title="@@menu.logout">
+    <button data-testid="logoutBtn" matIconButton (click)="logout()" title="Logout" i18n-title="@@menu.logout">
       <mat-icon>close</mat-icon>
     </button>
   }

@@ -6,7 +6,7 @@
         [otherBoardList]="otherBoardList()"
         (deleteNote)="refreshCurrentBoard()"
         (changeNote)="refreshCurrentBoard()"
-        (orderNote)="reorderBoard($event)"
+        (orderNote)="reorderBoard()"
         (moveNote)="moveNote($event)"
         cdkDrag
         [cdkDragData]="note"
@@ -20,7 +20,7 @@
         [otherBoardList]="otherBoardList()"
         (deleteNote)="refreshCurrentBoard()"
         (changeNote)="refreshCurrentBoard()"
-        (orderNote)="reorderBoard($event)"
+        (orderNote)="reorderBoard()"
         (moveNote)="moveNote($event)"
       />
     }
@@ -29,12 +29,25 @@
   <mat-card class="cardButtons">
     <mat-card-content>
       <div class="buttonCard">
-        <button (click)="refreshCurrentBoard()" matIconButton title="Refresh board" i18n-title="@@board.refreshBoard">
-          <mat-icon>refresh</mat-icon>
-        </button>
+        @if (isLoading()) {
+          <mat-spinner class="mat-neutral spinnerLoading" diameter="24" />
+        } @else {
+          <button
+            data-testid="refreshBtn"
+            matIconButton
+            title="Refresh board"
+            i18n-title="@@board.refreshBoard"
+            [disabled]="isLoading()"
+            (click)="refreshCurrentBoard()"
+          >
+            <mat-icon>refresh</mat-icon>
+          </button>
+        }
 
         @if (parameterNoteMax() && parameterNoteMax() > noteList().length) {
-          <button (click)="addNote()" matButton="elevated" appHighlight i18n="@@board.addNote">Add a note</button>
+          <button data-testid="addBtn" matButton="elevated" appHighlight [disabled]="isLoading()" (click)="addNote()">
+            <ng-container i18n="@@board.addNote">Add a note</ng-container>
+          </button>
         }
       </div>
     </mat-card-content>

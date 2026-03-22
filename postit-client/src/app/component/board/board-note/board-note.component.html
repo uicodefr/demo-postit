@@ -10,14 +10,21 @@
   </mat-card-content>
 
   <mat-card-actions>
-    <button (click)="changeOrder(-1)" matIconButton title="Move up" i18n-title="@@note.moveUp">
+    <button (click)="changeOrder(-1)" data-testid="moveUpBtn" matIconButton title="Move up" i18n-title="@@note.moveUp">
       <mat-icon>arrow_upward</mat-icon>
     </button>
-    <button (click)="changeOrder(1)" matIconButton title="Move down" i18n-title="@@note.moveDown">
+    <button
+      (click)="changeOrder(1)"
+      data-testid="moveDownBtn"
+      matIconButton
+      title="Move down"
+      i18n-title="@@note.moveDown"
+    >
       <mat-icon>arrow_downward</mat-icon>
     </button>
 
     <button
+      data-testid="moveBoardBtn"
       matIconButton
       [matMenuTriggerFor]="boardMenu"
       title="Move to another board"
@@ -27,7 +34,7 @@
     </button>
     <mat-menu #boardMenu="matMenu">
       @for (board of otherBoardList(); track board.id) {
-        <button mat-menu-item (click)="changeToBoard(board)">
+        <button data-testid="moveBoardNameBtn" (click)="changeToBoard(board)">
           {{ board.name }}
         </button>
       }
@@ -44,7 +51,13 @@
       EDIT
     </button>
 
-    <button (click)="changeColor()" matIconButton title="Change Color" i18n-title="@@note.changeColor">
+    <button
+      data-testid="changeColorBtn"
+      (click)="changeColor()"
+      matIconButton
+      title="Change Color"
+      i18n-title="@@note.changeColor"
+    >
       <mat-icon>colorize</mat-icon>
     </button>
 
@@ -69,6 +82,7 @@
       />
       <button
         (click)="inputFile.click()"
+        data-testid="uploadFileBtn"
         matIconButton
         title="Upload an attachment"
         i18n-title="@@note.uploadAttachment"
@@ -78,7 +92,13 @@
     }
 
     <div class="buttonRightContainer">
-      <button (click)="deleteNoteAfterConfirm()" matIconButton title="Delete" i18n-title="@@generic.delete">
+      <button
+        (click)="deleteNoteAfterConfirm()"
+        data-testid="deleteBtn"
+        matIconButton
+        title="Delete"
+        i18n-title="@@generic.delete"
+      >
         <mat-icon>delete_outline</mat-icon>
       </button>
     </div>

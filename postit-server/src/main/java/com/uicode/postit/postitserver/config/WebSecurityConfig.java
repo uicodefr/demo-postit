@@ -8,9 +8,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 
+import com.uicode.postit.postitserver.config.security.CsrfCookieFilter;
 import com.uicode.postit.postitserver.config.security.RestAuthenticationEntryPoint;
 import com.uicode.postit.postitserver.config.security.RestAuthenticationFailureHandler;
 import com.uicode.postit.postitserver.config.security.RestAuthenticationSuccessHandler;
@@ -50,16 +52,17 @@ public class WebSecurityConfig {
             csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler())
             )
-                .formLogin(form -> form
-                        .loginPage(LOGIN_URL)
-                        .successHandler(successHandler)
-                        .failureHandler(failureHandler))
-                .logout(logout -> logout
-                        .logoutUrl(LOGOUT_URL)
-                        .logoutSuccessHandler(
-                                (request, response, authentication) -> response.setStatus(HttpServletResponse.SC_OK)))
-                .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint(authenticationEntryPoint));
+            .addFilterBefore(new CsrfCookieFilter(), UsernamePasswordAuthenticationFilter.class)
+            .formLogin(form -> form
+                    .loginPage(LOGIN_URL)
+                    .successHandler(successHandler)
+                    .failureHandler(failureHandler))
+            .logout(logout -> logout
+                    .logoutUrl(LOGOUT_URL)
+                    .logoutSuccessHandler(
+                            (request, response, authentication) -> response.setStatus(HttpServletResponse.SC_OK)))
+            .exceptionHandling(ex -> ex
+                    .authenticationEntryPoint(authenticationEntryPoint));
                 /* Now all is authorize, except controller who use @Secured
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/global/status").permitAll()

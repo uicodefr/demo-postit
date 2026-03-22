@@ -3,7 +3,7 @@ import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '@app/service/auth/auth.service';
 import { GlobalInfoService } from './global-info.service';
 import { AlertType } from '@app/const/alert-type';
 import { GlobalConstant } from '@app/const/global-constant';

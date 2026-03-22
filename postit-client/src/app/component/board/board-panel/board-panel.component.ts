@@ -8,10 +8,11 @@ import { SHARED_MATERIAL } from '@app/common-imports';
 import { MatCardModule } from '@angular/material/card';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { BoardNoteComponent } from '@app/component/board/board-note/board-note.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-board-panel',
-  imports: [SHARED_MATERIAL, MatCardModule, DragDropModule, BoardNoteComponent],
+  imports: [SHARED_MATERIAL, MatCardModule, DragDropModule, MatProgressSpinnerModule, BoardNoteComponent],
   templateUrl: './board-panel.component.html',
   styleUrls: ['./board-panel.component.scss'],
 })
@@ -20,6 +21,7 @@ export class BoardPanelComponent {
   private readonly postitService = inject(PostitService);
 
   public board = input<Board>({} as Board);
+  public isLoading = input(false);
   public noteList = input<PostitNote[]>([]);
   public otherBoardList = input<Board[]>([]);
   public parameterNoteMax = input(0);
@@ -36,31 +38,13 @@ export class BoardPanelComponent {
     newNote.boardId = this.board().id;
     newNote.name = $localize`:@@board.newNote:New note`;
 
-    this.postitService.createNote(newNote).subscribe((noteCreated) => {
-      this.noteList().push(noteCreated);
+    this.postitService.createNote(newNote).subscribe(() => {
       this.globalInfoService.showAlert(AlertType.SUCCESS, $localize`:@@board.newNoteCreated:New note created`);
-
       this.refreshCurrentBoard();
     });
   }
 
-  public reorderBoard(note: PostitNote): void {
-    let orderNum = 1;
-    for (const noteOfBoard of this.noteList()) {
-      if (noteOfBoard.id === note.id) {
-        noteOfBoard.orderNum = note.orderNum;
-      } else {
-        if (note.orderNum === orderNum) {
-          orderNum++;
-        }
-        noteOfBoard.orderNum = orderNum++;
-      }
-    }
-
-    this.noteList().sort(
-      (note1, note2) => (note1.orderNum ? note1.orderNum : 0) - (note2.orderNum ? note2.orderNum : 0),
-    );
-
+  public reorderBoard(): void {
     this.refreshCurrentBoard();
   }
 

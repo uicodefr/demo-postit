@@ -27,7 +27,7 @@ export class SettingsComponent implements OnInit {
   public readonly userSettings = viewChild<UserSettingsComponent>('userSettings');
 
   public ngOnInit(): void {
-    this.authService.getRefreshedCurrentUser();
+    this.authService.getRefreshedCurrentUser().subscribe();
   }
 
   public refresh(): void {

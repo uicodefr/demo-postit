@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { UrlConstant } from '@app/const/url-constant';
-import { Board } from '@app/model/postit/board';
 import { PostitService } from '@app/service/postit/postit.service';
 import { provideHttpClient } from '@angular/common/http';
+import { defaultBoardListMock } from '@test/fixture/boards.fixture';
 
 let postitService: PostitService;
 let httpMock: HttpTestingController;
@@ -18,9 +18,12 @@ describe('PostitService', () => {
     httpMock = TestBed.inject(HttpTestingController);
   });
 
+  it('should be created', () => {
+    expect(postitService).toBeTruthy();
+  });
+
   it('getBoardList should call the correct url', () => {
-    const boardList: Board[] = [];
-    boardList.push({ id: 1, name: 'Test 1' }, { id: 2, name: 'Test 2' });
+    const boardList = defaultBoardListMock();
 
     postitService.getBoardList().subscribe((result) => {
       expect(result).toBe(boardList);

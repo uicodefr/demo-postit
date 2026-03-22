@@ -1,17 +1,20 @@
 import { Component, OnInit, computed, effect, inject, input, output, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
-import { PostitNote } from '../../../model/postit/postit-note';
-import { ConfirmDialogComponent, ConfirmDialogData } from '../../shared/dialog/confirm-dialog/confirm-dialog.component';
-import { PostitService } from '../../../service/postit/postit.service';
-import { GlobalInfoService } from '../../../service/util/global-info.service';
-import { AlertType } from '../../../const/alert-type';
-import { EditNoteDialogComponent } from '../edit-note-dialog/edit-note-dialog.component';
-import { GlobalConstant } from '../../../const/global-constant';
-import { ColorizeNoteDialogComponent } from '../colorize-note-dialog/colorize-note-dialog.component';
+import { PostitNote } from '@app/model/postit/postit-note';
+import {
+  ConfirmDialogComponent,
+  ConfirmDialogData,
+} from '@app/component/shared/dialog/confirm-dialog/confirm-dialog.component';
+import { PostitService } from '@app/service/postit/postit.service';
+import { GlobalInfoService } from '@app/service/util/global-info.service';
+import { AlertType } from '@app/const/alert-type';
+import { EditNoteDialogComponent } from '@app/component/board/edit-note-dialog/edit-note-dialog.component';
+import { GlobalConstant } from '@app/const/global-constant';
+import { ColorizeNoteDialogComponent } from '@app/component/board//colorize-note-dialog/colorize-note-dialog.component';
 import { Board } from '@app/model/postit/board';
 import { AttachedFileService } from '@app/service/postit/attached-file.service';
-import { AttachedFileDialogComponent } from '../attached-file-dialog/attached-file-dialog.component';
+import { AttachedFileDialogComponent } from '@app/component/board//attached-file-dialog/attached-file-dialog.component';
 import { GlobalService } from '@app/service/global/global.service';
 import { MatCardModule } from '@angular/material/card';
 import { SHARED_COMMON, SHARED_MATERIAL } from '@app/common-imports';

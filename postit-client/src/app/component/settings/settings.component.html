@@ -3,14 +3,14 @@
     <ng-container i18n="@@settings.title">Settings</ng-container>
 
     <div class="refreshZone">
-      <button type="button" matIconButton title="Refresh" i18n-title (click)="refresh()">
+      <button type="button" data-testid="refreshBtn" matIconButton title="Refresh" i18n-title (click)="refresh()">
         <mat-icon>refresh</mat-icon>
       </button>
     </div>
   </h1>
 
   <mat-accordion>
-    <mat-expansion-panel *appHasRole="'ROLE_BOARD_WRITE'">
+    <mat-expansion-panel data-testid="boardPanel" *appHasRole="'ROLE_BOARD_WRITE'">
       <mat-expansion-panel-header>
         <mat-panel-title i18n="@@settings.board.title"> Board Configuration </mat-panel-title>
         <mat-panel-description i18n="@@settings.board.description">
@@ -21,7 +21,7 @@
       <app-board-settings #boardSettings></app-board-settings>
     </mat-expansion-panel>
 
-    <mat-expansion-panel *appHasRole="'ROLE_USER_WRITE'">
+    <mat-expansion-panel data-testid="userPanel" *appHasRole="'ROLE_USER_WRITE'">
       <mat-expansion-panel-header>
         <mat-panel-title i18n="@@settings.user.title"> User Configuration </mat-panel-title>
         <mat-panel-description i18n="@@settings.user.description"> Add, update and delete users </mat-panel-description>

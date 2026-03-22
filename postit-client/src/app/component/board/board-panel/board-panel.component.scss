@@ -20,6 +20,12 @@
     border: none;
     background-color: transparent;
     box-shadow: none;
+
+    .spinnerLoading {
+      // should same size that the refresh btn
+      margin: 18px;
+    }
+
     div {
       display: flex;
       flex-direction: column;

@@ -29,6 +29,13 @@ server:
 
 # ACTUATOR
 management:
+  info:
+    env:
+      enabled: true
+    java:
+      enabled: false
+    os:
+      enabled: false
   endpoints:
     web:
       exposure:

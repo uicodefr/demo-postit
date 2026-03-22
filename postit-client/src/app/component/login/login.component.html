@@ -3,9 +3,11 @@
 
   @if (userConnected()) {
     <mat-card class="alreadyConnected">
-      <mat-card-content class="loginCardContent">
-        <ng-container i18n="@@login.youAreConnectedAs">You are connected as</ng-container>
-        <em> {{ userConnected()?.username }} </em>
+      <mat-card-content class="logoutCardContent">
+        <p>
+          <ng-container i18n="@@login.youAreConnectedAs">You are connected as</ng-container>
+          <em> {{ userConnected()?.username }} </em>
+        </p>
         <br />
 
         <button
@@ -26,6 +28,7 @@
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="loginForm">
           <mat-form-field>
             <input
+              data-testid="usernameInput"
               type="text"
               matInput
               placeholder="Username"
@@ -36,6 +39,7 @@
 
           <mat-form-field>
             <input
+              data-testid="passwordInput"
               type="password"
               matInput
               placeholder="Password"

@@ -1,8 +1,8 @@
-import { IdEntity } from '../id-entity';
+import { IdEntity } from '@app/model/id-entity';
 
 export interface AttachedFile extends IdEntity {
   postitNoteId: number;
   filename: string;
   size: number;
-  type: number;
+  type: string;
 }

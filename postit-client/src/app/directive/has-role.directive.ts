@@ -1,6 +1,6 @@
 import { Directive, ViewContainerRef, TemplateRef, inject, input, effect } from '@angular/core';
 
-import { AuthService } from '../service/auth/auth.service';
+import { AuthService } from '@app/service/auth/auth.service';
 
 @Directive({
   selector: '[appHasRole]',

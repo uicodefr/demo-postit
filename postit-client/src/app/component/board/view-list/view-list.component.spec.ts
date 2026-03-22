@@ -20,9 +20,7 @@ describe('ViewListComponent', () => {
         { provide: MAT_BOTTOM_SHEET_DATA, useValue: {} },
       ],
     }).compileComponents();
-  });
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(ViewListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -30,5 +28,22 @@ describe('ViewListComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should show view list', () => {
+    expect(fixture.nativeElement.querySelector('[data-testid="tabsItem"] .title').textContent).toContain('Tabs');
+    expect(fixture.nativeElement.querySelector('[data-testid="tabsItem"] .indication').textContent).toContain(
+      'individually display with a tab for each board (default)',
+    );
+
+    expect(fixture.nativeElement.querySelector('[data-testid="panelsItem"] .title').textContent).toContain('Panels');
+    expect(fixture.nativeElement.querySelector('[data-testid="panelsItem"] .indication').textContent).toContain(
+      'each board in a panel which can be displayed or hidden',
+    );
+
+    expect(fixture.nativeElement.querySelector('[data-testid="tableItem"] .title').textContent).toContain('Table');
+    expect(fixture.nativeElement.querySelector('[data-testid="tableItem"] .indication').textContent).toContain(
+      'all boards in column (support drag and drop)',
+    );
   });
 });

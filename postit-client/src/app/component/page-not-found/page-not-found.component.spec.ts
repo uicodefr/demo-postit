@@ -10,15 +10,14 @@ describe('PageNotFoundComponent', () => {
     await TestBed.configureTestingModule({
       imports: [PageNotFoundComponent],
     }).compileComponents();
-  });
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(PageNotFoundComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create and display', () => {
     expect(component).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('h2').textContent).toBe('Page not found');
   });
 });
